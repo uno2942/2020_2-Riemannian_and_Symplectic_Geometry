@@ -1,0 +1,441 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, physics, cancel}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\ad}{ad}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\intprodl}{%
+    \mathbin{\scalebox{1.5}{$\lrcorner$}}%
+}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW7}
+\end{center}
+박성빈, 수학과
+
+Notation: I'll write $C^\perp$ instead of $C^\Omega$ from the notation of the problem. Throughout this paper, if there is less confusion, for an embedding $i:Q\rightarrow M$, I identified $i(Q)$ and $Q$, and $di(T_xQ)$ as a subspace of $T_xM$ for $x\in Q$.
+
+I'll first show a proposition which will be used throughout the homework.
+\begin{proposition}\label{HW7:Prop1}
+The set of Hamiltonian field is ample, in other words, for $x\in M^n$, we get
+\begin{equation*}
+    \{X(x):X=X_h\textrm{ for some }h\in C^\infty(M)\} = T_xM.
+\end{equation*}
+\end{proposition}
+\begin{proof}
+$\subset$ part is obvious, so I'll prove the converse. Let's consider a map
+\begin{equation*}
+    \varphi:C^\infty(M)\rightarrow T_xM
+\end{equation*}
+by mapping $\varphi(h) = X_h(x)$. This is linear map since
+\begin{equation*}
+    X_{ah_1+h_2}\intprodl \omega = d(ah_1+h_2) = adh_1+dh_2 = aX_{h_1}\intprodl \omega + X_{h_2}\intprodl \omega.
+\end{equation*}
+Also, $\varphi$ is surjective: choose a local coordinate $(t, U)$ at $x$. By choosing appropriate bump function $f$, we get $t^i f\in C^\infty(M)$. Also, $X_{t^i f}(x)$ are linearly independent in $T_xM$; if there exists $(a_i)$ which are not all zero but $a_iX_{t^i f}(x) = 0$, then
+\begin{equation*}
+    \left(a_iX_{t^i f}(x) \intprodl \omega\right)\left(\left.\pdv{t^j}\right|_x\right) = a_i dt^i\left(\left.\pdv{t^j}\right|_x\right) = a_j = 0
+\end{equation*}
+for all $j$, which is contradiction. Therefore, $\dim \varphi(C^\infty(M)) = \dim T_xM$, and the proposition holds.
+\end{proof}
+
+\begin{remark}
+Using this proposition, we can identify $\omega(v, X_f(x))$ for some $v\in T_xM$ and $f\in C^\infty(M)$ by
+\begin{equation*}
+    \omega(X_f(x), v) = v[f](x)
+\end{equation*}
+replacing $v$ by $X_g(x)$ for some $g\in C^\infty(M)$.
+\end{remark}
+
+\noindent \textbf{1}
+\begin{enumerate}
+    \item Since $c$ is a regular value of $H$, $H^{-1}(c)$ forms a closed submanifold of $M$ of dimension $n-1$. Let the embedding $i:H^{-1}(c)\rightarrow M$. By solving the ODE generated by $X_H$, for any $x\in i(H^{-1}(c))\subset M$, there exists a flow $\phi^t_H$ for $t\in (-\epsilon, \epsilon)$ for some $\epsilon>0$ on some neighborhood of $x$ with $\phi^t_H(x)\in i(H^{-1}(c))$. It implies that $X_H(x)\in di\left(T_xH^{-1}(c)\right)$. Therefore, by taking a distribution $\Delta$ by $\Delta_x = \mathrm{span}\{di^{-1}(X_H(x))\}$ for each $x\in H^{-1}(c)$, we get an $1$-dim integrable distribution on $H^{-1}(c)$. Now, $H^{-1}(c)$ can be foliated by the integral manifold of $\Delta$. From now on, I'll identify the point on $H^{-1}(c)$ and the point on $i(H^{-1}(c))$, and $T_xH^{-1}(c)$ as a subspace of $T_xM$. 
+    
+    Now, let's explicitly construct the foliation. To define foliation, we should impose $\dim \Delta_x = 1$, so $X_H(x) \neq 0$ for all $x$. In this setting, we can use the following proposition.
+    \begin{proposition}
+        Let $X$ be a $C^\infty$ vector field on $M$ with $X(p)\neq 0$. Then there is a coordinate system $(x,U)$ around $p$ such that
+        \begin{equation*}
+            X = \pdv{x^1}\textrm{ on }U.
+        \end{equation*}
+        (The proof is on \textit{Comprehensive introduction to Differential Geometry I}, Spivak, theorem 5.7. I quote it since I rarely used this theorem.)
+    \end{proposition}
+    
+    Set $X=X_H$ and $M=H^{-1}(c)$ at the above proposition. For easy treatment, let's further shrink $U$ such that $x(U) = (-\epsilon, \epsilon)^{n-1}$ for some $\epsilon>0$ and $U$ is contained in the domain where the ODE $\phi^t_H$ is a collection of diffeomorphisms for $t\in (-T, T)$ with $\epsilon<T$ and the domain of $\phi^t_H$ is in $U$. In this coordinate, the set
+    \begin{equation*}
+        \{q\in N:x^2(q) = a^2, \ldots x^{n-1}(q) = a^{n-1}\}, \abs{a^i}<\epsilon.
+    \end{equation*}
+    is an integral manifold since for $\alpha(t) = (t, a^2, \ldots, a^{n-1})$, $\dv{\alpha}{t} = X(\alpha(t))\in \Delta_{\alpha(t)}$, which is Hamiltonian trajectory. Furthermore, we can patch each overlapped interval curves into a maximal integral curve using existence and uniqueness theorem of ODE, and construct a foliation of $M$. (To do this more precisely, we can follow the proof in the \textit{Comprehensive introduction to Differential Geometry I}, Spivak, theroem 6.6; I already constructed local version of Frobenius integrability theorem.) Therefore, we can construct a equivalence relation such that $x\sim y$ if and only if there exists a integral curve $\phi^{t}_H(x)$ and $t_0\in\mathbb{R}$ such that $\phi^{t_0}_H(x) = y$. Note that the time domain of $\phi^t_H(x)$ may not be $\mathbb{R}$ for some $x$: For $M = \mathbb{R}^2\setminus\{0\}$ with a vector field $X=\pdv{x^1}$, the integral curve at $(-1,0)$ is definitely $\phi^t_X((-1,0)) = (-1+t, 0)$, but it is defined on time domain $(-\infty, 1)$.
+    
+    Now, Let's construct $M^{-1}(c)$. We just saw that $M_c =H^{-1}(c)/\sim$ is a well-defined set. Let's give the quotient topology on $M_c$ using the projection $\pi_c:H^{-1}(c)\rightarrow M_c$. This is well-defined topological space. On this topological space, let's construct the atlas of $M_c$. The difficulty arises from the fact that the charts at each point in $H^{-1}(c)$ is local, but the equivalence relation is global. To remedy this difficulty, I need to make connection between local chart and global leaf. I'll first show some propositions.
+    \begin{proposition}\label{HW7:Prop3}
+        Let $x, y\in N_x$, then there exists an open set $x\in U$ and $y\in V$ such that $U$ and $V$ are diffeomorphic.
+    \end{proposition}
+    \begin{proof}
+    Since $x,y$ are in the same maximal integral curve, there exists $T$ such that $\phi^{T}_H(x) = y$. Along the compact curve $\phi^t_H$ for $[0,T]$, take a open cover which is consisted of foliation chart at each point in the curve. Using Lebesgue lemma, we can reach from $x$ to $y$ by dividing time interval properly passing through finite subcover. Let the divided time interval $\{0=t_0, t_1, \ldots, t_n = T\}$ and each neighborhood containing $[t_i, t_{i+1}]$ by $U_i$.
+    
+    Let's consider the transition from $U_0$ to $U_1$. Let's write $\alpha$ and $\beta$ as a foliation coordinate on $U_0$ and $U_1$. Using the foliation chart on $U_0$, 
+    \begin{equation}\label{HW7:Prop3_Eq1}
+        \alpha(\phi^t_H(q)) = (a^1, \ldots, a^{n-1}) + (t,0,\ldots, 0)
+    \end{equation}
+    for $\alpha(q) = (a^1, \ldots, a^n)$ with $\abs{a^i}<\epsilon$. In $U_0\cap U_1$ take an open neighborhood of $\phi^{t_1}_H(x)$. By translating the neighborhood along $\alpha^1$ coordinate and shrinking it, we can choose $x\in V_0\subset U_0$ such that $\phi^{t_1}_H(V_0)\subset U_0\cap U_1$. Note that $\phi^{t_1}_H(V_0)$ and $V_0$ are diffeomorphic. For transition from $U_1$ to $U_2$, we again choose a neighborhood $V_1\subset \phi^{t_1}_H(V_0)$ of $\phi^{t_1}_H(x)$ such that $\phi^{t_2-t_1}_H(V_1)\subset U_1\cap U_2$. Repeating this process, we finally make a open neighborhood $V\subset U_n$ of $y= \phi^T_H(x)$ such that it is diffeomorphic to some open neighborhood $U$ of $x$ by back-tracking $V$ using diffeomorphism along $\phi^t_H(x)$.
+    \end{proof}
+    \begin{remark}\label{HW7:Remark1}
+    According to \eqref{HW7:Prop3_Eq1}, we can figure out how the transition occur between foliation chart. By the uniqueness of ODE solution, the Hamiltonian flow have constant coordinate value at each $U_0$ and $U_1$. Let $q\in U_0\cap U_1$ and $\alpha(q) = (a^i)$, $\beta(q) = (b^i)$. For a Hamiltonian flow $\phi^t(q)\subset U_0\cap U_1$ for $\abs{t}<\delta$, we get the transition map
+    \begin{equation*}
+        \beta\circ \alpha^{-1}:(a^1+t, a^2, \ldots, a^{n-1})\mapsto (b^1+t, b^2, \ldots, b^{n-1}).
+    \end{equation*}
+    on $\phi^t(q)$. It shows that for $b^2, \ldots, b^{n-1}$, it does not depends on $a^1$. Let's give an equivalence relation on $\alpha(U_0\cap U_1)$ by $(a_1^1, \ldots, a^{n-1}_1)\sim (a_2^1, \ldots, a^{n-1}_2)$ if and only if $a_k^1=a_k^2$ for $k\geq 2$. Give the similar equivalence relation on $\beta(U_0\cap U_1)$, then we get a well-defined continuous function
+    \begin{equation*}
+        \widetilde{\beta\circ \alpha^{-1}}:\alpha(U_0\cap U_1)/\sim \mapsto \beta(U_0\cap U_1)/\sim
+    \end{equation*}
+    such that
+    \begin{equation*}
+        \widetilde{\beta\circ \alpha^{-1}}(a^2, \ldots, a^{n-1}) = [\beta\circ \alpha^{-1}(t_0, a^2, \ldots, a^{n-1})]
+    \end{equation*}
+    for some $t_0$ making $(t_0, a^2, \ldots, a^{n-1})\in \alpha(U_0\cap U_1)$. For each open cube in $\alpha(U_0\cap U_1)$ and $\beta(U_0\cap U_1)$, it is just taking contraction of first coordinate, so we can treat each open set in the quotient space as an open set in $\mathbb{R}^{n-2}$. Finally, if we choose $(a^2, \ldots, a^{n-1})$ and $t_0$, then there exists an open set $V$ $(t_0, a^2, \ldots, a^{n-1})\subset U_0\cap U_1$. In this set, we take partial derivative about $a^2, \ldots, a^{n-1}$ and identify it as a derivative of $\widetilde{\beta\circ \alpha^{-1}}$. It shows that the function is smooth. Finally, we can reverse this procedure to get $\widetilde{\alpha\circ \beta^{-1}}$ which is inverse to $\widetilde{\beta\circ \alpha^{-1}}$ and is also smooth.
+    \end{remark}
+    
+    \begin{corollary}
+    The quotient map $\pi_c:F^{-1}(c)\rightarrow M_c$ is open.
+    \end{corollary}
+    \begin{proof}
+    Choose an open set $U\subset F^{-1}(c)$ and let the saturation $S(U)$. I need to show that $S(U)$ is open set in $F^{-1}(c)$. Choose $q\in S(U)$, then it means there exists $p\in U$ such that $[q]=[p]$. Therefore, there exists $t_0$ such that $\phi^{t_0}_H(q) = p$. From the above proposition, there exists a neighborhood $U_1$ of $p$ and neighborhood $V_1$ of $q$ such that both are homeomorphic. Also, note that the homeomorphism was constructed along Hamiltonian trajectory in the coordinate $X_H = \pdv{x^1}$ for each local coordinate, so $V_1\subset S(U)$. It shows that $S(U)$ is open, and $\pi_c$ is open map.
+    \end{proof}
+
+
+    Now, let's give the atlas of $M_c$ as following: for each $x\in F^{-1}(c)$, choose a foliation chart $(t, U)$ as before. Taking a neighborhood $[x]\in\pi_c(U)$ with coordinate $t_c = (t^2, \ldots, t^{n-1})$, we can cover $M_c$ using the charts. Note that $t_c$ is well-defined since any integral curve has constant $2, \ldots, n-1$ coordinate. By the property of $t$ with assumption in the problem, $t_c$ is a homeomorphism from $\pi_c(U)$ to an open set in $\mathbb{R}^{n-2}$, but I need the $C^\infty$ relation: let $\pi_c(U)\cap \pi_c(V)\neq \emptyset$ with coordinates $t^U_c, t^V_c$. I need to construct a bi-$C^\infty$ function
+    \begin{equation*}
+        f:t^U_c\left(\pi_c^{-1}(\pi_c(U)\cap \pi_c(V))\cap U\right) \rightarrow t^V_c\left(\pi_c^{-1}(\pi_c(U)\cap \pi_c(V))\cap V\right).
+    \end{equation*}
+    If $U\cap V\neq \emptyset$, I already checked it at remark \ref{HW7:Remark1}, so assume $U\cap V= \emptyset$. Again, choose $x,y\in N_x$ such that $x\in U$ and $y\in V$ with $\phi^T_H(x) = y$ for some $T$. As in the proof of proposition \ref{HW7:Prop3}, take finite open set $\{U_i\}_{i=0}^k$ joining $x$ and $y$ with time point $\{t_i\}_{i=0}^{k-1}$ such that $\phi^{t_i}_H(x)\in U_i\cap U_{i+1}$. As a result of the proposition, we get an open neighborhood $x\in U$ such that $y\in \phi^T_H(U)$. At each $U_i\cap U_{i+1}$, there exists a bi-$C^\infty$ transition map between foliation chart. Now, take quotient of $U_i$ as in the remark \ref{HW7:Remark1}. In this case, we legally compose this transition maps. For example, choose $q\in U$ from $U_0/\sim$ to $U_1/\sim$, $[\phi^{t_1}_H(q)]\in U_0/\sim \cap U_1/\sim$, so there is a transition map $f_1$. Since $[\phi^{t_1}_H(q)] = [\phi^{t_2}_H(q)]$ in $U_1/\sim$ and $[\phi^{t_2}_H(q)]\in U_1/\sim \cap U_2/\sim$. Continuing this process while we reach $y$, we get transition maps, and by composing each transition map in each step, we get coordinate transition map from $U$ to $V$, and it is bi-$C^\infty$ as each transition map is $C^\infty$. By taking the composed transition map as a coordinate transition map of $t^U$ to $t^V$, we prove the well-defineness of the atlas we gave on $M_c$.
+    
+    By the construction, $\pi_c$ can be written in the coordinate form
+    \begin{equation*}
+        \pi_c(a^1, \ldots, a^{n-1}) = (a^2, \ldots, a^{n-1}),
+    \end{equation*}
+    so it is indeed differentiable.
+    
+\item I'll first show the existence of such lift. For each $\tilde{v},\tilde{w}\in T_{[x]}M_c$, choose $x\in N_x$, and a foliation coordinate $(t,U)$ at $x$. Choose a coordinate on $[x]$ by the compatible coordinate with $t$. Writing $\tilde{v} = (v^2, \ldots, v^{n-1})$ (resp. $\tilde{w} = (w^2, \ldots, w^{n-1})$ in the compatible coordinate system, we can choose a lift of $\tilde{v}$ and $\tilde{w}$ by
+\begin{equation*}
+    \begin{split}
+        v &= \sum_{i=2}^{n-1} v^i\left.\pdv{t^i}\right|_x\\
+        w &= \sum_{i=2}^{n-1} w^i\left.\pdv{t^i}\right|_x.
+    \end{split}
+\end{equation*}
+Note that our $v$ and $w$ satisfy $d\pi_c(v) = \tilde{v}$, $d\pi_c(w)=\tilde{w}$, and $\omega(v, X_H(x)) = 0 = \omega(w, X_H(x))$ since
+\begin{equation*}
+    \omega(v, X_H(x)) = v[H](x) = 0
+\end{equation*}
+for $v\in T_xH^{-1}(c)$. It shows the existence of the lift.
+
+Now, I need to show that this is well-defined. I'll show the well-defineness for local version and extend it to global version. For local version, choose $y\in N_x\cap U$ and lifts $v_2, w_2\in T_yF^{-1}(c)$ such that $d\pi_c(v_2)=\tilde{v}$, $d\pi_c(w_2) = \tilde{w}$, and $\omega(v_2,X_H(y))=\omega(w_2,X_H(y)) = 0$.
+
+I'll first show that $(\phi^t_H)^*\omega(v,w)$ is constant, where $\{\phi^t_H\}$ is a collection of diffeomorphisms with $\phi^0_H(x) = x$. Using proposition \ref{HW7:Prop1}, we can choose $g,h\in C^\infty(M)$ such that $Y=X_g$ and $Z=X_h$, which are hamiltonian vector field such that each are equal at $q\in M$, so
+\begin{equation*}
+\begin{split}
+    d(X_H\intprodl \omega)(Y, Z)(q) &= X_g(\omega(X_H, X_h))(q) - X_h(\omega(X_H, X_g))(q) - \omega(X_H, [X_g,X_h])(q)\\
+    &=(X_gX_h(H) - X_hX_g(H) - [X_g,X_h](H))(q) = 0.
+\end{split}
+\end{equation*}
+Therefore, we get $L_{X_H}\omega = 0$ and $\dv{t}\left((\phi^t_H)^*\omega(v,w)\right) = 0$ for all $t$, which implies that $\omega (d\phi^t_H(v), d\phi^t_H(w)) = \omega(v,w)$ for all $t$, where $\phi^t_H$ is defined. Since $\omega(v, X_H(x)) = \omega(w, X_H(x)) = 0$, which is $X_H(x) = \left.\pdv{t^1}\right|_x$ by the coordinate construction, we can set
+\begin{equation*}
+    \begin{split}
+        v &= \sum_{i=2}^{n-1}v^i\left.\pdv{t^i}\right|_x\\
+        w &= \sum_{i=2}^{n-1}w^i\left.\pdv{t^i}\right|_x.
+    \end{split}
+\end{equation*}
+Also, in this setting, we get
+\begin{equation*}
+    \begin{split}
+        d\phi^t_H(v) &= \sum_{i=2}^{n-1}v^id\phi^t_H\left(\left.\pdv{t^i}\right|_x\right) = \sum_{i=2}^{n-1}v^i\left.\pdv{t^i}\right|_y\\
+        d\phi^t_H(w) &= \sum_{i=2}^{n-1}w^id\phi^t_H\left(\left.\pdv{t^i}\right|_x\right) = \sum_{i=2}^{n-1}w^i\left.\pdv{t^i}\right|_y
+    \end{split}
+\end{equation*}
+since $\phi^t_H$ acts as identity function for $i=2, \ldots, n-1$ coordinates.
+
+Now, let's show $\omega(v,w) = \omega(v_2, w_2)$. Choose $t_0$ such that $\phi_H^{t_0}(x) = y$. Note that $d\pi_c$ maps $v$ (resp. $w$) and $d\phi_H^t(v)$ (resp. $d\phi_H^t(w)$) to the same $\tilde{v}$ (resp. $\tilde{w}$). Since $d\pi_c(v_2) = d\pi_c(v)$, (resp. $d\pi_c(w_2)=d\pi_c(w)$) we get $d\phi_H^t(v)-v_2, d\phi_H^t(w)-w_2\in \mathrm{span}\{X_H(y)\}$, and we get 
+\begin{equation*}
+    \omega(v_2, w_2) = \omega(v_2 + (d\phi_H^t(v)-v_2), w_2 + (d\phi_H^t(w)-w_2)) = \omega(d\phi_H^t(v), d\phi_H^t(w)).
+\end{equation*}
+Therefore, in $U$, $\omega(v,w)$ are same for any lift $x\in N_x\cap U$ and $v,w\in T_xH^{-1}(c)$.
+
+Let's extend the local equivalence to global equivalence. Fix $x\in N_x$ and $v,w\in T_{x}M_c$ satisfying $d\pi_c(v) = \tilde{v}$ and $d\pi_c(w) = \tilde{w}$. Let's define
+    \begin{multline*}
+        A_{x,v,w} = \{y\in N_x:\textrm{For any } v_2,w_2\in T_yF^{-1}(c) \textrm{ satisfying }\\d\pi(v_2) = \tilde{v}, d\pi(w_2)=\tilde{w}, \omega(v_2,w_2)=\omega(v,w)\}.
+    \end{multline*}
+Then I already showed that $A_{x,v,w}$ does not depend on the choice of lifts $v,w$, so in fact only depends on $x$ if fixed $\tilde{v}$ and $\tilde{w}$ in prior, and is non-empty open set; for any $y$, we can repeat the above argument in the foliation chart containing $y$ and choose an open set of $N_x$ contained in $A_{x,v,w}$. If $A_{x,v,w}$ is not the whole $N_x$, then choose points in $A_{x,v,w}^c$ and make an equivalence class like $A_{x,v,w}$. If we take union of whole equivalence classes except $A_{x,v,w}$, it is again open, making two disjoint open set with union is whole set in connected set $N_x$, which is not possible. Therefore, $A_{x,v,w}$ is the whole set, which ends the proof.
+
+\item We have identified $T_xH^{-1}(c)$ as a subspace of $T_xM$, and constructed $\omega_c$ from $i_c^*\omega$ to satisfy $i_c^*\omega = \pi_c^*\omega_c$. The construction was well-defined, so we get
+\begin{equation*}
+    i_c^*\omega = \pi_c^*\omega_c.
+\end{equation*}
+
+\end{enumerate}
+
+
+
+\noindent \textbf{2}
+I'll identify $i(C)\subset V$ with $C$ if there is no confusion. Let's first define a sympletic inner product $\Omega_{C/C^\perp}$ on $C/C^\perp$ by
+\begin{equation*}
+    \Omega_{C/C^\perp}([c_1], [c_2]) = \Omega(c_1, c_2).
+\end{equation*}
+for $c_1,c_2\in C$. (More precisely, it is $\Omega(i_C(c_1), i_C(c_2))$.) Then it is well defined: for different representation $[c_1'],[c_2']$ of $[c_1],[c_2]$,
+\begin{equation*}
+\begin{split}
+    \Omega_{C/C^\perp}([c_1'], [c_2']) &= \Omega(c_1 - (c_1 - c_1'), c_2 - (c_2 - c_2'))\\
+    &=\Omega(c_1, c_2) - \cancel{\Omega(c_1-c_1', c_2)} - \cancel{\Omega(c_1, c_2-c_2')} + \cancel{\Omega(c_1-c_1', c_2-c_2')}\\
+    &=\Omega_{C/C^\perp}([c_1], [c_2])
+\end{split}
+\end{equation*}
+since $c_1-c_1',c_2-c_2'\in C^\perp\subset C$. By the definition, it is bilinear and alternating, so I need to check the non-degeneracy. Assume $\Omega_{C/C^\perp}([c_1], [c]) = 0$ for all $c\in C$, then $\Omega(c_1, c) = 0$ for all $c\in C$, so $c_1\in C^\perp$ and $[c_1]=0$. It shows that $\Omega_{C/C^\perp}$ is a sympletic inner product. Also, it satisfies
+\begin{equation*}
+\begin{split}
+    i_C^*\Omega(c_1,c_2) &=\Omega(i_C(c_1),i_C(c_2))
+\end{split}
+\end{equation*}
+and
+\begin{equation*}
+\begin{split}
+    \pi_C^*\Omega_{C/C^\perp}(c_1,c_2) &=\Omega_{C/C^\perp}([c_1],[c_2]) = \Omega(i_C(c_1),i_C(c_2)).
+\end{split}
+\end{equation*}
+Assume there exists another sympletic inner product $\Omega'_{C/C^\perp}$ on $C/C^\perp$ satisfying $i_C^*\Omega = \pi_C^*\Omega'_{C/C^\perp}$, then
+\begin{equation*}
+    \Omega'_{C/C^\perp}([c_1],[c_2]) = \pi_C^*\Omega'_{C/C^\perp}(c_1,c_2) = i_C^*\Omega(c_1,c_2) = \Omega_{C/C^\perp}([c_1],[c_2]),
+\end{equation*}
+for all $c_1,c_2\in C$, so it is same as $\Omega_{C/C^\perp}$. Therefore, $\Omega_{C/C^\perp}$ is unique.
+
+Any finite dimensional sympletic vector space have even dimension, so $\dim C/C^\perp$ is even.
+
+\noindent \textbf{3}
+\begin{enumerate}
+    \item Let $i:Q^m\rightarrow M^n$ be the embedding. Choose $x\in Q$ and an open neighborhood $U$ with local coordinate $t$. Since $\rank \omega_x$ is constant for all $x\in Q$, the null distribution $\mathcal{N}$ has constant dimension $k$ for some $k$. Using the local trivialization of $TU$ and local coordinate $t$, we can find the vector fields $\xi_1,\ldots, \xi_k$ which spans the null space of $\omega_x$ for each $x\in U$. To show involution, I need to show that $[\xi_i,\xi_j]\in \mathcal{N}$. From the definition of exterior derivative, we get
+    \begin{equation*}
+        \begin{split}
+        d\omega(X,Y,Z) = &X[\omega(Y,Z)] - Y[\omega(X,Z)] + Z[\omega(X,Y)] \\
+        &- \omega([X,Y],Z) + \omega([X,Z],Y)-\omega([Y,Z],X).
+        \end{split}
+    \end{equation*}
+    Now, set $X=\xi_i$, $Y=\xi_j$, and $Z$ be any vector field on $TU$. Since $d\omega = 0$, and $\xi_i,\xi_j\in\mathcal{N}$, we get $\omega([\xi_i,\xi_j],Z) = 0$. Therefore, it shows $[\xi_i,\xi_j]\in\mathcal{N}$.
+    
+    \item Let $\dim \mathcal{N} = k$ and $N$ be a $k$-dimensional integral manifold of $\mathcal{N}$, i.e. $Q^m$ is foliated by $N^k$. I'll assume that $P$ is a smooth manifold with differential structure compatible with foliation chart, i.e. for $x\in Q$, there exists a foliation chart $(t, U)$ with $\epsilon>0$ satisfying each component in $N\cap U$ are the set of the form
+    \begin{equation*}
+        \{q\in U:t^{k+1}(q)=a^{k+1}, \ldots, t^{m}(q)=a^{m}\},\abs{a^i}<\epsilon,
+    \end{equation*}
+    and $(t^{k+1}, \ldots, t^{m})$ is a coordinate system of $\pi(U)$; in fact, I need to assume more such as $\pi$ is open map. In this setting, I'll construct $\omega_P$.
+    
+    For $\tilde{v},\tilde{w}\in T_{[x]}P$, and lifts $v,w\in T_xP$ satisfying $d\pi(v)=\tilde{v},d\pi(w) = \tilde{w}$. Let's define $\omega_P$ on $P$ by
+    \begin{equation*}
+        \omega_P(\tilde{v},\tilde{w})\coloneqq \omega(v,w).
+    \end{equation*}
+    
+    I need to show that this is well-defined. I'll first show the well-defineness in some foliation chart, and extend this result to global version. Choose a foliation chart $(t,U)$ with $\epsilon>0$ such that $x\in U$. In this coordinate, decompose $v$ by first $k$ parts spanned by $\{\pdv{t^1}, \ldots, \pdv{t^k}\}$ and remainder. Let's denote the first one $v_1$ and the other $v_2$. Since $\pi$ maps
+    \begin{equation*}
+        (a^1, \ldots ,a^m)\mapsto (a^{k+1}, \ldots, a^m),
+    \end{equation*}
+    and each component in $N\cap U$ is a integral manifold of $\mathcal{N}$, $d\pi(v_1) = 0$ and we can identify $v_1\in \mathcal{N}$. Decomposing $w$ by the same way, we get
+    \begin{equation*}
+        \omega(v,w) = \omega(v_2,w_2).
+    \end{equation*}
+    In the coordinate form, I'll write
+    \begin{equation*}
+        \begin{split}
+            v_2 &= \sum_{j=k+1}^m v^j_2\left.\pdv{t^j}\right|_{x}\\
+            w_2 &= \sum_{j=k+1}^m w^j_2\left.\pdv{t^j}\right|_{x}.
+        \end{split}
+    \end{equation*}
+    In fact, I can prove the existence of lifts $v_2$, $w_2$ of $\tilde{v}$ and $\tilde{w}$ in $T_xP$ in this step: for $\tilde{v} = (a^{k+1}, \ldots, a^m)$ and $\tilde{w} = (b^{k+1}, \ldots, b^m)$, we construct $v_2$ and $w_2$ by $v^j_2 = a^j$, $w^j_2 = a^j$. Now, assume $y$ is in the same component which contains $x$. What I want to show is that
+    \begin{equation*}
+        \omega\left(\sum_{j=k+1}^m v^j_2\left.\pdv{t^j}\right|_{y}, \sum_{j=k+1}^m v^j_2\left.\pdv{t^j}\right|_{y}\right) = \omega(v_2, w_2),
+    \end{equation*}
+    i.e. just moving the vector in $\mathbb{R}^n$. The key idea is that $X\intprodl \omega = 0$ for any $X\in \mathcal{N}$, so $L_X\omega = 0$.
+    
+    Since $x,y$ are in the same component in $N\cap U$, using the foliation coordinate, we can identify $x$ and $y$ by
+    \begin{equation*}
+    \begin{split}
+        x&\mapsto \left(\alpha^1, \ldots, \alpha^k, a^{k+1}, \ldots, a^{m}\right)\\
+        y&\mapsto \left(\beta^1, \ldots, \beta^k, a^{k+1}, \ldots, a^{m}\right).
+    \end{split}
+    \end{equation*}
+    for some $\abs{\alpha},\abs{\beta}, \abs{a^i}<\epsilon$. Now, consider a vector field on $U$ by
+    \begin{equation*}
+        X(q) = \sum_{i=1}^k (\beta^i-\alpha^i)\left.\pdv{t^i}\right|_q,
+    \end{equation*}
+    for $q\in U$, then $X\in\mathcal{N}$ since it is smooth and spanned by $\pdv{t^i}$ for $i=1,\ldots, k$. Also, this is simple ODE, so it is soluble and the integral curve with initial condition $\alpha^0(x) = x$ is $\alpha^t(x) = x + t(y-x)$, which is well-defined at least $t\in [0,1]$, by identifying $U$ a convex open cube $(-\epsilon, \epsilon)^m$ of $\mathbb{R}^m$. Furthermore, $\alpha^1$ is a diffeomorphism between a small neighborhood of $x$ and a small neighborhood of $y$. Since $X\in\mathcal{N}$, $L_X\omega = 0$ on $U$ and $(\alpha^1)^*\omega = \omega$. By writing $(\alpha^1)^*\omega$, we get
+    \begin{equation*}
+        \begin{split}
+            (\alpha^1)^*\omega(v_2, w_2) &= \omega(d\alpha^1(v_2), d\alpha^1(w_2)) \\
+            &=\omega\left(v_2[\alpha^1], w_2[\alpha^1]\right)\\
+            &=\omega\left(\sum_{j=k+1}^m v^j_2 \left.\pdv{\alpha^1}{t^j}\right|_{x}, \sum_{l=k+1}^m v^l_2 \left.\pdv{\alpha^1}{t^l}\right|_{x}\right)\\
+            &=\omega\left(\sum_{j=k+1}^m v^j_2 \left.\pdv{t^j}\right|_{y}, \sum_{l=k+1}^m v^l_2 \left.\pdv{t^l}\right|_{y}\right)
+        \end{split}
+    \end{equation*}
+    since the curve $\alpha^1(q)$ is contained in each component of $N\cap U$ containing $q$, so $k+1, \ldots, m$ parts is just identity in $\alpha^1$. It is natural condition to impose to define $\omega_P$ since 
+    \begin{equation*}
+        d\pi\left(\sum_{j=k+1}^m v^j_2 \left.\pdv{t^j}\right|_{y}\right) = \sum_{j=k+1}^m v^j_2 \left.\pdv{t^j}\right|_{[x]} = d\pi\left(\sum_{j=k+1}^m v^j_2 \left.\pdv{t^j}\right|_{x}\right).
+    \end{equation*}
+    
+    Now, I'll extend this result to global version. Fix $x\in Q$ and $v,w\in T_{x}P$ such that $d\pi(v) = \tilde{v}$ and $d\pi(w) = \tilde{w}$. Let's define
+    \begin{multline*}
+        A_{x,v,w} = \{y\in N_x:\textrm{For any } v_2,w_2\in T_yQ \textrm{ satisfying }\\
+        d\pi(v_2) = \tilde{v}, d\pi(w_2)=\tilde{w}, \omega(v_2,w_2)=\omega(v,w)\}.
+    \end{multline*}
+    Note that $A_{x,v,w}$ only depends on $x$ if we already fixed $\tilde{v}$ and $\tilde{w}$ as we saw in local case.
+    
+    I already shows that $A_{x,v,w}$ is non-empty, and open set in $N_x$ since for any $y\in A_{x,v,w}$; $A_{x,v,w}$ contains the open set of $N_x$ generated by foliation chart. Assume $A_{x,v,w}$ is not the whole set, then for $y\not\in A_{x,v,w}$, we can repeat the same argument, and by taking union of all such sets, we get open set $A_{x,v,w}^c$. Since $N_x$ is connected, this is not possible, so $A_{x,v,w}$ is the whole set. It shows $\omega_P$ is well-defined.
+    
+    By the construction of $\omega_P$, it satisfies
+    \begin{equation*}
+        i_Q^*\omega = \pi^*\omega_P.
+    \end{equation*}
+    The alternating and bilinear property comes form the above equation. Also, as in the problem 2, it verifies the uniqueness of $\omega_P$ satisfying the above property. Therefore, I'll show the non-degeneracy: assume there exists $\tilde{v}\in T_{[x]}P$ such that $\omega_P(\tilde{v}, \tilde{w}) = 0$ for all $\tilde{w}\in T_{[x]}P$, then
+    \begin{equation*}
+        \omega_P(\tilde{v}, \tilde{w}) = \pi^*\omega_P(v,w) = i_Q^*\omega(v,w) = 0,
+    \end{equation*}
+    so $v\in (T_xQ)^\perp \subset \mathcal{N}_x$. Therefore, $\tilde{v} = 0$.
+    
+    \item I'll first show that $X_{F_i}\in \Gamma(TQ)$. Let's consider the flow $\phi^t_{F_i}$ generated by $X_{F_i}$ as a vector field on $M$. By the same argument we did in the class, $\phi^t_{F_i}(x)\subset Q$ if $x\in Q$ as $\dv{t}F_i(\phi^t_{F_i}(x)) = 0$. Since $F_i$ are in involution, by the samre argument,
+    \begin{equation*}
+        \dv{t}F_j(\phi^t_{F_i}(x)) = dF_j\left(\dv{t}\left(\phi^t_{F_i}(x)\right)\right) = dF_j\left(X_{F_i}\left(\phi_{F_i}^t(x)\right)\right) = \{F_j, F_i\}(\phi_{F_i}^t(x)) = 0.
+    \end{equation*}
+    Therefore, if $x\in Q$, $\phi^t_{F_i}(x)\in Q$ for all $t$, and $X_{F_i}(x)\in T_xQ$.
+    
+    Now, I'll show that for any $x \in Q^{2n-k}$, $(T_xQ)^\perp \subset T_xQ$ where $(T_xQ)^\perp$ is taken in $T_xM$, by identifying $x\in Q\subset M$. Assume there exists $v\in (T_xQ)^\perp - T_xQ$, then for any $F_i$,
+    \begin{equation*}
+        \omega(v, X_{F_i}) = -v[F_i] = 0.
+    \end{equation*}
+    This is impossible: for any $w\in \mathrm{span}\{v, T_xQ\}$, $w[F_i] = 0$ for all $i$, and $\dim\mathrm{span}\{v, T_xQ\}>n-k$, so $c$ can not be a regular value in this case. Therefore, $(T_xQ)^\perp \subset T_xQ$.
+    
+    I'll show that $\rank \omega_x = n-2k$. To do this, I'll first prove a proposition.
+    \begin{proposition}
+        For full rank square matrix $A\in GL_{2n}\mathbb{R}$, if we restrict the matrix on $2n-k$ dimensional subspace for $k \leq n$, $\rank A\geq 2n-2k$.
+    \end{proposition}
+    \begin{proof}
+    First, choose orthonormal basis at $2n-k$ dimensional subspace and choose other orthonormal basis using Gram-Schdmit process. Enumerate the basis such that the basis which will be removed are at front. Now, let's view the matrix in column space view. If we eliminate first $k$ column and $k$ row, in column space, we eliminate $k$ column and delete upper $k$ element for left $2n-k$ column. Therefore, the maximal removed rank is $2k$, so left rank is at least $2n-2k$.
+    \end{proof}
+    Now, If I show that $\rank \omega_x\leq 2n-2k$ for all $x$, which is enough to show that the null distribution has dimension $k$, then we finally prove that $Q$ is a coisotropic submanifold with constant $\rank \omega$. Therefore, I'll show that $\mathcal{N}_x \supset \mathrm{span}_\mathbb{R}\{X_{F_i}(x):i=1,\ldots, k\}$.
+    
+    For any $v\in T_xQ\leq T_xM$, there exists $f\in C^\infty(M)$ such that $X_f(x) = v$, so we can safely write
+    \begin{equation*}
+        \omega(X_{F_i}, v) = v[F_i].
+    \end{equation*}
+    Since $v\in T_xQ$, there exists a curve $\gamma$ in $Q$ such that $\gamma'(0) = v$ with $\gamma(0) = x$, and $v[F_i] = \left.\dv{t}\right|_{0}(F_i\circ \gamma) = 0$ since $F_i$ is constant on $Q$. Therefore, $X_{F_i}\in \mathcal{N}_x$ for all $i$. Since $dF_i(x)$ are linearly independent in $T_x^*M$ for all $x\in Q$, $X_{F_i}(x)$ are linearly independent for all $x$, implying $\dim \mathcal{N}_x = k$, and it is spanned by $X_{F_i}(x)$. 
+    
+    Finally, Using (a), (b), we get coisotropic reduction $P$ of $Q$.
+\end{enumerate}
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

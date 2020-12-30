@@ -1,0 +1,599 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, mathrsfs, physics}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node, auto-pst-pdf}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW4}
+\end{center}
+박성빈, 수학과
+
+Notation: If there is no mention, $M$ represents a smooth manifold. If I write differentiation on closed interval $[a,b]$, then it means there exists $\epsilon>0$ such that it is smooth on $(a-\epsilon, b+\epsilon)$.
+
+If there is not explanation, then the inner product $\langle \cdot, \cdot \rangle$ denote the inner product on $M$.
+
+\noindent \textbf{1}
+
+The proposition is false. For example, in $\mathbb{R}^2$, the geodesic connecting $(0,0)$ and $(1,1)$ is definitely $(t,t)$ for $t\in [0,1]$. However, if I set 
+\begin{equation}
+    \gamma(t) = \begin{cases}
+        (t/2, t/2) & t\in [0,1/2] \\
+        ((3t-1)/2, (3t-1)/2) & t\in [1/2, 1],
+    \end{cases}
+\end{equation}
+then this curve is not smooth since $\gamma'(1/2)$ is not well-defined, but it is definitely length minimizing since the image is same as the image of the geodesic. Therefore, I'll add one more assumption: the piecewise differentiable curve has parameter proportion to arc length. It is equivalent to say that $\abs{\gamma'(t)}$ is constant: for $\gamma:[a,b]\rightarrow M$, if I set $s(t) = \int_a^t \abs{\gamma'(t)}dt$, then $s'(t) = \gamma'(t)$ and $s(t)$ is a linear function about $t$ if and only if $s'(t)$ is constant.
+
+Let $\gamma(t):[a,b]\rightarrow M$ be a piecewise-smooth and constant speed curve. Let $\{t_0 = a, t_1, \ldots, t_n = b\}$ be the points in $[a,b]$ such that $t_i<t_{i+1}$ and $\gamma$ is smooth on $[t_i, t_{i+1}]$. To show the $\gamma$ is in fact smooth, I need to show the smoothness at each $t_i$ for $1\leq i\leq n-1$. WLOG, I'll check the smoothness at $i=1$.
+
+As a constant speed curve, we define the energy of curve by $E(\gamma)$ as we did in the class and denote length of the curve by $L(\gamma)$. Using H\"older's inequality, we get
+\begin{equation}
+    \left(L(\gamma)\right)^2 = E(\gamma)(b-a).
+\end{equation}
+Therefore, $\gamma$ is the locally energy minimizing curve, and the first variation formula becomes zero. Writing it explicitly, for any infinitesimal variation $V(t)$ along $\gamma(t)$, we get
+\begin{equation}
+    0 = -\int_a^b\left\langle V(t), \frac{D\gamma'}{dt}\right\rangle dt - \sum_{i=1}^{n-1} \left\langle V(t_i), \gamma'(t_i^+)-\gamma'(t_i^-)\right\rangle.
+\end{equation}
+
+Using bump function on $[t_{i-1}, t_i]$, we can generate any infinitesimal variation such that $V(t)$ is any smooth vector field along $\gamma([t_{i-1}, t_i])$ with $V(t_{i-1})=V(t_i) = 0$ and $0$ elsewhere. Using the previous homework, we get $\frac{D\gamma'}{dt} = 0$ on each interval, and it means $\gamma$ satisfies the geodesic equation on each interval.
+
+Now, let's concentrate on $t_1$. Restricting $\gamma$ to $[t_0, t_2]$, choose a infinitesimal variation $V(t)$ such that $V(t_1) = \left.\pdv{x^1}\right|_{\gamma(t_1)}$ and $V(t_0)=V(t_2) = 0$. More explicitly, choose a local coordinate $x$ at $p$ on neighborhood $U$ not containing $\gamma(t_0)$ and $\gamma(t_2)$. Choose small enough $\epsilon>0$ such that $\gamma((t_1-\epsilon, t_1+\epsilon))\subset U$. Set $V(t) = g_{\epsilon/2}(t-t_i)\left.\pdv{x^1}\right|_{\gamma(t)}$ for $t\in [t_1-\epsilon, t_1+\epsilon]$ in the local coordinate such that $g_{\epsilon/2}:[-\epsilon/2, \epsilon/2]\rightarrow [0,1]$ is a bump function satisfying $g^{(n)}(-\epsilon/2) = g^{(n)}(\epsilon/2) = 0$ for all $n\geq 0$ and $g(0) = 1$. Set $V(t) = 0$ elsewhere. Now, we get
+\begin{equation}
+    0 = \left\langle \left.\pdv{x^1}\right|_{\gamma(t_1)}, \gamma'(t_1^+)-\gamma'(t_1^-)\right\rangle.
+\end{equation}
+
+Repeat this for $\left.\pdv{x^j}\right|_{\gamma(t_1)}$, then we get $\gamma'(t_1^+)-\gamma'(t_1^-) = 0$ in $T_{\gamma(t_1)}M$. Now, we know the curve is $C^1$ in whole domain.
+
+To increase the regularity, let's use geodesic equation. On $[t_0, t_1]$, it satisfies
+\begin{equation}
+    \dv[2]{\gamma^k}{t} - \Gamma_{ij}^k \dv{\gamma^j}{t}\dv{\gamma^k}{t} = 0.
+\end{equation}
+Since $\gamma$ is smooth on the interval,
+\begin{equation}
+    \frac{d^2\gamma^k}{dt^2}(t_1^-) = \Gamma_{ij}^k(\gamma(t_1)) \left(\frac{d\gamma^j}{dt}\frac{d\gamma^k}{dt}\right)(t_1^-).
+\end{equation}
+for all $k$. By the same reason we also get
+\begin{equation}
+    \frac{d^2\gamma^k}{dt^2}(t_1^+) = \Gamma_{ij}^k(\gamma(t_1)) \left(\frac{d\gamma^j}{dt}\frac{d\gamma^k}{dt}\right)(t_1^+).
+\end{equation}
+
+It shows that $\frac{d^2\gamma}{dt^2}(t_1^-) = \frac{d^2\gamma}{dt^2}(t_1^+)$. For $\frac{d^3\gamma^k}{dt^3}(t_1^\pm)$, differentiate the geodesic equation about $t$, then we get the equation of $\frac{d^3\gamma^k}{dt^3}(t_1^\pm)$ about $\frac{d^2\gamma^k}{dt^2}(t_1^\pm)$ and $\frac{d^1\gamma^k}{dt^1}(t_1^\pm)$ and get the third derivative at $t_1$ also coincides. Repeating this process for all $n$th derivative at $t_1$, we get $\gamma$ is smooth at $t_1$. Therefore, $\gamma$ is in fact smooth.\\
+
+\noindent\textbf{2}
+\begin{enumerate}
+    \item[\#2]
+    \begin{enumerate}
+        \item[a)] Since $d\pi(p,v):T_v(T_pM)\rightarrow T_p M$, $d\pi(V),d\pi(W)$ is well-defined. Therefore, I need to check whether the second term is well-defined. 
+        
+        By the definition of tangent vector on differential manifold, for $V\in T_v(TM)$, there should exists a curve $\alpha:(-\epsilon, \epsilon)\rightarrow TM$ for some $\epsilon>0$ such that $\alpha'(0) = V$. By setting $p(t) = \pi(\alpha(t))$, we get a smooth vector field $\alpha(t)$ on $\gamma(t)$, and the covariant derivative along $p(t)$ is defined for $\alpha(t)$.
+        
+        Let's assume there exists another $\alpha_2(t) = (p_2(t), v_2(t))$ satisfying the same initial condition, then
+        \begin{equation}
+        \begin{split}
+            \nabla^p_{\partial_t}v(0)-\nabla^{p_2}_{\partial_t}v_2(0) &= \nabla^p_{\partial_t}v(0)-\nabla^p_{\partial_t}v_2(0) + \nabla^p_{\partial_t}v_2(0) - \nabla^{p_2}_{\partial_t}v_2(0)\\
+            &=0.
+        \end{split}
+        \end{equation}
+        since $v(0) = v_2(0)$ and $v'(0) = v_2'(0)$, so the first term vanishes and $p'(0) = p_2'(0)$, so the second term also vanishes. (In the coordinate computation of covariant derivative, $\nabla^\gamma_{\pdv{t}} f^i e_i(0) = (\frac{df^i}{dt} e_i)(0) + (f^i \dv{\gamma^j}{t}\Gamma_{ij}^k e_k)(0)$, so if $f'(0)$, $f(0)$, and $\gamma'(0)$ is equal, then the covariant derivative coincides.).
+        
+        The metric is positive definite form as a sum of positive definite forms. Therefore, the metric is a well-defined Riemmanian metric.
+        
+        \item[b)] I'll first show some propositions.
+        \begin{proposition}\label{Prop:const_curve}
+            Fix $p\in M$. If there exists $\gamma:[0,t_0]\rightarrow M$ for some $t_0>0$ such that $\gamma(t) = p$ for all $t$ and a vector field $V$ on $\gamma$, then by identifying $T_pM$ with $T_{V(t)}(T_pM)$,
+            \begin{equation}
+                \frac{DV}{dt} = \frac{dV}{dt}.
+            \end{equation}
+        \end{proposition}
+        \begin{proof}
+            Let's use local coordinate $x$ at $p$ and canonical local coordinate on $TM$ containing $T_p M$. Writing $V(t) = V^i(t)\left.\pdv{x^i}\right|_p$,
+                \begin{equation}
+                    \frac{DV}{dt} = \dv{V^i}{t}\left.\pdv{x^i}\right|_p + V^i\nabla_{\dv{\gamma}{t}}\pdv{x^i} = \dv{V}{t}
+                \end{equation}
+            since $\dv{\gamma}{t} = 0$.
+        \end{proof}
+        
+        \begin{proposition}\label{Prop:Const_curve}
+            Fix $p\in M$. For any $W\in T_v(T_pM)$ for any $v\in T_pM$, $d\pi (W) = 0$.
+        \end{proposition}
+        \begin{proof}
+        Fix $v\in T_pM$ and $W\in T_v(T_pM)$. By the definition of tangent vector, there is a curve $\beta(s):[-\epsilon,\epsilon]\rightarrow T_{p}M$ for some $\epsilon>0$ such that $\beta(0) = v$ and $\beta'(0) = W$. For any $f\in C^\infty(M)$
+        \begin{equation}
+            \left(d(\pi\circ \beta)\left(\left.\dv{s}\right|_{0}\right)\right)(f) = \left.\dv{s}\left(f\circ \pi\circ \beta\right)\right|_{0} = \left.\dv{(f(p))}{s}\right|_{0} = 0.
+        \end{equation}
+        Therefore, $d\pi (W) = 0$.
+        \end{proof}
+        
+        Assume the curve $\alpha(t) = (p(t), v(t))$ is horizontal, but $\frac{Dv}{dt}(t_0)\neq 0$ for some $t_0$. Construct $\beta=(q,w):[0,1]\rightarrow TM$ such that $q(t) = p(t_0)$ for all $t$ and $w(t) = \left(\frac{Dv}{dt}(t_0)\right)t + v(t_0)$ by identifying $T_{p(t_0)}M$ with $T_{v(t_0)}(T_{p(t_0)}M)$. Now, we get a curve $\beta$ on $T_{p(t_0)}M$, so the first term in metric is zero. Since
+        \begin{equation}
+            \langle \alpha'(t_0), \beta'(0)\rangle = \left\langle \frac{Dv}{dt}(t_0), \frac{Dw}{dt}(0) \right\rangle = \left\langle \frac{Dv}{dt}(t_0), \frac{Dv}{dt}(t_0) \right\rangle\neq 0,
+        \end{equation}
+        it contradicts the horizontal condition. Therefore, the vector field $v(t)$ is parallel along $p(t)$. Conversely, if the vector field is parallel along $p(t)$, then $\alpha$ is horizontal since $\frac{Dv}{dt} = 0$.
+        
+        \item[c)] In the previous homework, we showed that the geodesic vector field $G$ on $TM$ which was defined on local coordinate on $TM$ was well-defined. Therefore, for any $(p,v)\in TM$, there exists a trajectory $\gamma:(-\epsilon, \epsilon)\rightarrow TM$ for some $\epsilon>0$ such that $\gamma(0) = (p,v)$ and $\left.\dv{\gamma}{t}\right|_{t=0} = G(p,v)$. By the definition of geodesic field, we also get $p'(t) = v(t)$ writing $\gamma(t) = (p(t), v(t))$. Since $\frac{D v}{dt} = 0$, we get the curve is horizontal by the previous problem. Therefore, $G(p)$ is horizontal vector for any $p$ and $G$ is horizontal vector field.
+        
+        \item[d)] Let's assume that a trajectory of the geodesic vector field at $(p,v)$ is not geodesic on $TM$.
+        
+        Let's choose $p\in U\subset M$ such that $\pi^{-1}(U)$ is hemeomorphic to $U\times\mathbb{R}^n$. Choose a small enough normal ball $V\subset U$ of $p$. Since we gave a Riemannian metric on $TM$, we can choose a small enough strongly convex neighborhood $W$ of $(p,v)$ on $TM$ such that $W\subset \pi^{-1}(V)$. In this setting $\pi(W)$ is open in $M$ since the projection $\pi$ is an open map. In $W$ with a local coordinate, we can compute the trajectory of the vector field $\overline{\alpha}=(\alpha, v):[0,t_0]\rightarrow W$ for some $t_0>0$ with $\overline{\alpha}(0) = (p,v)$. Let $\overline{\alpha}(t_0) = (q,w)$. Also, set another curve $\beta:[0, t_1]\rightarrow W$ such that it is the length minimizing geodesic on $TM$, $\beta(0) = (p,v)$, and $\beta(t_1) = (q,w)$. 
+        
+        Since $\alpha$ is not geodesic and 
+        \begin{equation}
+            \langle \overline{\alpha}'(t), \overline{\alpha}'(t)\rangle = \langle v(t), v(t)\rangle = const,
+        \end{equation}
+        it's image should different from $\beta$; otherwise, $l(\overline{\alpha}) = l(\beta)$ and by proper reparametrization, we can make $\alpha = \beta$.
+        
+        By the definition of length of curve, we get
+        \begin{equation}
+        \begin{split}
+            l(\overline{\alpha}) &=\int_0^{t_0}\langle \overline{\alpha}'(t), \overline{\alpha}'(t)\rangle^{1/2}dt \\
+            &=\int_0^{t_0}\left(\left\langle d\pi(\overline{\alpha}'(t)), \langle d\pi(\overline{\alpha}'(t))\right\rangle + \left\langle \frac{D\alpha'(t)}{dt}, \frac{D\alpha'(t)}{dt}\right\rangle \right)^{1/2}dt\\
+            &=\int_0^{t_0}\left(\left\langle \alpha'(t), \alpha'(t)\right\rangle + \left\langle \frac{D\alpha'(t)}{dt}, \frac{D\alpha'(t)}{dt}\right\rangle \right)^{1/2}dt\\
+            &\geq l(\alpha).
+        \end{split}
+        \end{equation}
+        
+        Since $\alpha$ is geodesic on $M$, we get the equality $l(\overline{\alpha}) = l(\alpha)$. However, $l(\beta)<l(\overline{\alpha})$ since $\overline{\alpha}$ is not length minimizing while $\beta$ is. It means $l(\pi(\beta))<l(\alpha)$. Since the image of $\alpha$ is contained in the normal ball, it should be distance minimizing between $p$ and $q$ in $M$, so it is contradiction. It shows trajectory of the geodesic vector field is geodesic.
+        
+        \item[e)] We already showed that if $W$ is horizontal, the second term should vanish, so 
+        \begin{equation}
+            \langle W, W\rangle_{(p,v)} = \langle d\pi(W), d\pi(W)\rangle_p.
+        \end{equation}
+        Now, assume $W$ is vertical. Since it is tangent to $\pi^{-1}(p)$, there exists a curve $\gamma:(-\epsilon, \epsilon)\rightarrow T_pM$ for some $\epsilon>0$ such that $\gamma(0) = (p,v)$ and $\gamma'(0) = W$. Since $\pi(\gamma(t)) = p$ for all $t$, we get $d\pi(\gamma'(0)) = 0$. Also, by identifying $T_pM$ with $T_v(T_pM)$ and using proposition \ref{Prop:Const_curve}, we get
+        \begin{equation}
+            \langle W, W\rangle_{(p,v)} = \langle W, W\rangle_p.
+        \end{equation}
+    \end{enumerate}
+    
+    \item[\#7] For $p\in M^n$, choose $\epsilon>0$ such that $\exp_p:B_\epsilon(0)\subset T_p M\rightarrow M$ is a diffeomorphism between $B_\epsilon(0)$ onto a normal neighborhood $p\in U$ of $M$.
+    
+    Choose a local coordinate $x$ near $p$. Note that on $T_pM$, $g_{ij}(p)$ and $\Gamma_{ij}^k(p)$ is constant. Since $g_{ij}(p)$ is a positive-definite matrix, using spectral theorem, there exists basis of $T_p M$ consisting of eigenvectors of $g$. Let the eigenvectors $\xi_i$ and corresponding eigenvalues $\lambda_i$. Note that $\lambda_i>0$. Let the $e_i = \frac{1}{\sqrt{\lambda_i}}\xi_i$, then we get
+    \begin{equation}
+        \langle e_i, e_j\rangle = \frac{1}{\sqrt{\lambda_i\lambda_j}}\langle \xi_i, \xi_j\rangle = \delta_{ij}.
+    \end{equation}
+    
+    Let's construct a coordinate $t:U\rightarrow \mathbb{R}^n$ as following: for any $q\in U$, there uniquely exists $t^1, \ldots ,t^n\in\mathbb{R}$ such that $\exp_p(\sum_i t^i e_i) = q$. For such $q$, set $t(q) = (t^1, \ldots, t^n)$. Since $\exp_p$ is a diffeomorphism between $B_\epsilon(0)$, which is a ball in vector space, and $U$, $t$ is a local coordinate on $U$. Note that $\exp_p(0) = p$, so $t(p) = 0$. Also, $d(\exp_p)_0$ is the identity on $T_pM$, so
+    \begin{equation}
+    \begin{split}
+        e_i = d(\exp_p)_0(e_i) = \left.\dv{\left(\exp_p(t e_i)\right)}{t}\right|_{t=0} = \left.\pdv{t^i}\right|_{p}
+    \end{split}
+    \end{equation}
+    Therefore, $\left\langle \left.\pdv{t^i}\right|_p, \left.\pdv{t^j}\right|_p\right\rangle = \langle e_i, e_j\rangle = \delta_{ij}$.
+    
+    To show $\Gamma_{ij}^k(p) = 0$, let's fix a vector $v = \sum_{i}v^i e_i\in B_\epsilon(0)$ and and a geodesic $\gamma(t) = \exp_p\left(vt\right)$. In $t$ coordinate system, $\gamma(t) = (v^1 t, v^2t, \ldots, v^n t)$. Writing this in geodesic ODE, we get
+    \begin{equation}
+        (\gamma^k)'' - \Gamma_{ij}^k(\gamma(t)) (\gamma^i)'(\gamma^j)' = -\Gamma_{ij}^k v^iv^j = 0.
+    \end{equation}
+    for all $k$. At $t=0$, we get $\Gamma_{ij}^k(p) v^i v^j = 0$, and this is true for all $v\in B_\epsilon(0)$. For fixed $k$, $\Gamma_{ij}^k$ is a symmetric matrix about $i,j$, and again by spectral theorem, it has eigenvectors associated with eigenvalues in $\mathbb{R}$. By setting $v$ by eigenvectors, it shows that all the eigenvalues of $\Gamma_{ij}^k(p)$ are $0$, so $\Gamma_{ij}^k(p) = 0$ for all $i,j,k$.
+    
+    Let's define $E_i(q)$ for $q\in U$ as following: Since $q\in U$, there exists $v\in B_\epsilon(0)$ such that $\exp_p(v) = q$. Let $\gamma:[0,1]\rightarrow U$ such that $\gamma(t) = \exp_p(vt)$. Now, consider a parallel transport of $e_i$ along $\gamma(t)$. In normal coordinate form, I need to solve the following ODE:
+    \begin{equation}\label{Eq:Parallel_transport}
+        \frac{DX}{dt} = \dv{X^k}{t} - \Gamma_{ij}^k v^i X^j = 0.
+    \end{equation}
+    with $X(0) = e_i$. If necessary, shrink $B_\epsilon(0)\subset T_pM$ to make sure the above first order ODE have unique solution for all $e_i$. Solving the ODE, we get a smooth vector field $X$ along $\gamma$. Assign $E_i(q) = X(1)$. In this way, I can construct a vector field $E_i$ on $U$ and other vector fields like $E_j = Y(1)$ by solving the same ODE with initial condition $Y(0) = e_j$. The vector fields are smooth as $n$th derivative of $X$ can be written by lower order terms by taking derivative of \eqref{Eq:Parallel_transport}. Also, by the defining equation, we get
+    
+    \begin{equation}
+        \dv{t}\langle X, Y\rangle = \left\langle \frac{DX}{dt}, Y\right\rangle + \left\langle X, \frac{DY}{dt}\right\rangle = 0.
+    \end{equation}
+    Note that the covariant derivative along curve is done on the geodesic connecting $p$ and $q$. It implies $\langle E_i(q), E_j(q)\rangle = \langle e_i, e_j\rangle$ for all $q\in U$. Therefore, $\langle E_i, E_j\rangle = \delta_{ij}$. This results validate the term "frame"; if $E_i(q)$ could  not span $T_qM$ for some $q\in U$, then $a_{ij}(q) = \langle E_i, E_j\rangle(q)$ could not have rank $n$.
+    
+    Finally, I'll show that $\nabla_{E_i}E_j(p) = 0$, but it is just a solution of \eqref{Eq:Parallel_transport} with $v = e_i$ and $X(0) = e_j$.
+    It finishes the proof.
+    
+    \item[\#8] 
+    \begin{enumerate}
+        \item [a)] By the definition,
+        \begin{equation}
+            \langle \textrm{grad } f(p), E_i(p)\rangle = df_p(E_i) = E_i(f)(p).
+        \end{equation}
+        Since $\langle E_j(p), E_i(p)\rangle = \delta_{ij}$ and $E_i$ is a local frame at $p$, we get
+        \begin{equation}
+            \textrm{grad }f(p) = \sum_{i=1}^n E_i(f)(p)E_i(p).
+        \end{equation} Let's write $Y = a^i E_i$ for some $a_i\in C^\infty(M)$. Then,
+        \begin{equation}
+            \left(\textrm{div } X(p)\right)(Y) = \sum_{j=1}^n a^i\nabla_{E_i}f_jE_j = \sum_{j=1}^n a^iE_i(f_j)(p)E_j(p) + \sum_{j=1}^n a^if_j(p)\nabla_{E_i}E_j(p)
+        \end{equation}
+        By the construction of geodesic frame, $\nabla_{E_i}E_j(p) = 0$, so the trace of $\textrm{div } X(p)$ is
+        \begin{equation}
+            \sum_{i=1}^n E_i(f_i)(p)
+        \end{equation}
+        \item[b)] We just plug in $E_i = \pdv{x^i}$ since the vector fields $\pdv{x^i}$ already satisfies the condition for geodesic frame in $\mathbb{R}^n$. Therefore, we get
+        \begin{equation}
+            \begin{split}
+                \textrm{grad }f &= \sum_{i=1}^n \pdv{f}{x^i}e_i\\
+                \textrm{div } X &= \sum_{i=1}^n \pdv{f_i}{x^i}.
+            \end{split}
+        \end{equation}
+        where $X = \sum_i f_ie_i$.
+    \end{enumerate}
+    \item[\#9]
+    \begin{enumerate}
+        \item[a)] Combining the results in problem 8, we get
+    \begin{equation}
+        \textrm{div }\textrm{grad }f(p) = \sum_{i=1}^n E_i\left(E_i(f)\right)(p) = \sum_{i} E_i(E_i(f))(p).
+    \end{equation}
+    If $M=\mathbb{R}^n$, then again,
+    \begin{equation}
+        \Delta f = \sum_{i}\pdv[2]{f}{x_i}
+    \end{equation}
+        \item[b)]
+        \begin{equation}
+            \begin{split}
+                \Delta (f\cdot g) &= \sum_{i} E_i(E_i(f\cdot g))(p)\\
+                &=\sum_{i} E_i(fE_i(g) + gE_i(f))(p)\\
+                &=\sum_{i} \left(2E_i(f)E_i(g)+g E_i(E_i(f))+f E_i(E_i(g))\right)(p)\\
+                &=\sum_{i} \left(2E_i(f)E_i(g)+g E_i(E_i(f))+f E_i(E_i(g))\right)(p)\\
+                &=f\Delta g + g\Delta f + 2\langle \textrm{grad }f, \textrm{grad }g\rangle.
+            \end{split}
+        \end{equation}
+        Note that we are using geodesic frame.
+    \end{enumerate}
+    
+    \item[\#14] Fix $p\in M$ and choose a normal neighborhood $p\in U$. Choose a normal coordinate $x$ on $U$. Using this coordinate, we got $\Gamma_{ij}^k(p) = 0$ in problem 7.
+    
+    Let's consider canonical local coordinate $(x^1, \ldots, x^n, v^1, \ldots, v^n)$ on $TU$. The geodesic field $G$ on $TU$ can be written by
+    \begin{equation}
+        G = \sum_{i=1}^n v^i \pdv{x^i} - \Gamma_{ij}^k v^iv^j \pdv{v^k} 
+    \end{equation}
+    as we did in the previous homework. Note that $G(p, v) = \sum_{i=1}^n v^i \left.\pdv{x^i}\right|_p$.
+    
+    The present difficulty is that we need to compute $\textrm{div }G$ on $TM$, not on $M$. In problem 2, we derived that the natural meteric on $TM$ is Riemannian metric. Using the metric on $TM$, we compute the metric tensor. The result is
+    \begin{equation}
+    \begin{split}
+        \left\langle \left.\pdv{x^i}\right|_{(q,v)}, \left.\pdv{x^j}\right|_{(q,v)} \right\rangle_{TM} &= \left\langle d\pi\left(\left.\pdv{x^i}\right|_{(q,v)}\right), d\pi\left(\left.\pdv{x^j}\right|_{(q,v)}\right) \right\rangle + \left\langle \frac{Dv}{dt}(0), \frac{Dv}{dt}(0) \right\rangle \\
+        &= g_{ij}(q) + \left\langle v^k\Gamma_{ik}^l\pdv{x^l}, v^s\Gamma_{js}^t \pdv{x^t} \right\rangle(q)\\
+        &=g_{ij}(q) + \left(g_{lt} v^kv^s\Gamma_{ik}^l\Gamma_{js}^t\right)(q)\\
+        \left\langle \pdv{x^i}, \pdv{v^j} \right\rangle_{TM} &= 0 + \left\langle v^k\Gamma_{ik}^l\pdv{x^l}, \pdv{x^j} \right\rangle(q)\\
+        &=\left(g_{lj}v^k\Gamma_{ik}^l\right)(q)\\
+        \left\langle \pdv{v^i}, \pdv{v^j} \right\rangle_{TM} &= \left\langle \pdv{x^i}, \pdv{x^j} \right\rangle(q) = g_{ij}(q),
+    \end{split}
+    \end{equation}
+    where $g_{ij} = \left\langle \pdv{x^i}, \pdv{x^j}\right\rangle$ on $M$.
+    
+    For metric matrix $g_{TM}$ in $TM$, the square of the volume form for $\{\pdv{x^i}, \pdv{v^i}\}$ is written as
+    \begin{equation}
+    \det g_{TM} = \begin{pmatrix}
+        g_{11} + g_{lt} v^kv^s\Gamma_{1k}^l\Gamma_{1s}^t & \hdots & g_{1n} + g_{lt} v^kv^s\Gamma_{1k}^l\Gamma_{ns}^t & g_{l1}v^k\Gamma_{1k}^l & \hdots & g_{ln}v^k\Gamma_{1k}^l \\
+        \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+        g_{n1} + g_{lt} v^kv^s\Gamma_{nk}^l\Gamma_{1s}^t & \hdots & g_{nn} + g_{lt} v^kv^s\Gamma_{nk}^l\Gamma_{ns}^t & g_{l1}v^k\Gamma_{nk}^l & \hdots & g_{ln}v^k\Gamma_{nk}^l \\
+        g_{1t}v^s\Gamma_{1s}^t & \hdots & g_{1t}v^s\Gamma_{ns}^t & g_{11} & \hdots & g_{1n} \\
+        \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+        g_{nt}v^s\Gamma_{1s}^t & \hdots & g_{nt}v^s\Gamma_{ns}^t & g_{n1} & \hdots & g_{nn}
+    \end{pmatrix}.
+    \end{equation}
+     Now, Let's multiply $v^k\Gamma_{1k}^l$ at $n+l$ low for $1\leq l\leq n$ and subtract them to the first row. Surprisingly, we can erase the second term in upper left first row and eliminate the upper right first row. For each $i$th row for $1\leq i\leq n$, repeat this procedure, then we get
+    \begin{equation}\label{Eq:Volume_TM}
+    \det g_{TM} = \begin{pmatrix}
+        g_{11} & \hdots & g_{1n} & 0 & \hdots & 0 \\
+        \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+        g_{n1} & \hdots & g_{nn} & 0 & \hdots & 0 \\
+        g_{l1}v^k\Gamma_{1k}^l & \hdots & g_{l1}v^k\Gamma_{nk}^l & g_{11} & \hdots & g_{1n} \\
+        \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+        g_{ln}v^k\Gamma_{nk}^l & \hdots & g_{ln}v^k\Gamma_{nk}^l & g_{n1} & \hdots & g_{nn}
+    \end{pmatrix}.
+    \end{equation}
+    Note that the volume form does not depends on $v^i$. Therefore,
+    \begin{equation}
+        \nu(p,v) = (2n)!\left(\det g(p)\right)^2 \left(dx^1\wedge \cdots \wedge dx^n\wedge dv^1 \wedge \cdots \wedge dv^n\right)(p,v).
+    \end{equation}
+    Computing $i(G)\nu$, we get
+    \begin{equation}
+    \begin{split}
+        i(G)\nu\left(\pdv{x^1}, \ldots \widehat{\pdv{x^j}}, \ldots, \pdv{x^n}, \pdv{v^1}, \ldots, \pdv{v^n}\right) &= (-1)^{j-1}(2n)! v^j\left(\det g\right)^2\\
+        i(G)\nu\left(\pdv{x^1}, \ldots , \pdv{x^n}, \pdv{v^1}, \ldots \widehat{\pdv{v^j}}, \ldots, \pdv{v^n}\right) &= (-1)^{n+j}(2n)!\Gamma_{st}^j v^sv^t\left(\det g\right)^2.
+    \end{split}
+    \end{equation}
+    
+    Using this, we can compute $d(i(G)\nu)$:
+    \begin{equation}
+        \begin{split}
+            d(i(G)\nu)(p,v) &= (2n)!\left(\sum_{j=1}^n \pdv{\left(v^j\left(\det g\right)^2\right)}{x^j} - \sum_{k=1}^n \pdv{\left(\Gamma_{st}^k v^sv^t\right)}{v^k} \right)(p,v)\left(dx^1\wedge \cdots \wedge dx^n\wedge dv^1 \wedge \cdots \wedge dv^n\right)(p,v)\\
+            &=(2n)!\sum_{j=1}^n \left(v^j\frac{\partial\left(\det g\right)^2}{\partial x^j}\right)(p,v)\left(dx^1\wedge \cdots \wedge dx^n\wedge dv^1 \wedge \cdots \wedge dv^n\right)(p,v)
+        \end{split}
+    \end{equation}
+    since $\Gamma_{ij}^k$ is a function on $M$ and $\Gamma_{ij}^k(p) = 0$ for all $i,j,k$. By previous homework, the zero Christofell symbol implies $\pdv{g_{ij}}{x^k}(p) = 0$ for all $i,j,k$. Therefore,
+    \begin{equation}
+        \frac{\partial\left(\det g\right)^2}{\partial x^j}(p,v) = 2\left(\det g\frac{\partial\det g}{\partial x^j}\right)(p) = 0.
+    \end{equation}
+    Now, we get $d(i(G)\nu)(p,v) = 0$ for all $v\in T_pM$ and $\textrm{div }G(p,v)\nu = 0$ using problem 11. The coefficient in $\nu$ is non-zero since $g$ is positive-definite, so $\textrm{div }G(p,v) = 0$. Since I chose arbitrary $p\in M$, this results means $\textrm{div } G = 0$ on $TM$.
+    
+    The change of volume along geodesic flow is measured by $L_G(\nu)$. Using Cartan's magic formula, we get
+    \begin{equation}
+        L_G(\nu) = i_G d\nu + d(i_G\nu) = 0.
+    \end{equation}
+    Note that the first term vanishes as a exterior derivative of $2n$-form on $2n$-manifold, and the second term is what we have shown. Therefore, $\nu$ does not vary along the flow of the goedesic field.
+    
+    Addition: for completeness, I'll sketch the proof for problem 11. I'll following the hint. Fix $p\in M$. Choose a normal neighborhood $U$ and normal coordinate $x$ at $p$ on $U$. Let $E_i$ be a geodesic frame at $p$ and let $\omega_i$ be differential forms of degree one defined on $U$ such that $\omega_i(E_j)=\delta_{ij}$.
+    
+    As a vector field on $U$, let's write each $E_i$ by
+    \begin{equation}
+        E_i = a_i^s\pdv{x^s}.
+    \end{equation}
+    Since $\langle E_i, E_j\rangle = \delta_{ij}$, we get $a_i^s a_j^t g_{st} = \delta_{ij}$. Writing it in matrix form, we get
+    \begin{equation}
+        \begin{pmatrix}
+        a_1^1 & \hdots & a_1^n \\
+        \vdots & \ddots & \vdots \\
+        a_n^1 & \hdots & a_n^n \\
+        \end{pmatrix}
+        (g_{ij})
+        \begin{pmatrix}
+        a_1^1 & \hdots & a_n^1 \\
+        \vdots & \ddots & \vdots \\
+        a_1^n & \hdots & a_n^n \\
+        \end{pmatrix}
+        = I.
+    \end{equation}
+    Since $\det g> 0$, $(a^j_i)$ is invertible, and we get $\det (a^j_i) = \det g^{-1/2}$. Since $\nu$ and $(\omega_1\wedge \ldots \wedge \omega_n)$ are both $n$-form and
+    \begin{equation}
+    \begin{split}
+        \nu\left(\pdv{x^1}, \ldots, \pdv{x^n}\right) &= \sqrt{\det g}\\
+        (\omega_1\wedge \ldots \wedge \omega_n)\left(\pdv{x^1}, \ldots, \pdv{x^n}\right) &= \left(\det (a^j_i)\right)^{-1}(\omega_1\wedge \ldots \wedge \omega_n)\left(E_1, \ldots, E_n\right) = \sqrt{\det g},
+    \end{split}
+    \end{equation}
+    they should be equal. Next, define $\theta_i = (\omega_1\wedge \ldots \wedge \widehat{\omega^i}\wedge \ldots \wedge \omega_n)$. As we computed before, for a vector field $X = \sum_{i} f_i E_i$ on $U$, we get
+    \begin{equation}
+        i(X)\nu = \sum_{i} (-1)^{i-1}f_i\theta_i.
+    \end{equation}
+    Since $df_i = \sum_{j} E_j(f_i)\omega^j$ and $d\theta_i(p) = 0$ as in the hint, which is followed by the torsion-freeness of the Levi-Civita connection and property of the geodesic frame at $p$, we get
+    \begin{equation}
+        d(i(X)\nu)(p) = (\sum_{i}E_i(f_i))(p)\nu = \textrm{div }X(p)\nu.
+    \end{equation}
+\end{enumerate}
+
+
+\noindent \textbf{3}
+Before computation, I'll first show a proposition.
+\begin{proposition}
+For Riemannian curvature tensor $R$, it satisfies
+\begin{equation}
+    \nabla_T (R(X,Y,Z,W)) = (\nabla_T R)(X,Y,Z,W) + R(\nabla_T X, Y,Z,W) + R(X, \nabla_T Y, Z,W) + R(X,Y,\nabla_T Z, W) + R(X,Y,Z,\nabla_T W)
+\end{equation}
+for vector fields $X,Y,Z,W,T$.
+\end{proposition}
+\begin{proof}
+Let's compute the covariant derivative of Riemmanian curvature using local coordinate $x$. Writing
+\begin{equation}
+    R_{ijkl} = \langle R(\partial_i, \partial_j)\partial_k, \partial_l\rangle,
+\end{equation}
+we get
+\begin{equation}
+    R = R_{ijkl}dx^i\otimes dx^j \otimes dx^k \otimes dx^l.
+\end{equation}
+
+For 1-form, the covariant derivative can be rewritten by Christoffel symbol since
+\begin{equation}
+    \left(\nabla_i dx^j\right)(\partial_k) = \nabla_i \left(dx^j(\partial_k)\right) - dx^j\left(\nabla_i \partial_k\right) = -\Gamma_{ik}^j,
+\end{equation}
+so $\nabla_i dx^j = -\Gamma_{ik}^j dx^k$. Using this notation, we get
+\begin{equation}
+\begin{split}
+    \nabla_s R &= \nabla_s R_{ijkl}dx^i\otimes dx^j \otimes dx^k \otimes dx^l\\
+    &=\partial_s(R_{ijkl})dx^i\otimes dx^j \otimes dx^k \otimes dx^l - \Gamma_{si_2}^i R_{ijkl}dx^{i_2}\otimes dx^j \otimes dx^k \otimes dx^l\\
+    &\phantom{=}- \Gamma_{sj_2}^j R_{ijkl}dx^i\otimes dx^{j_2} \otimes dx^k \otimes dx^l - \Gamma_{sk_2}^k R_{ijkl}dx^i\otimes dx^j \otimes dx^{k_2} \otimes dx^l\\
+    &\phantom{=}-\Gamma_{sl_2}^l R_{ijkl}dx^i\otimes dx^j \otimes dx^k \otimes dx^{l_2}.
+\end{split}
+\end{equation}
+Therefore,    
+\begin{equation}
+\begin{split}
+    \left(\nabla_s R\right)(X,Y,Z,W) &= \partial_s(R_{ijkl})X^i Y^j  Z^k  W^l - \Gamma_{si_2}^i R_{ijkl}X^{i_2} Y^j  Z^k  W^l\\
+    &\phantom{=}- \Gamma_{sj_2}^j R_{ijkl}X^i Y^{j_2}  Z^k  W^l - \Gamma_{sk_2}^k R_{ijkl}X^i Y^j  Z^{k_2}  W^l\\
+    &\phantom{=}-\Gamma_{sl_2}^l R_{ijkl}X^i Y^j  Z^k  W^{l_2}\\
+    &=\partial_s\left(R_{ijkl}X^i Y^j  Z^k  W^l\right) - R_{ijkl} dx^i\left(\nabla_s\left(X^{i_2}\partial_{i_2}\right)\right) Y^j  Z^k  W^l\\
+    &\phantom{=}- R_{ijkl}X^i dx^j\left(\nabla_s\left(Y^{j_2}\partial_{j_2}\right)\right)  Z^k  W^l - R_{ijkl}X^i Y^j  dx^k\left(\nabla_s\left(Z^{k_2}\partial_{k_2}\right)\right)  W^l\\
+    &\phantom{=}-R_{ijkl}X^i Y^j Z^k dx^l\left(\nabla_s\left(W^{l_2}\partial_{l_2}\right)\right)
+\end{split}
+\end{equation}
+and we get
+\begin{equation}
+    (\nabla_T R)(X,Y,Z,W) = \nabla_T (R(X,Y,Z,W)) -\left( R(\nabla_T X, Y,Z,W) + R(X, \nabla_T Y, Z,W) + R(X,Y,\nabla_T Z, W) + R(X,Y,Z,\nabla_T W)\right)
+\end{equation}
+\end{proof}
+
+Let's write each part in the equation.
+\begin{equation}
+\begin{split}
+    (\nabla_T R)(X,Y,Z,W) &= \nabla_T (R(X,Y,Z,W)) - R(\nabla_T X, Y,Z,W) - R(X, \nabla_T Y, Z,W) - R(X,Y,\nabla_T Z, W) - R(X,Y,Z,\nabla_T W)\\
+    (\nabla_Z R)(X,Y,W,T) &= \nabla_Z (R(X,Y,W,T)) - R(\nabla_Z X, Y,W,T) - R(X, \nabla_Z Y, W,T) - R(X,Y,\nabla_Z W, T) - R(X,Y,W,\nabla_Z T)\\
+    (\nabla_W R)(X,Y,T,Z) &= \nabla_W (R(X,Y,T,Z)) - R(\nabla_W X, Y,T,Z) - R(X, \nabla_W Y, T,Z) - R(X,Y,\nabla_W T, Z) - R(X,Y,T,\nabla_W Z).
+\end{split}
+\end{equation}
+
+Adding all minus terms in RHS, we get
+\begin{equation}
+\begin{split}
+    &\langle R(\nabla_T X, Y)Z, W\rangle + \langle R(X,\nabla_T  Y)Z, W\rangle + \langle R(X,  Y)\nabla_T Z, W\rangle + \langle R(X,  Y) Z, \nabla_T W\rangle\\
+    &=\langle R(Z, W)\nabla_T X, Y\rangle + \langle R(Z,W)X, \nabla_T  Y\rangle + \langle R(\nabla_T Z, W)X, Y\rangle + \langle R(Z, \nabla_T W) X, Y\rangle,
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+    &\langle R(\nabla_Z X, Y)W, T\rangle + \langle R(X,\nabla_Z  Y)W, T\rangle + \langle R(X,  Y)\nabla_Z W, T\rangle + \langle R(X,  Y) W, \nabla_Z T\rangle\\
+    &=\langle R(W, T)\nabla_Z X, Y\rangle + \langle R(W,T)X, \nabla_Z Y\rangle + \langle R(\nabla_Z W,  T)X, Y\rangle + \langle R(W, \nabla_Z T) X, Y\rangle,
+\end{split}
+\end{equation}
+and
+\begin{equation}
+\begin{split}
+    &\langle R(\nabla_W X, Y)T, Z\rangle + \langle R(X,\nabla_W  Y)T, Z\rangle + \langle R(X,  Y)\nabla_W T, Z\rangle + \langle R(X,  Y) T, \nabla_W Z\rangle\\
+    &=\langle R(T, Z)\nabla_W X, Y\rangle + \langle R(T,Z)X, \nabla_W Y\rangle + \langle R(\nabla_W T, Z)X, Y\rangle + \langle R(T, \nabla_W Z) X, Y\rangle.
+\end{split}
+\end{equation}
+
+Since
+\begin{equation}
+    \begin{split}
+         \langle R(\nabla_T Z, W)X, Y\rangle - \langle R(\nabla_Z T, W) X, Y\rangle &=\langle R([T,Z],W)X,Y\rangle\\
+         \langle R(\nabla_W T,  Z)X, Y\rangle -\langle R(\nabla_T W, Z) X, Y\rangle &= \langle R([W,T],Z)X, Y\rangle\\
+         \langle R(\nabla_Z W,  T)X, Y\rangle - \langle R(\nabla_W Z, T) X, Y\rangle &= \langle R([Z,W],T)X,Y\rangle,
+    \end{split}
+\end{equation}
+
+The final form of minus terms is
+
+\begin{multline}\label{Eq_3_1}
+    \left\langle \left(R([T,Z],W)+R([W,T],Z)+R([Z,W],T)\right)X,Y\right\rangle \\
+    +\langle R(Z, W)\nabla_T X, Y\rangle  + \langle R(W, T)\nabla_Z X, Y\rangle  + \langle R(T, Z)\nabla_W X, Y\rangle \\
+    + \langle R(T,Z)X, \nabla_W Y\rangle  + \langle R(W,T)X, \nabla_Z Y\rangle  + \langle R(Z,W)X, \nabla_T  Y\rangle.
+\end{multline}
+
+Each positive terms in RHS is computed as
+\begin{equation}
+    \begin{split}
+    \nabla_T (R(X,Y,Z,W)) &= T\langle\nabla_Z\nabla_W X - \nabla_W\nabla_Z X - \nabla_{[Z,W]}X, Y\rangle \\
+    &= \langle \nabla_T\nabla_Z\nabla_W X - \nabla_T\nabla_W\nabla_Z X - \nabla_T\nabla_{[Z,W]}X, Y\rangle + R(Z, W, X,\nabla_T Y),
+    \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+    \nabla_Z (R(X,Y,W,T)) &= Z\langle\nabla_W\nabla_T X - \nabla_T\nabla_W X - \nabla_{[W,T]}X, Y\rangle \\
+    &= \langle \nabla_Z\nabla_W\nabla_T X - \nabla_Z\nabla_T\nabla_W X - \nabla_Z\nabla_{[W,T]}X, Y\rangle + R(W, T, X,\nabla_Z Y),
+    \end{split}
+\end{equation}
+and
+\begin{equation}
+    \begin{split}
+    \nabla_W (R(X,Y,T,Z)) &= W\langle\nabla_T\nabla_Z X - \nabla_Z\nabla_T X - \nabla_{[T,Z]}X, Y\rangle \\
+    &= \langle \nabla_W\nabla_T\nabla_Z X - \nabla_W\nabla_Z\nabla_T X - \nabla_W\nabla_{[T,Z]}X, Y\rangle + R(T, Z, X,\nabla_W Y).
+    \end{split}
+\end{equation}
+
+Joining two appropriate terms in above equations, it becomes
+\begin{equation}
+\begin{split}
+    \nabla_W\nabla_T\nabla_Z X - \nabla_T\nabla_W\nabla_Z X &= R(W,T)\nabla_Z X + \nabla_{[W,T]}\nabla_Z X\\
+    \nabla_T\nabla_Z\nabla_W X - \nabla_Z\nabla_T\nabla_W X &= R(T,Z)\nabla_W X + \nabla_{[T,Z]}\nabla_W X\\
+    \nabla_Z\nabla_W\nabla_T X - \nabla_W\nabla_Z\nabla_T X &= R(Z,W)\nabla_T X + \nabla_{[Z,W]}\nabla_T X,
+\end{split}
+\end{equation}
+and
+\begin{equation}\label{Eq:final}
+\begin{split}
+    \nabla_{[W,T]}\nabla_Z X - \nabla_Z\nabla_{[W,T]} X &= R([W,T],Z)X + \nabla_{[[W,T],Z]}X\\
+    \nabla_{[T,Z]}\nabla_W X - \nabla_W\nabla_{[T,Z]} X &= R([T,Z],W)X + \nabla_{[[T,Z],W]}X\\
+    \nabla_{[Z,W]}\nabla_T X - \nabla_T\nabla_{[Z,W]} X &= R([Z,W], T)X + \nabla_{[[Z,W],T]}X.
+\end{split}
+\end{equation}
+Summing \eqref{Eq:final}, by Jacobi identity, the sum of latter terms become zero.
+
+Summing up all positive terms, The final form is same as \eqref{Eq_3_1}. Therefore, we get
+\begin{equation}
+     (\nabla_T R)(X,Y,Z,W)+(\nabla_Z R)(X,Y,W,T)+(\nabla_W R)(X,Y,T,Z)=0.
+\end{equation}
+
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

@@ -1,0 +1,362 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+	\usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, mathrsfs, physics}
+	\usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+	\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+	\usepackage{fancyhdr}
+	\usepackage[shortlabels]{enumitem}
+	\usepackage[pdfmenubar=true, pdfborder	={0 0 0 [3 3]}]{hyperref}
+	\usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node, auto-pst-pdf}
+
+%================================================================================
+%Layout
+	%Page layout
+	\addtolength{\hoffset}{-50pt}
+	\addtolength{\headheight}{+10pt}
+	\addtolength{\textwidth}{+75pt}
+	\addtolength{\voffset}{-50pt}
+	\addtolength{\textheight}{+75pt}
+	\newcommand{\Space}{1em}
+	\newcommand{\Vspace}{\vspace{\Space}}
+	\newcommand{\ran}{\textrm{ran }}
+	\setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+	\newtheoremstyle{Mytheorem}%
+	{1em}{1em}%
+	{\slshape}{}%
+	{\bfseries}{.}%
+	{ }{}
+
+	\newtheoremstyle{Mydefinition}%
+	{1em}{1em}%
+	{}{}%
+	{\bfseries}{.}%
+	{ }{}
+
+	\theoremstyle{Mydefinition}
+	\newtheorem{statement}{Statement}
+	\newtheorem{definition}[statement]{Definition}
+	\newtheorem{definitions}[statement]{Definitions}
+	\newtheorem{remark}[statement]{Remark}
+	\newtheorem{remarks}[statement]{Remarks}
+	\newtheorem{example}[statement]{Example}
+	\newtheorem{examples}[statement]{Examples}
+	\newtheorem{question}[statement]{Question}
+	\newtheorem{questions}[statement]{Questions}
+	\newtheorem{problem}[statement]{Problem}
+	\newtheorem{exercise}{Exercise}[section]
+	\newtheorem*{comment*}{Comment}
+	%\newtheorem{exercise}{Exercise}[subsection]
+
+	\theoremstyle{Mytheorem}
+	\newtheorem{theorem}[statement]{Theorem}
+	\newtheorem{corollary}[statement]{Corollary}
+	\newtheorem{corollaries}[statement]{Corollaries}
+	\newtheorem{proposition}[statement]{Proposition}
+	\newtheorem{lemma}[statement]{Lemma}
+	\newtheorem{claim}{Claim}
+	\newtheorem{claimproof}{Proof of claim}[claim]
+	\newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+	\fancypagestyle{myfency}{%Plain
+	\fancyhf{}
+	\fancyhead[L]{}
+	\fancyhead[C]{}
+	\fancyhead[R]{}
+	\fancyfoot[L]{}
+	\fancyfoot[C]{}
+	\fancyfoot[R]{\thepage}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0pt}}
+
+	\fancypagestyle{myfirstpage}{%Firstpage
+	\fancyhf{}
+	\fancyhead[L]{}
+	\fancyhead[C]{}
+	\fancyhead[R]{}
+	\fancyfoot[L]{}
+	\fancyfoot[C]{}
+	\fancyfoot[R]{\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}}
+
+	\pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+	\Large{HW1}
+\end{center}
+박성빈, 수학과
+
+Notation: I'll use $M$ be a manifold and $E$ be a smooth vector bundle on $M$. I'll use $\pi$ a projection from $E$ to $M$ and $s$ be a section of $E$. $t$ will represent the local trivialization of $E$. When I want to pick a point in $E$, I'll use $e$ and $x = \pi(e)$. If I want to pick a point in a neighborhood of $x$, I'll use $p$. When I lift a vector $v$ (resp. a vector field $X$) in $TM$ onto $HTE$, I'll denote it $\tilde{v}$ (resp. $\tilde{X}$). The dimension of $M$ is $n$ and the dimension of $E$ is $n+k$, i.e. $E$ is rank $k$. When I consider pull-back bundle of a curve $\gamma$, I'll sometimes denote $F=\gamma^*E$.\\
+
+\noindent \textbf{1}
+Let $\gamma:[0,1]\rightarrow M$ such that $d\gamma\left(\left.\pdv{t}\right|_{t=0}\right) = v$. Let's consider $T(\gamma^*E)$ and connection $T(F) = H\oplus V$. For a canonical global frame $\pdv{t}$ of $T[0,1]$, lift it to a smooth vector field on $H$ given by
+\begin{equation*}
+    X(e) = (d_e\pi|_H)^{-1}\left(\pdv{t}\right)
+\end{equation*}
+then there exists a unique lift $\tilde{\gamma}:[0,1]\rightarrow \gamma^*E$ satisfying 
+\begin{equation*}
+    \dv{\tilde{\gamma}}{t} = X(\tilde{\gamma}(t)),~\tilde{\gamma}(0) = e
+\end{equation*}
+Since the above equation is a ODE with fixed value at some $t$, existence and uniqueness of the solution is guaranteed. I'll slightly modify the above ODE by
+\begin{equation}\label{Eq:1_1}
+    \dv{\tilde{\gamma}^h}{t} = X(\tilde{\gamma}^h(t)),~\tilde{\gamma}^h(h) = e
+\end{equation}
+with $h\in [0,1]$. This ODE again have unique solution with $\tilde{\gamma}^h(h) = e$. Now, I'll define parallel transport $\Pi_h^0$ from $E_{\gamma(h)}$ to $E_{\gamma(0)}$ by $\Pi_h^0(e) = \tilde{\gamma}^h(0)$, which is the solution of the above ODE with condition $\tilde{\gamma}^h(h) = e$ and by identifying $\gamma^*E|_t$ by $E_{\gamma(t)}$. It also enjoys the linear properties as we did in the class.
+
+The covariant derivative can be recovered by Ehresmann connection by the following: for $v\in TM$ with a curve $\gamma:[0,1]\rightarrow M$ such that $\left.\dv{\gamma}{t}\right|_{t=0} = v$ and $s\in \Gamma(E)$,
+\begin{equation*}
+    \nabla_v (s) = \lim_{h\rightarrow 0}\frac{\Pi^0_h (s(\gamma(h)))-s(\gamma(0))}{h}
+\end{equation*}
+
+We can divide the above fraction by the following:
+\begin{equation*}
+\begin{split}
+    \nabla_v (s) &= \lim_{h\rightarrow 0}\frac{\Pi^0_h (s(\gamma(h)))-s(\gamma(0))}{h}\\
+    &=\lim_{h\rightarrow 0}\frac{\Pi^0_h (s(\gamma(h)))-s(\gamma(h)) + s(\gamma(h))-s(\gamma(0))}{h} \\
+    &=\lim_{h\rightarrow 0}\frac{\tilde{\gamma}^h(0)-\tilde{\gamma}^h(h)}{h} +\lim_{h\rightarrow 0}\frac{s(\gamma(h))-s(\gamma(0))}{h}\\
+    &=-X(e) +ds(v).
+\end{split}
+\end{equation*}
+
+To justify the last step, consider a curve $\tilde{\gamma}(t)$ satisfying \eqref{Eq:1_1} with $e=s(\gamma(0))$, then
+\begin{equation*}
+    \begin{split}
+        \lim_{h\rightarrow 0}\frac{\tilde{\gamma}^h(0)-\tilde{\gamma}^h(h)}{h} &= \lim_{h\rightarrow 0}\frac{\tilde{\gamma}^h(0)-\tilde{\gamma}(0)}{h}-\frac{\tilde{\gamma}^h(h)-\tilde{\gamma}(h)}{h} - \frac{\tilde{\gamma}(h)-\tilde{\gamma}(0)}{h}
+    \end{split}
+\end{equation*}
+
+By writing $\tilde{\gamma}^h(0) = s(\gamma(h)) + \int_h^0 X(\tilde{\gamma}^h(t)) dt$, in Euclidean space, we get
+\begin{equation*}
+\begin{split}
+    \lim_{h\rightarrow 0}\norm{\frac{\tilde{\gamma}^h(0)-\tilde{\gamma}(0)}{h}} &=\lim_{h\rightarrow 0}\norm{\frac{s(\gamma(h)) + \int_h^0 X(\tilde{\gamma}^h(t)) dt-s(\gamma(0))}{h}}
+\end{split}
+\end{equation*}
+
+As a continuous vector field on image of $\tilde{\gamma}^h$, which is compact, $\norm{X(\tilde{\gamma}^h(t)}$ is bounded in $[0,1]$. By by considering it on Euclidean space with local trivialization and local coordinate, $\norm{\tilde{\gamma}^h(0)-\tilde{\gamma}^h(0)}\rightarrow 0$ as $h\rightarrow 0$, so using mean-value theorem and letting $h\rightarrow 0$, we get 
+\begin{equation*}
+\begin{split}
+    \norm{\lim_{h\rightarrow 0}\frac{s(\gamma(h)) + \int_h^0 X(\tilde{\gamma}^h(t)) dt-s(\gamma(0))}{h}} &\leq \norm{\lim_{h\rightarrow 0}\frac{s(\gamma(h))-s(\gamma(0))}{h}} + \norm{\lim_{h\rightarrow 0}\frac{ \int_h^0 X(\tilde{\gamma}^h(t)) dt}{h}} \\
+    &= \norm{X(e)}-\norm{X(e)} = 0.
+\end{split}
+\end{equation*}
+By the same reason, $\lim_{h\rightarrow 0}\frac{\tilde{\gamma}^h(h)-\tilde{\gamma}(h)}{h} = 0$, so we get $ \lim_{h\rightarrow 0}\frac{\tilde{\gamma}^h(0)-\tilde{\gamma}^h(h)}{h} = X(e)$.
+
+This equation shows that $\nabla_v(s)$ does not depend on the choice of $\gamma$. Furthermore, we get $d_e\pi(-X(e)+ds(v)) = -\left.\pdv{\gamma}{t}\right|_{t=0} + v = 0$, (note that $d\pi\circ ds = d(\pi\circ s) = d(\textrm{Id})$), so $-X(e)+ds(v) \in E_{x}$ by the canonical identification between $V_eE$ and $E_{\pi(e)}$.\\
+
+
+
+
+\noindent \textbf{2}
+
+I'll first check that if $d\pi(\xi_1) = d\pi(\xi_2) = v$ such that $\xi_1,\xi_2\in H_eTE$, then $\xi_1=\xi_2$. Since $d\pi(\xi_1-\xi_2) = 0$, $\xi_1-\xi_2 \in V_eTE$ and $(ds_1-ds_2)(\pi(e))(v) = d(s_1-s_2)(\pi(e))(v) = \xi_1-\xi_2$. By definition, $\nabla_v (s_1-s_2) = \nabla_v s_1-\nabla_v s_2 = 0$. Therefore, $\xi_1-\xi_2 = V_eTE\cap H_eTE$. Using the step 1 result, which will be proven independently, we get $\xi_1 = \xi_2$. It shows that any vector $v\in TM$, there is at most one $\xi\in T_eHE$ such that $d\pi(\xi) = v$.
+
+Now, I'll show that $H_eTE$ forms a subspace of $T_eE$. For any $\xi_1, \xi_2\in H_eTE$ and $r\in \mathbb{R}$ with $\xi_i = ds_i(\pi(e))(v_i)$ for $i=1,2$ following the notation in the problem. For the scalar multiplication, $H_eTE$ is linear since $\nabla_{r v} s = r \nabla_{v} s$, so $ds(\pi(e))(rv) = r\xi\in H_eTE$. 
+
+To get $\xi_1+\xi_2\in H_eTE$, I'll construct a section which satisfies $\nabla_{v_1+v_2} s = 0$ with $s(\pi(e)) = e$. Taking a local frame $E_1, \ldots, E_k$ of $\gamma(E)$ near $e$ and real valued functions $\alpha^1, \ldots, \alpha^k$ such that a section $s$ is written as $\alpha^i E_i$, then we get a real-valued matrix $\omega_i^j$, $i,j=1,\ldots, k$, associated with affine connection such that
+\begin{equation}\label{Eq:2_1}
+    \nabla_v s = \sum_i \nabla_v \alpha^i E_i = \sum_i v[\alpha^i]E_i + \alpha^i(\sum_j \omega^j_i(v)E_j)  = \sum_i (v[\alpha^i] + \sum_j \alpha^j \omega^i_j(v) )E_i,
+\end{equation}
+where $\omega^j_i$ is a matrix from $TM$ to $\mathbb{R}$ associated with the connection $\nabla$. The point is that we only need to make $(\nabla_v s)(x) = 0$. Therefore, set $v_1[\alpha^i](x) = -\sum_j \alpha^j(x)(\omega_j^i(v_1))(x)$ and $v_2[\alpha^i](x) = -\sum_j \alpha^j(x)(\omega_j^i(v_2))(x)$ in Euclidean space using local trivialization and local chart, and make a plane through $\sum_i \alpha^i(x)E_i(x)$ with the two vectors $v_1[\alpha^i](x)$ and $v_2[\alpha^i](x)$, and roll-back it to a section. By doing this, we get $(\nabla_{v_1}s)(x) = (\nabla_{v_2} s)(x) = 0$, so $(\nabla_{v_1+v_2}s)(x) = 0$ with $s(x) = e$. (If $v_1$ and $v_2$ are linearly dependent, then even we don't need to make a plane since scalar multiplication of vector commutes with $\nabla$.) It shows $ds(\pi(e))(v_1+v_2) = ds(v_1)+ds(v_2) = \xi_1+\xi_2\in H_eTE$.
+
+\begin{enumerate}
+    \item[\textbf{Step 1}] It is easy to see that $\{0\}\subset H_eTE\cap V_eTE$. Conversely, if $\xi\in H_eTE\cap V_eTE$, then there exists $s\in \Gamma(E)$, $v\in T_{\pi(e)}M$ such that $\nabla_v s = 0$ and $\xi = ds(\pi(e))(v)$. Also, $d_e\pi(\xi)=0$. Since $\pi\circ s = \textrm{Id}_M$, $d_e\pi \circ ds(\pi(e))$ is identity map on $T_{\pi(e)} M$ and $d_e\pi(\xi) = d_e\pi(ds(\pi(e))(v)) = v = 0$. Therefore, $\xi = 0$. (Since $\nabla_0 s = \nabla_{0+0} s = \nabla_0 s + \nabla_0 s$ for any section $s$, and $ds(0) = 0$.)
+    
+    \item[\textbf{Step 2}] Fix $\xi\in T_e E$ and $v\in d_e\pi(\xi)$. I need to construct $s\in \Gamma(E)$ such that $(\nabla_v s)(p) = 0$, $s(p) = e$ and $d_e \pi(\xi-ds(\pi(e))(v)) = v - v = 0$. However, I already did such construction showing linearity (note that I only used step 1 result showing linearity of $H_eTE$), so I get $T_eE = H_eTE\oplus V_eTE$.
+
+    \item[\textbf{Step 3}] Choose $\xi\in H_{ce}TE$, then there exists $s\in\Gamma(E)$ with $s(x) = ce$ and $v\in T_{\pi(e)}M$ such that $\nabla_v s = 0$ and $ds(\pi(ce))(v) = \xi$. For $c\neq 0$, consider $s' = \frac{1}{c}s$, then $\nabla_v s' = 0$ and $ds'(\pi(e))(v)$. More precisely, I need to compute on $T_{(x,e)}(\gamma^* M)) = \{(\partial_t|_{t=0}, w)\in T[0,1]\times TE:d\gamma(\partial_t|_{t=0}) = v = d\pi(w)\}$ such that $\gamma(0) = x$, $\gamma'(0) = v$. In this case, In this case, $R_c(x,e) = (x,ce)$ and $dR_c(v, ds'(\pi(e))(v)) = (v,\xi) = (v, ds(\pi(ce))(v))$ since $R_c\circ s' = s$. For $c=0$, note that $(\nabla_v s)(x) = 0$ by setting $s(p) = (p, 0)$ for all $p$ in a neighborhood of $x$ satisfying $s(x) = 0$; since $(s+s)(x) = (x,0) = s(x)$, $(\nabla_v s)(p) = (\nabla_v (s+s))(p) = 0$, so $(\nabla_v s)(p) = 0$. In this case, $ds(\pi(0))(v) = (v,0)$. $R_0$ maps $(x,e)\in \gamma^*E$ to $(x, (x, 0))$, so $dR_0(v,w) = (v, (v, 0))\in T(\gamma^*E)$. which can be identified as a vector in $TM$. Therefore, we get $H_{ce}TE\subset dR_c(H_eTE)$ for $c\in \mathbb{R}$.
+    Now, for $c\neq 0$, $H_{ce}TE\subset dR_c (H_e TE)$ implies that $dR_{1/c}(H_{ce}TE) \subset H_eTE$ since $R_{1/c}\circ R_c = id_E$. By writing $c'=1/c$, $e\mapsto ec$, we get $dR_{c'}(H_eTE)\subset H_{c'e}TE$. Therefore, for $c\neq 0$, $dR_c(H_eTE) = H_{ce}TE$. For $c=0$, $H_0TE\subset dR_0 (H_eTE)$ and conversely, we can identify $dR_0 (H_eTE)$ by the vector component of $T_{\pi(e)}M$, and we have already seen that $H_0TE$ also can be identified with $T_{\pi(e)}M$. Therefore, $H_0TE = dR_0(H_eTE)$.
+\end{enumerate}
+
+\noindent \textbf{3}
+\begin{enumerate}
+    \item[(a)] I'll check the conditions for derivation.
+    \begin{enumerate}
+        \item For $s_1, s_2\in \Gamma(E)$, 
+        \begin{equation*}
+            \begin{split}
+                \nabla_{v}(s_1+s_2)(x) &= \sum_{\alpha}\chi_\alpha(y)\Phi_\alpha^{-1}(x, v[(s_1+s_2)_\alpha]) \\
+                &=\sum_{\alpha}\chi_\alpha(y)\Phi_\alpha^{-1}(x, v[(s_1)_\alpha]+v[(s_2)_\alpha]]) \\
+                &=\sum_{\alpha}\chi_\alpha(y)\left(\Phi_\alpha^{-1}(x, v[(s_1)_\alpha])+\Phi_\alpha^{-1}(x, v[(s_2)_\alpha])\right) \\
+                &=\nabla_{v}(s_1)(x) + \nabla_{v}(s_1)(x)
+            \end{split}
+        \end{equation*}
+        \item and for $f\in C^\infty(M)$ and $s\in\Gamma(E)$,
+        \begin{equation*}
+            \begin{split}
+                \nabla_{v}(fs)(x) &= \sum_{\alpha}\chi_\alpha(y)\Phi_\alpha^{-1}(x, v[(fs)_\alpha]) \\
+                &= \sum_{\alpha}\chi_\alpha(y)\Phi_\alpha^{-1}(x, v[f_\alpha]s_\alpha(x) + f_\alpha(x) v[s_\alpha]) \\
+                &= \sum_{\alpha}\chi_\alpha(y)\left(\Phi_\alpha^{-1}(x, v[f_\alpha]s_\alpha(x))+f_\alpha(x)\Phi_\alpha^{-1}(x,  v[s_\alpha])\right) \\
+                &= v[f]s(x) + f(x)(\nabla_v s)(x)
+            \end{split}
+        \end{equation*}
+    \end{enumerate}
+    Therefore, it is a derivation.
+    \item[(b)] Again, I'll check the conditions with values in $E_x$.
+    \begin{enumerate}
+        \item For $X_1,X_2\in TM$ and $s\in \Gamma(E)$,
+        \begin{equation*}
+            \begin{split}
+                \nabla_{X_1+X_2}(s)(y) &= \sum_{\alpha}\chi_\alpha \Phi_{\alpha}^{-1}(y, (X_1+X_2)[s_\alpha](y))\\
+                &=\sum_{\alpha}\chi_\alpha \left(\Phi_{\alpha}^{-1}(y, X_1[s_\alpha](y))+\Phi_{\alpha}^{-1}(y, X_2[s_\alpha](y))\right) \\
+                &=\nabla_{X_1}(s)(y)+\nabla_{X_2}(s)(y)
+            \end{split}
+        \end{equation*}
+        \item For $f\in C^\infty(M)$ with $X\in TM$,
+        \begin{equation*}
+            \begin{split}
+                \nabla_{fX}(s)(y) &= \sum_{\alpha}\chi_\alpha \Phi_{\alpha}^{-1}(y, (fX)[s_\alpha](y))\\
+                &= \sum_{\alpha}\chi_\alpha \Phi_{\alpha}^{-1}(y, f(y)X[s_\alpha](y))\\
+                &= \sum_{\alpha}\chi_\alpha f(y)\Phi_{\alpha}^{-1}(y, X[s_\alpha](y))\\
+                &= f(y)\nabla_X(s)(y)
+            \end{split}
+        \end{equation*}
+        \item 
+        \begin{equation*}
+            \begin{split}
+                \nabla_{X}(fs)(y) &= \sum_{\alpha}\chi_\alpha \Phi_{\alpha}^{-1}(y, X[(fs)_\alpha](y))\\
+                &= \sum_{\alpha}\chi_\alpha \Phi_{\alpha}^{-1}(y, X[f_\alpha](y)s(y) + f_\alpha(y)X[s_\alpha](y))\\
+                &= \sum_{\alpha}\chi_\alpha\left( \Phi_{\alpha}^{-1}(y, X[f_\alpha](y)s(y)) + \Phi_\alpha^{-1}(f_\alpha(y)X[s_\alpha](y))\right)\\
+                &=X[f](y)s(y) + f(y)\nabla_X (s)(y)
+            \end{split}
+        \end{equation*}
+        \item For $s_1, s_2\in \Gamma(E)$,
+        \begin{equation*}
+            \begin{split}
+                \nabla_{X}(s_1+s_2)(y) &= \sum_{\alpha}\chi_\alpha \Phi_{\alpha}^{-1}(y, X[(s_1+s_2)_\alpha](y))\\
+                &= \sum_{\alpha}\chi_\alpha\left( \Phi_{\alpha}^{-1}(y, X[(s_1)_\alpha](y))+\Phi_{\alpha}^{-1}(y, X[(s_2)_\alpha](y))\right)\\
+                &=\nabla_X(s_1)(y)+\nabla_X(s_2)(y)
+            \end{split}
+        \end{equation*}
+    \end{enumerate}
+    Therefore, it defines an affine connection.
+\end{enumerate}
+
+\noindent \textbf{4}
+What I want is to compute $[\tilde{\partial_i}, \tilde{\partial_j}](e)$ and check whether it is related to $R(\partial_i, \partial_j)$. To do this, first choose $e\in E$ and $x=\pi(e)$. Near $e$, choose local coordinate $x^1, \ldots, x^n, y^1, \ldots, y^k$ in $E$ such that $x^1, \ldots, x^n$ is a local coordinate near $\pi(e)$; this is possible using local trivialization. Choose a smooth vector field near $e$ by $X = \partial_i + \sum_{\alpha=1}^k a^\alpha \partial_{y^\alpha}$, $Y = \partial_j + \sum_{\alpha=1}^k b^\alpha \partial_{y^\alpha}$. Let $P_H$ be a projection from $TE$ to $HTE$, then as a smooth subspace, $P_H$ sends a smooth vector field to smooth vector field such that $d\pi(\xi) = d\pi(P_H(\xi))$. (Note that $d\pi(P_V)=0$.) Therefore, we can set $\tilde{\partial_i} = P_H(X)$, $\tilde{\partial_j} = P_H(Y)$. Furthermore, it forms a local frame of $HTE$ near $e$ since for any smooth vector field $Z$, we can choose $a^i$ such that $a^i \partial_i = d\pi(Z)$ near $\pi(e)$, and by the uniqueness of the lifting vector fields, $a^i \tilde{\partial_i} = Z$. Therefore, we can use $\tilde{\partial_i}$ for $i=1,\ldots, n$ as a local frame near $e$.
+
+First, I'll show that $R(X,Y)\in End(E)$. In problem 5, I'll show that $R(X,Y)$ is a linear operator about $\Gamma(E)$. Using this, I'll first show a proposition:
+\begin{proposition}
+Fix $X,Y\in TM$ and $e\in E$ with $\pi(e) = x$, then $(R(X,Y)s)(x)=(R(X,Y)s')(x)$ for $s,s'\in \Gamma(E)$ if $s(x)=s'(x) = e$, i.e., $(R(X,Y)s)(x)$ only depends on the value of $s(x)$.
+\end{proposition}
+
+\begin{proof}
+Since $R(X,Y)$ is a linear operator on $\Gamma(E)$, $(R(X,Y)s)(x)-(R(X,Y)s')(x) = (R(X,Y)(s-s'))(x)$. Choose a local frame $\{E_\alpha\}$ on a neighborhood $V$ of $x$, then $s=\sum_{\alpha} a^\alpha E_\alpha$ with $a^\alpha:U\rightarrow \mathbb{R}$ such that $a^\alpha(x) = 0$. Using $C^\infty$ Urysohn lemma, set $g:U\rightarrow \mathbb{R}$ such that $\textrm{supp}~g\subset U\subset \overline{U}\subset V$ and interior of $g^{-1}(1)$ is not empty containing $x$, then we get
+\begin{equation*}
+\begin{split}
+    (R(X,Y)(s-s'))(x) &= (R(X,Y)(g(s-s')))(x)\\
+    &=\sum_\alpha a^\alpha(x) (R(X,Y)(g E_\alpha))(x)\\
+    &=0.
+\end{split}
+\end{equation*}
+Therefore, $(R(X,Y)s)(x) = (R(X,Y)s')(x)$.
+\end{proof}
+
+The above proposition shows that we can regard $R(X,Y)$ as a linear map. Therefore, we can replace the domain of $R(X,Y)$ to $E$ and codomain to $E^*$, so $R(X,Y)\in End(E)$. By identifying $V_eTE$ and $E$, the problem is to check $[\tilde{\partial_i}, \tilde{\partial_j}](e)$ for all $e\in E$, i.e., I don't have to take care of the choice of a section for $R(\partial_i,\partial_j)$. In fact, it is enough to show that the equality holds in local coordinate system.
+
+Now, let's compute $[\tilde{\partial_i}, \tilde{\partial_j}]$. Choose $e\in E$ with $\pi(e) = x$ and give local coordinate near $e$ by $x^1, \ldots, x^n, y^1, \ldots, y^k$. Definitely, $\partial_{y^\alpha}$ is a basis of $VTE$ near $e$. Let's choose local frame of $E$ by $E_\alpha$ such that $E_\alpha$ is $\partial_{y^\alpha}$, then a section $s(x)$ can be rewritten as $(y^\alpha \circ s)E_\alpha$. By writing 
+
+\begin{equation*}
+    \begin{split}
+        \tilde{\partial_i}(e) &= ds(\pi(e))(\partial_i) - \nabla_{\partial_i(x)} s \\
+        &= \partial_i(\sum_{\alpha=1}^k (y^\alpha \circ s)E_\alpha)(x) - (\partial_i(y^\alpha \circ s)(x)E_\alpha(x) + (y^\alpha \circ s)(x)\sum_{\beta=1}^k \Gamma_{i\alpha}^\beta E_\beta(x))\\
+        &=\partial_i - \sum_{\alpha=1}^k \sum_{\beta=1}^k y^\alpha(e)\Gamma_{i\alpha}^\beta E_\beta(x)
+    \end{split}
+\end{equation*}
+for some section $s$ such that $s(x) = e$. Note that LHS does not depends on the choice of $s$, so I'll write $\tilde{\partial_i}(e)$ by $\partial_i - y^\alpha \Gamma_{i\alpha}^\beta \partial_{y^\beta}$ using Einstein convention. Now, we can compute the commutator:
+\begin{equation*}
+\begin{split}
+    [\tilde{\partial_i}, \tilde{\partial_j}] &= [\partial_i - y^\alpha \Gamma_{i\alpha}^\beta \partial_{y^\beta}, \partial_j - y^\gamma \Gamma_{j\gamma}^\delta \partial_{y^\delta}] \\
+    &=-\pdv{y^\gamma \Gamma_{j\gamma}^\delta}{x^i}\partial_{y^\delta} + \pdv{y^\alpha \Gamma_{i\alpha}^\beta}{x^j}\partial_{y^\beta} + [y^\alpha \Gamma_{i\alpha}^\beta\partial_{y^\beta}, y^\gamma \Gamma_{j\gamma}^\delta \partial_{y^\delta}]\\
+    &=-y^\gamma \pdv{\Gamma^\delta_{j\gamma}}{x^i}\partial_{y^\delta} + y^\alpha \pdv{\Gamma^\beta_{i\alpha}}{x^j}\partial_{y^\beta} + y^\alpha \Gamma^\beta_{i\alpha} \Gamma_{j\gamma}^\delta\delta_\beta^\gamma\partial_{y^\delta} + y^\alpha \Gamma^\beta_{i\alpha} \pdv{\Gamma_{j\gamma}^\delta}{y^\beta}\partial_{y^\delta} \\
+    &\phantom{=}-\left(y^\gamma \Gamma^\delta_{j\gamma} \Gamma_{i\alpha}^\delta\delta_\delta^\alpha\partial_{y^\beta} + y^\gamma \Gamma^\delta_{j\gamma} \pdv{\Gamma_{i\alpha}^\beta}{y^\delta}\partial_{y^\beta}\right)\\
+    &=-y^\gamma \pdv{\Gamma^\delta_{j\gamma}}{x^i}\partial_{y^\delta} + y^\alpha \pdv{\Gamma^\beta_{i\alpha}}{x^j}\partial_{y^\beta} + y^\alpha \Gamma^\beta_{i\alpha} \Gamma_{j\beta}^\delta\partial_{y^\delta}-y^\gamma \Gamma^\alpha_{j\gamma} \Gamma_{i\alpha}^\beta\partial_{y^\beta}.
+\end{split}
+\end{equation*}
+
+In some step, I used $\pdv{y^\gamma}{x^i} = 0$ and $\pdv{\Gamma_{i\alpha}^\beta}{y^\delta} = 0$ since $y^\gamma$ and $x^i$ are in different coordinate and $\Gamma_{i\alpha}^\beta$ only depends on $x$ coordinate. By changing some indexes, I get
+\begin{equation*}
+    [\tilde{\partial_i}, \tilde{\partial_j}]=-y^\alpha \pdv{\Gamma^\beta_{j\alpha}}{x^i}\partial_{y^\beta} + y^\alpha \pdv{\Gamma^\beta_{i\alpha}}{x^j}\partial_{y^\beta} + y^\alpha \Gamma^\beta_{i\alpha} \Gamma_{j\beta}^\gamma\partial_{y^\gamma}-y^\alpha \Gamma^\beta_{j\alpha} \Gamma_{i\beta}^\gamma\partial_{y^\gamma}
+\end{equation*}
+
+Comparing the final result with \eqref{Eq:5_1}, we get $[\tilde{\partial_i}, \tilde{\partial_j}](e) = -R(\partial_i, \partial_j)e$, and we already showed that $\{\tilde{\partial_i}\}$ forms a local section near $e$, by Frobenius theorem, $R\equiv 0$ is equivalent to the integrability of $HTE$; since $d\pi([\tilde{\partial_i}, \tilde{\partial_j}]) = [d\pi(\tilde{\partial_i}, d\pi(\tilde{\partial_j})] = [\partial_i, \partial_j] = 0$, if $[\tilde{\partial_i}, \tilde{\partial_j}]\neq 0$, it means $P_V([\tilde{\partial_i}, \tilde{\partial_j}])\neq 0$, where $P_V$ is the projection from $TE$ to $VTE$.\\
+
+
+
+\noindent \textbf{5} In this problem, I'll use Einstein notation for all equations. For $X,Y\in TM$ and a frame $\{E_\alpha\}$,
+\begin{equation*}
+    \begin{split}
+       R(X,Y)a^\alpha E_\alpha &= \nabla_X\left(Y(a^\alpha)E_\alpha + a^\alpha\omega^\beta_\alpha(Y) E_\beta\right)-\nabla_Y\left(X(a^\alpha)E_\alpha + a^\alpha\omega^\beta_\alpha(X) E_\beta\right)\\
+        &\phantom{=}-\left([X,Y](a^\alpha)E_\alpha + a^\alpha\omega^\beta_\alpha([X,Y]) E_\beta\right)\\
+        &=X(Y(a^\alpha))E_\alpha + Y(a^\alpha)\omega_\alpha^\beta(X)E_\beta + X(a^\alpha)\omega_\alpha^\beta(Y) E_\beta + a^\alpha(X[\omega^\beta_\alpha(Y)]E_\beta + \omega^\beta_\alpha(Y) \omega_\beta^\gamma(X)E_\gamma)\\
+        &\phantom{=} -\left(Y(X(a^\alpha))E_\alpha + X(a^\alpha)\omega_\alpha^\beta(Y)E_\beta + Y(a^\alpha)\omega_\alpha^\beta(X) E_\beta + a^\alpha(Y[\omega^\beta_\alpha(X)]E_\beta + \omega^\beta_\alpha(X) \omega_\beta^\gamma(Y)E_\gamma)\right) \\
+        &\phantom{=}-\left([X,Y](a^\alpha)E_\alpha + a^\alpha\omega^\beta_\alpha([X,Y]) E_\beta\right)\\
+        &=a^\alpha d\omega_\alpha^\beta (X,Y) E_\beta + a^\alpha\left(\omega^\beta_\alpha(Y) \omega_\beta^\gamma(X) E_\gamma -\omega^\beta_\alpha(X) \omega_\beta^\gamma(Y) E_\gamma\right).
+    \end{split}
+\end{equation*}
+For the remainder term, by changing indexes, we get
+\begin{equation*}
+    \omega^\gamma_\alpha(Y) \omega_\gamma^\beta(X) E_\beta -\omega^\gamma_\alpha(X) \omega_\gamma^\beta(Y) E_\beta.
+\end{equation*}
+Therefore,
+\begin{equation*}
+    \Omega(X,Y) E_\alpha = \Omega_\alpha^\beta E_\beta = d\omega_\alpha^\beta(X,Y)E_\beta + \left(\omega_\gamma^\beta \wedge \omega_\alpha^\gamma\right)(X,Y) E_\beta,
+\end{equation*}
+so we get 
+\begin{equation*}
+    \Omega_\alpha^\beta = d\omega_\alpha^\beta + \left(\omega_\gamma^\beta \wedge \omega_\alpha^\gamma\right).
+\end{equation*}
+
+I'll show the linearity of $R(X,Y)$ about $X,Y\in TM$. It is easy to see that $R$ is linear about addiction of vector fields. For multiplication, for $f,g\in C^\infty(M)$,
+\begin{equation*}
+    \begin{split}
+        \left(\nabla_{fX}\nabla_{gY}-\nabla_{gY}\nabla_{fX}-\nabla_{[fX,gY]}\right)a^\alpha E_\alpha &= f\nabla_X (g\nabla_Y a^\alpha E_\alpha) - g\nabla_Y (f\nabla_X a^\alpha E_\alpha) - \nabla_{fg[X,Y]+f(X(g))Y-g(Y(f))X}a^\alpha E_\alpha \\
+        &=f(X(g)\nabla_Y a^\alpha E_\alpha + g\nabla_X\nabla_Ya^\alpha E_\alpha) -g(Y(f)\nabla_X a^\alpha E_\alpha + f\nabla_Y\nabla_Xa^\alpha E_\alpha) \\
+        &\phantom{=} - fg\nabla_{[X,Y]}a^\alpha E_\alpha - f(X(g)\nabla_Y(a^\alpha E_\alpha)\\
+        &\phantom{=}+ g(Y(f)\nabla_X(a^\alpha E_\alpha)\\
+        &=fg(\nabla_X\nabla_Y a^\alpha E_\alpha - \nabla_Y\nabla_X E_\alpha - \nabla_{[X,Y]}a^\alpha E_\alpha).
+    \end{split}
+\end{equation*}
+
+If I compute this in terms of $\partial_i$, I get
+\begin{equation}\label{Eq:5_1}
+    \Omega(\partial_i, \partial_j)(a^\alpha E_\alpha) = a^\alpha \left(\pdv{\Gamma_{j\alpha}^\beta}{x^i} E_\beta - \pdv{\Gamma_{i\alpha}^\beta}{x^j} \right)E_\beta + a^\alpha\left(\Gamma_{j\alpha}^\beta\Gamma_{i\beta}^\gamma - \Gamma_{i\beta}^\gamma\Gamma_{j\alpha}^\beta\right)E_\gamma
+\end{equation}
+
+
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

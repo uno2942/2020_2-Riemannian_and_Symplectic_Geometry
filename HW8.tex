@@ -1,0 +1,293 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, physics, cancel}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\ad}{ad}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\intprodl}{%
+    \mathbin{\scalebox{1.5}{$\lrcorner$}}%
+}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW8}
+\end{center}
+박성빈, 수학과
+
+Notation: 
+
+\noindent \textbf{1}
+I'll assume $M_c$ a connected manifold; I could not found the counterexample, but if I don't consider $M_c$, then there can be counterexample such that $\Gamma = 0$: consider two disjoint torus and identify each torus by $[0,1]^2/\sim$. Giving a vector field $\pdv{x_1^1}$, $\pdv{x_1^2}$ on first torus and $\frac{1}{\sqrt{2}}\pdv{x_2^1}$, $\frac{1}{\sqrt{2}}\pdv{x_2^2}$ on second torus, then for any $x_0$ in the manifold, $\Gamma = 0$.
+
+I'll first show the following proposition
+\begin{proposition}
+    For $\{F_1, \ldots, F_n\}$ in involutive, $[X_{F_i}, X_{F_j}] = 0$.
+\end{proposition}
+\begin{proof}
+WLOG, I'll show that $\{X_{F_1},X_{F_2}\}=0$ implies $[X_{F_1}, X_{F_2}] = 0$. Using the ampleness of Hamiltonian vector field at $T_pM$ for $p\in M$ with sympletic form $\omega$, for any $v\in T_pM$, choose $f\in C^\infty(M)$ such that $X_f(p) = v$, then
+    \begin{equation*}
+        \begin{split}
+        -\omega([X_{F_1}, X_{F_2}], X_f) &= X_{F_1}X_{F_2}[f] - X_{F_2}X_{F_1}[f]\\
+        &=\{\{f, F_2\}, F_1\} - \{\{f, F_1\}, F_2\}\\
+        &=\{\{f, F_2\}, F_1\} - \left(-\{\{F_1, F_2\}, f\} - \{\{F_2, f\}, F_1\}\right)\\
+        &=\{\{F_1, F_2\}, f\}.
+        \end{split}
+    \end{equation*}
+    Since $\omega$ is non-degenerate, $\{X_{F_1},X_{F_2}\}=0$ implies $[X_{F_1},X_{F_2}] = 0$.
+\end{proof}
+Since $X_{F_i}$ are linearly independent and $[X_{F_i},X_{F_j}] = 0$ on $M$, for each $p\in M$, we can select a coordinate system $(x,U)$ of $p$ satisfying
+\begin{equation}\label{HW8:EQ1}
+    X_{F_i} = \pdv{x^i}
+\end{equation}
+for $i=1,\ldots, n$ on $U$. Since $M_c$ is compact, the flow $\phi^t_{F_i}$ of each $X_{F_i}$ are well defined for all time $t\in \mathbb{R}$ satisfying the condition of one-parameter condition, i.e. for $t_1,t_2\in \mathbb{R}$, 
+\begin{equation*}
+    \phi^{t_1+t_2}_{F_i} = \phi^{t_1}_{F_i}\circ \phi^{t_2}_{F_i} = \phi^{t_2}_{F_i}\circ \phi^{t_1}_{F_i}.
+\end{equation*}
+Furthermore, we can exchange the flow map generated by different vector field as $[X_{F_i}, X_{F_j}] = 0$. (The proof is on \textit{Comprehensive introduction to Differential Geometry I}, Spivak, theorem 5.13.) Therefore, for $\vec{t},\vec{s}\in \mathbb{R}^n$,
+\begin{equation*}
+\begin{split}
+    \left(\phi_{F_1}^{t_1}\circ \cdots \circ \phi_{F_n}^{t_n}\right) \circ \left(\phi_{F_1}^{s_1}\circ\cdots \circ \phi_{F_n}^{s_n}\right) &= \left(\phi_{F_1}^{t_1}\circ\phi_{F_1}^{s_1}\right(\circ \cdots \circ \left(\phi_{F_n}^{t_n} \circ\phi_{F_n}^{s_n}\right)\\
+    &=\phi_{F_1}^{t_1+s_1}\circ \cdots \circ \phi_{F_n}^{t_n+s_n}.
+\end{split}
+\end{equation*}
+Therefore, we can construct $\Phi:\mathbb{R}^n\times M_c\rightarrow M_c$ such that
+\begin{equation*}
+    \Phi((t_1,\ldots, t_n), x) = \phi_{F_1}^{t_1}\circ \cdots \phi_{F_n}^{t_n}(x)
+\end{equation*}
+and satisfying a structure such that
+\begin{equation*}
+    \Phi\left(\vec{s}, \Phi(\vec{t}, x)\right) = \Phi(\vec{s}+\vec{t}, x).
+\end{equation*}
+For fixed $x_0\in M_c$, I'll define $\Gamma \coloneqq \{\vec{t}\in\mathbb{R}:\Phi(\vec{t},x_0)=x_0\}$. The above property shows that $\Gamma$ is a subgroup of $\mathbb{R}^n$ about addition. Soon, I'll show that $\Gamma$ does not depend on the choice of $x_0$.
+
+Since I assumed $M_c$ is connected, by the same argument in the previous homework, for fixed $x_0\in M$, $\Phi(\cdot, x_0)$ is onto. Also, $\Phi(\cdot, x_0)$ is $C^\infty$ since
+\begin{equation*}
+\begin{split}
+    \pdv{t^i}\Phi((t_1, \ldots, t_n), x_0) &= \pdv{t^i}\phi_{F_i}^{t_i}\circ \phi_{F_i}^{t_i}\cdots \phi_{F_{i-1}}^{t_{i-1}}\circ \widehat{\phi_{F_{i}}^{t_{i}}}\circ \phi_{F_{i+1}}^{t_{i+1}}\cdots \phi_{F_n}^{t_n}(x) \\
+    &= X_{F_i}(\phi_{F_{i}}^{t_{i}}\circ \phi_{F_i}^{t_i}\cdots \phi_{F_{i-1}}^{t_{i-1}}\circ \widehat{\phi_{F_{i}}^{t_{i}}}\circ \phi_{F_{i+1}}^{t_{i+1}}\cdots \phi_{F_n}^{t_n}(x))\\
+    &=X_{F_i}(\Phi((t_1, \ldots, t_n), x_0)).
+\end{split}
+\end{equation*}
+Since $X_{F_i}$ are linearly independent, by inverse function theorem, $\Phi(\cdot, x_0)$ is locally invertible and locally diffeomorphism. For $\vec{t} = 0$, it means there exists open neighborhoods $0\in U\subset \mathbb{R}^n$ such that $\Phi(\cdot, x_0)$ is injective on $U$, in particular, $U\cap \Gamma = 0$.
+
+I'll show two properties: 1. the $U$ making $\Phi(\cdot, x_0)$ injective does not depends on $x_0$: if I choose another $x_1\in M_c$, then there exists $\vec{T}\in\mathbb{R}^n$ such that $\Phi(\vec{T}, x_0) = x_1$, and if $\Phi(\vec{t}, x_1) = \Phi(\vec{s}, x_1)$ for some $\vec{t},\vec{s}\in U$, then 
+\begin{equation*}
+    \Phi(-\vec{T}, \Phi(\vec{t}, x_1)) = \Phi(-\vec{t}, \Phi(\vec{T}, x_1)) = \Phi(\vec{t}, x_0),
+\end{equation*}
+and by the same reason, we get $\Phi(\vec{t}, x_0) = \Phi(\vec{s}, x_0)$, so $\vec{t}=\vec{s}$. By side effect, this proof also shows that $\Gamma$ does not depend on the choice of $x_0\in M_c$. 2. for any $e\in \Gamma$, $(e+U)\cap \Gamma = e$ by the same reason as 1. Therefore, each element in $\Gamma$ has neighborhood separating the others, so $\Gamma$ is a discrete subgroup of $\mathbb{R}^n$.
+
+Now, I'll show an algebraic lemma to finish the proof.
+\begin{lemma}
+    Let $\Gamma$ be a discrete subgroup of $\mathbb{R}^n$, then there exists $k\in \mathbb{N}\cup \{0\}$ such that $k\leq n$ and $\Gamma$ is a free module of rank $k$ over $\mathbb{Z}$.
+\end{lemma}
+\begin{proof}
+    Let's give a Euclidean metric on $\mathbb{R}^n$. If $\Gamma$ is $0$, then $k=0$, so I'll assume $\Gamma\neq \{0\}$. Now, choose an element in $\Gamma\setminus\{0\}$ such that the distance from $0$ is the minimum; since there can not exists an accumulating point in $\Gamma$, there should exists such point. Let the element $e_1$. Note that $\mathbb{Z}e_1\subset \Gamma$, and $\mathbb{R}e_1\cap \Gamma = \mathbb{Z}e_1$ since $e_1$ is the nearest point to $0$ in $\mathbb{R}e_1$. If $\mathbb{Z}e_1=\Gamma$, then it ends the proof, so let's assume it is not.
+    
+    Now, choose $e_2$ as following: for any point $p\in \Gamma$, we can take $p-ne_1$ for some $n\in \mathbb{Z}$ such that $\abs{\langle p-ne_1, e_1\rangle}<\abs{e_1}^2$. It means that if the distance between $p$ and $\mathbb{R}e_1$ is $d$, then there exists some $n\in\mathbb{Z}$ satisfying $\abs{p-ne_1}\leq d+\abs{e_1}$. It means that if there is no element in $\Gamma\setminus \mathbb{Z}e_1$ such that the distance from $\mathbb{R}e_1$ is minimum, then there exist infinitely many element of $\Gamma$ in the compact ball of radius $d+\abs{e_1}$, which is impossible. Therefore, we can choose an element $e_2$ in $\Gamma$ such that the distance from $\mathbb{R}e_1$ is smallest. By the construction, $\mathbb{Z}e_1+\mathbb{Z}e_2 = (\mathbb{R}e_2+\mathbb{R}e_1)\cap \Gamma$; if there exists an element $p\in (\mathbb{R}e_2+\mathbb{R}e_1)\cap \Gamma$, then we can make the distance between $p-n_2e_2$ and $\mathbb{R}e_1$ smaller than the distance of $e_2$ by taking appropriate $n_2$, and so $0$ by the construction of $e_2$. By the same argument for the $e_1$ case, it should be in $\mathbb{Z}e_1$, which means that $p\in \mathbb{Z}e_1+\mathbb{Z}e_2$.
+    
+    Repeating this argument, we can find $e_i$ such that $\sum_{i} \mathbb{Z}e_i\subset \Gamma$. Also, it should be terminate at some $k\leq n$ since each $e_i$ are linearly independent and $\sum_{i} \mathbb{Z}e_i = \left(\sum_{i} \mathbb{R}e_i\right)\cap \Gamma$. It ends the proof.
+\end{proof}
+
+Since I already shows that $\Gamma$ is a discrete subgroup, I just need to show that $k=n$. Assume that $\Gamma$ is spanned by $e_1, \ldots, e_k$. Let $\sim$ be the equivalence relation on $\mathbb{R}^n$ such that $x_1\sim x_2$ if and only if $x_1-x_2\in \Gamma = \sum_{i=1}^k \mathbb{Z}e_i$. Let $q:\mathbb{R}^n\rightarrow \mathbb{R}^n/\sim$ be the quotient map and $\varphi:\mathbb{R}^n/\sim\rightarrow M_c$ be the induced map from $\Phi(\cdot, x_0)$ where $x_0\in M_c$ is pre-fixed point, i.e. for $[\vec{t}]\in \mathbb{R}^n/\sim$, $\varphi([\vec{t}]) = \Phi(\vec{t}, x_0)$. I'll show that $\varphi$ is homeomorphism from $\mathbb{R}^n/\sim$ to $M_c$.
+\begin{enumerate}
+    \item Well-defineness and continuity: As a induced map of continuous map, it is well-defined and continuous.
+    \item Injectivity: I already showed that $\Gamma$ does not depend on the choice of $x_0$, so $\varphi$ should be injective since the equivalence relation put all the points having the same image into one point.
+    \item Surjectivity: Since $\Phi(\cdot, x_0)$ was surjective, $\varphi$ is also surjective.
+    \item Open map: For any open set $[U]\in \mathbb{R}^n/\sim$, $q^{-1}([U])$ is open, and since $\Phi(\cdot, x_0)$ is locally homeomorphism, $\Phi(q^{-1}([U]), x_0)$ is an open set in $M_c$. It means that $\varphi([U])$ is open in $M_c$.
+\end{enumerate}
+Therefore, $\varphi$ is a homeomorphism from $\mathbb{R}^n/\sim$ to $M_c$.
+
+Since $e_i$ are linearly independent, by taking basis change, we can convert each $e_i$ by standard $i$th coordinate of $\mathbb{R}^n$ using linear isomorphism, which is homeomorphism, then $\mathbb{R}^n/\sim$ can be identified with $\mathbb{R}^k/\sim \times \mathbb{R}^{n-k} \simeq T^k\times \mathbb{R}^{n-k}$. Therefore, it means $M_c$ is homeomorphic to $T^K\times \mathbb{R}^{n-k}$, but since $M_c$ is compact, $n-k=0$, so $k=n$.
+
+\noindent \textbf{2}
+\begin{enumerate}
+    \item[(a)] Let $H = p_1$, then
+    \begin{equation*}
+        \{f, H\} = \sum_{i=1}^n \pdv{f}{q^i}\pdv{H}{p^i} - \pdv{H}{q^i}\pdv{f}{p^i} = \pdv{f}{q^1},
+    \end{equation*}
+    so $X_H = \pdv{q^1}$. In this setting, we get $\phi^1_H(0) = (1, 0, \ldots, 0)$ for $t\in[0,1]$. Now, take a bump function $f_\epsilon$ such that it is $1$ on $[-\epsilon, 1+\epsilon]\times [-\epsilon, \epsilon]^{2n-1}$, $0$ on $[-2\epsilon, 1+2\epsilon]\times [-2\epsilon, 2\epsilon]^{2n-1}$, and $0\leq f_\epsilon\leq 1$ for $\epsilon>0$. Since $f_\epsilon H$ is $H$ on $(-\epsilon/2, 1+\epsilon/2)\times (-\epsilon/2, \epsilon/2)^{2n-1}$, we again get $X_{f_\epsilon H}((t,0,\ldots, 0)) = (1,0,\ldots, 0)$ for $t\in[0,1]$ and $\phi^1_{f_\epsilon H}(0) = (1, 0, \ldots, 0)$, but $\max f_\epsilon H\leq \epsilon$ and $\min f_\epsilon H \geq -\epsilon$, so $\norm{f_\epsilon H}\leq 2\epsilon$ for any $\epsilon>0$. Therefore, displacement energy taking $0$ to $(1,0,\ldots, 0)$ is zero.
+    
+    \item[(b)] Before starting, I could not figure out how to construct a diffeomorphism which makes two sympletic forms equal on a curve. I think I need to assume that there exists a diffeomorphism of some neighborhood of $\gamma$ making any two non-degenerate sympletic two form coincide; I have tried this by considering the matrix form of sympletic two form and basis change, but I'm afraid of it whether the choice of such basis is smooth not using Moser's trick.
+    
+    I'll write the submanifold $\Im \gamma$ by $X$ and $NX$ be the normal bundle of $X$. Let $i_0:X\rightarrow NX$ be the inclusion to zero section. Using Tubular neighborhood theorem, we get a neighborhood $W$ of $i_0(X)$ and $V$ of $X\subset M$, which are diffeomorphic. Since $\Im\gamma$ is contractible manifold, any vector bundle on $\Im\gamma$ is trivial, so we can identify $NX$ by $X\times \mathbb{R}^{2n-1}\simeq [0,1]\times \mathbb{R}^{2n-1}$, and $W$ as a neighborhood $U$ of $OA$. Let $\psi$ be the diffeomorphism from $V\subset M$ to $U\subset \mathbb{R}^{2n}$. By the assumption above, I can take a diffeomorphism $\phi:V_1\rightarrow V_2$ which are neigthborhoods of $\gamma$ in $M$ such that $ \omega = \phi^*\psi^*\omega_0$ on $\gamma$. Shrinking $V$ enough to be inside $V_1$ and $V_2$, let's again write the diffeomorphism $\psi\circ\phi:V\rightarrow U$ by $\psi$.
+    
+    Now, let's take
+    \begin{equation*}
+        \omega_t = (1-t)\omega +t\psi^*\omega_0.
+    \end{equation*}
+    Since $\psi^*\omega_0|_\gamma = \omega|_\gamma$ and $\omega$ is-non-degenerate, $\omega_t$ is non-degenerate on $X$. Since $X$ is compact, by taking a neighborhood for each point in $\gamma$ making $\omega_t$ non-degenerate, we can choose a neighborhood of $\gamma$ such that $\omega_t$ is non-degenerate on the neighborhood. By taking intersection with $V$, I'll again write the neighborhood $V$. Using the diffeomorphism, choose a neighborhood $U'\subset \mathbb{R}^{2n}$ diffeomorphic to $V$, and again, choose a open ball for each point in $OA$ such that it is contained in $U'$. Using compactness, choose finite open balls and union it, then it forms a neighborhood of $OA$ which has a deformoation retraction to $OA$ by the map $(a,\vec{b})\mapsto (a,v\vec{b})$ for $v\in [0,1]$ where $a\in\mathbb{R}$ denoting a point in $OA$ and $\vec{b}\in \mathbb{R}^{2n-1}$. Let's again write the final neighborhood $U\subset\mathbb{R}^{2n}$ and the diffeomorphic neighborhood $V\subset M$. Finally, we get a open neighborhood $V$ of $\gamma$ such that $\psi^*\omega_t$ is non-degenerate on it and have deformation retraction to $\gamma$.
+    
+    What I want to find is the collection of diffeomorphism $h_t$ for $t\in[0,1]$ satisfying
+    \begin{equation*}
+        \begin{split}
+            h_t^*\omega_t&=\omega\\
+            dh_t|_{TM|_X} &= \mathrm{id}_{TM|_X}.
+        \end{split}
+    \end{equation*}
+    It we find out such $h_t$, then it fixes $X$ for each $t$, so neighborhood of $X$ maps to a neighborhood of $X$. From now on, I can follow the proof of the Darboux theorem as in the class. Let $\xi_t = \dv{h_t}{t}\circ h_t^{-1}$, then 
+    \begin{equation*}
+        \dv{t}(h_t^*\omega_t) = h_t^*\left(L_{\xi_t}\omega_t + \dv{\omega_t}{t}\right) = 0.
+    \end{equation*}
+    Using Cartan's magic fomula with $d\omega_t = td\omega + (1-t)\psi^*d\omega_0 = 0$, we get $h_t^*(d(\xi_t\intprodl \omega_t) + (\omega - \psi^*\omega_0)) = 0$. By denoting $\beta = \xi_t\intprodl \omega_t$, we need to solve 
+    \begin{equation}\label{HW8:Eq2}
+        \begin{split}
+            d\beta &= \omega - \psi^*\omega_0\\
+            \beta &= 0~~\textrm{on }X.
+        \end{split}
+    \end{equation}
+    The reason why I put $\beta = 0$ on $X$ is to make $\xi_t|_{X} = 0$, so $h_t$ should be identity on $X$.
+    
+    Let's construct the $\beta$ with some neighborhood of $X$. We already chose good neighborhood $X\subset V\subset M$ such that $\omega_t$ is non-degenerate on $V$ and have deformation retraction onto $\gamma$. Let $\pi_0:U\rightarrow OA$ such that $\pi_t((a, \vec{b})) = (a,t\vec{b})$ for $t\in [0,1]$. Let $r_t:V\rightarrow V$ be the deformation retraction such that $r_t = \psi^{-1}\circ \pi_t\circ \psi$, then it satisfies $r_1=\mathrm{id}_{V}$, $r_0 = \psi^{-1}\circ \pi_0\circ \psi$, and $r_t|_{X} = \mathrm{id}_X$ for all $t$. Let $\eta_t =\dv{r_t}{t}\circ r_t^{-1}$ for $t>0$. Since I'll put it in integral, it is okay to not define $\eta_t$ for $t=0$. I claim that if I set
+    \begin{equation*}
+        \beta = \int_0^1 r_t^*(\eta_t\intprodl (\omega-\psi^*\omega_0))dt,
+    \end{equation*}
+    on $V$, I get the solution of \eqref{HW8:Eq2}. Since $r_t|_{X} = \mathrm{id}_X$ and $\omega = \psi^*\omega_0$ on $X$, $\beta|_{X} = 0$. Also,
+    \begin{equation*}
+    \begin{split}
+        d\beta &= \int_0^1 r_t^*d(\eta_t\intprodl (\omega-\psi^*\omega_0))dt\\
+        &=\int_0^1 r_t^*d(L_{\eta_t}(\omega-\psi^*\omega_0) - \cancel{\eta_t\intprodl d(\omega-\psi^*\omega_0)})dt\\
+        &=\int_0^1 \dv{t}(r_t^*(\omega-\psi^*\omega_0))dt = \omega-\psi^*\omega_0
+    \end{split}
+    \end{equation*}
+    as $\Im(r_0)=X$, so $r_0^*(\omega-\psi^*\omega_0) = 0$. Using the non-degeneracy of $\omega_t$ on $V$, we can find $\xi_t$ on $V$ for $t\in [0,1]$. In fact, for latter use, I'll slightly extend the time domain: for small enough $\epsilon$ such that $\omega_t$ is non-degenerate on $(-\epsilon, 1+\epsilon)\times V$, choose $\xi_t$ on $V$ for $(-\epsilon, 1+\epsilon)$. The left one is to showing the construction of $h_t$ on some neighborhood of $X$ for $t\in [0,1]$, but we can just repeat the argument that we did in the class: the domain of existence is an open subset of $\mathbb{R}\times V$ and $h_t|_X = \mathrm{id}|_X$ for all $t$ since $\beta|_X = 0$, so $\xi_t|_X = 0$. Since $[0,1]\times X$ is compact, there exists an open neighborhood of $[0,1]\times X$ in $(-\epsilon, 1+\epsilon)\times V$. Now, taking the open neighborhood of $X$ at $t=0$ and denoting it by $V'$, we get a diffeomorphism $h_1:V'\rightarrow h_1(V')$ with $h_1^*(\psi|_{h_1(V')})^*\omega_0 = \omega$. Therefore, our desired sympletic diffeomorphism is $\psi|_{h_1(V')}\circ h_1$.
+    
+    \item[(c)] To use (b), I need to show that for any two point $p,p'\in M_c$, there exists an embedded curve $\gamma:[0,1]\rightarrow M_c$ such that $\gamma(0) = p$ and $\gamma(1) = p'$. I tried to show this by the following: using path-connectedness, choose a continuous path $\alpha$, and choose open cover of $\alpha$ using coordinate charts. Using Lebesgue lemma, divide the path and make piecewise-smooth curve. At each point, take a mollifier and make the curve smooth. (In fact, Whitney approximation theorem do this job.) However, I was not able to maintain the regularity: as radius of support of mollifier goes to $0$, its shape drastically changes, so it can affect the regularity of the mollified curve. Therefore, I decided to use stronger theorem: If $M_c$ is a connected smooth manifold, it admits complete Riemannian metric.\cite{10.2307/2034383} In this setting, by Hopf-Rinow's theorem, we can connect any two point using geodesic, which is definitely embedding of $[0,1]$ to $M_c$, so by using $(b)$, we can replace the problem to the case (a), and the displacement energy taking $p$ to $p'$ is zero.
+\end{enumerate}
+
+\noindent \textbf{3}
+\begin{enumerate}
+    \item[(a)] Since $G$ is a topological group, the multiplication map $t:G\times G\rightarrow G$ is a continuous map. Therefore, $t^{-1}(H)$ is an open set in $G \times G$. Since $G$ is homeomorphic to $\{g^{-1}\}\times G$, which has subspace topology of $G\times G$, $t^{-1}(H) \cap (\{g^{-1}\}\times G) = \{g^{-1}\}\times \{gH\}$ is open set in $\{g^{-1}\}\times G$ and $gH$ is a open set in $G$.
+    \item[(b)] For any $g\not\in H$, $gH\cap H=\emptyset$. Therefore, if we consider $C = \cup_{g\not\in H}gH$, then it is a open set, and compliment to $H$ since $1\in H$. Therefore, $H$ is closed.
+\end{enumerate}
+
+\noindent \textbf{4}
+\begin{enumerate}
+    \item[(a)] I'll use induction to show it (also, I'll add one more thing: $e\in U^n$ for all $n$). The proposition is following: $U^1= U$ and for $n\geq 2$ $U^n=\{g_1\cdots g_n:g_i\in U\} = \cup_{g\in U}gU^{n-1}$. If I show this, then by the previous problem, $U^n$ is a neighborhood of $U^{n-1}$ since $U^n$ is open and $eU^{n-1}=U^{n-1}\subset U^n$.
+    
+    For $n=2$, $U^2\subset \cup_{g\in U}gU^{1}$ since for any $g'\in U^2$, there exists $g_1,g_2\in U$ such that $g'=g_1g_2$ and $g_1g_2\in g_1U$. Conversely, by the definition of $U^2$, $U^2\supset \cup_{g\in U}gU^{n-1}$. By induction hypothesis, assume the equality holds for $n-1$ case, and I'll show that $U^n = \cup_{g\in U}gU^{n-1}$. For any $g'\in U^n$, there exists $g_1,\ldots, g_n\in U$ such that $g'=\prod_{i=1}^n g_i$, and we know $\prod_{i=2}^n g_i\in U^{n-1}$, so $g'\in g_1U^{n-1}$ and $U^{n}\subset \cup_{g\in U}gU^{n-1}$. Conversely, by the definition of $U^n$, $U^{n}\supset \cup_{g\in U}gU^{n-1}$ holds. It shows that $U^{n+1}$ is a neighborhood of $U^n$.
+    
+    \item[(b)] By (a), $\cup_n U^n$ is an open set. If I show that $\cup_{n} U^n$ is a subgroup of $G$, then by problem 3 (b) and connected property of $G$, it is $G$. For preciese notation, let's define
+    \begin{equation*}
+    U^n \coloneqq \{\prod_{i=1}^n g_i:g_i\in U\}.
+    \end{equation*}
+    For $a,b\in \cup_n U^n$, let's write $a = \prod_{i=1}^{n_1} g^a_i$ adn $b = \prod_{i=1}^{n_2}g^b_i$, then $a^{-1} = \prod_{i=n_1}^{1} (g^a_i)^{-1}$ and $a^{-1}b = \left(\prod_{i=n_1}^{1} (g^a_i)^{-1}\right)\left(\prod_{i=1}^{n_2}g^b_i\right)\in U^{n_1+n_2}$. Therefore, it is a subgroup of $G$.
+\end{enumerate}
+
+\bibliographystyle{unsrt}
+\bibliography{rep}
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

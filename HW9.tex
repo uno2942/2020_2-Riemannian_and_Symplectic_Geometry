@@ -1,0 +1,794 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, physics, cancel}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\ad}{ad}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\intprodl}{%
+    \mathbin{\scalebox{1.5}{$\lrcorner$}}%
+}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW9}
+\end{center}
+박성빈, 수학과
+
+Notation: 
+
+\noindent \textbf{1}
+Let's define $\Psi:\mathbb{U}\rightarrow \mathit{SU}(2)$ by
+\begin{equation*}
+    \Psi(a+ib+jc+kd) = \begin{pmatrix}
+        a + ib & -d+ic\\
+        d+ic & a-ib
+    \end{pmatrix}.
+\end{equation*}
+I'll show that this is a group isomorphism.
+
+Computing multiplication in $\mathbb{U}$, we get
+\begin{multline}\label{HW9:Eq1}
+    (a+ib+jc+kd)(x_1+ix_2+jx_3+kx_4) \\
+    =(ax_1-bx_2-cx_3-dx_4) + i(bx_1+ax_2+cx_4-dx_3)\\
+    +j(ax_3+cx_1+dx_2-bx_4)+k(ax_4+dx_1+bx_3-cx_2).
+\end{multline}
+In $\mathit{SU}(2)$,
+\begin{multline*}
+     \begin{pmatrix}
+    a+ib & -d+ic\\
+    d+ic & a-ib
+    \end{pmatrix}\begin{pmatrix}
+        x_1+ix_2 & -x_4+ix_3 \\
+        x_4+ix_3 & x_1-ix_2
+    \end{pmatrix} \\
+    = \begin{pmatrix}
+        (ax_1-bx_2-cx_3-dx_4)+i(bx_1+ax_2 + cx_4-dx_3) & -(ax_4+bx_3-cx_2+dx_1)+i(ax_3+cx_1+dx_2-bx_4)\\
+        (ax_4+bx_3-cx_2+dx_1)+i(ax_3+cx_1+dx_2-bx_4) & (ax_1-bx_2-cx_3-dx_4)-i(bx_1+ax_2 + cx_4-dx_3)
+    \end{pmatrix},
+\end{multline*}
+which shows that
+\begin{equation*}
+    \Psi((a+ib+jc+kd)(x_1+ix_2+jx_3+kx_4)) =  \begin{pmatrix}
+    a+ib & -d+ic\\
+    d+ic & a-ib
+    \end{pmatrix}\begin{pmatrix}
+        x_1+ix_2 & -x_4+ix_3 \\
+        x_4+ix_3 & x_1-ix_2
+    \end{pmatrix}.
+\end{equation*}
+
+If we write $w_1 = a+ib$, $w_2 = d+ic$, $v_1 = x_1+ix_2$, and $v_2 = x_4+ix_3$, then the above result can be rewritten by
+\begin{equation*}
+    \begin{pmatrix}
+        w_1 & -\overline{w_2}\\
+        w_2 & \overline{w_1}
+    \end{pmatrix}\begin{pmatrix}
+        v_1 & -\overline{v_2}\\
+        v_2 & \overline{v_1}
+    \end{pmatrix} = \begin{pmatrix}
+        w_1v_1-\overline{w_2}v_2 & -w_1\overline{v_2}-\overline{w_2v_1}\\
+        \overline{w_1}v_2+w_2v_1 & \overline{w_1v_1}-w_2\overline{v_2}
+    \end{pmatrix}
+\end{equation*}
+and
+\begin{equation*}
+    (w_1+kw_2)(v_1+kv_2) =w_1v_1+kw_2kv_2 + kw_2v_1+w_1kv_2 = w_1v_1 - \overline{w_2}v_2 + k(w_2v_1+\overline{w_1}v_2),
+\end{equation*}
+so
+\begin{equation*}
+    \Psi\left((w_1+kw_2)(v_1+kv_2)\right) = \begin{pmatrix}
+        w_1 & -\overline{w_2}\\
+        w_2 & \overline{w_1}
+    \end{pmatrix}\begin{pmatrix}
+        v_1 & -\overline{v_2}\\
+        v_2 & \overline{v_1}
+    \end{pmatrix}.
+\end{equation*}
+
+Since $\Psi$ has trivial kernel, is onto $\mathit{SU}(2)$, and is a group homomorphism, it is an group isomorphism. Since $\Psi$ is bi-$C^\infty$ consisting of polynomials, it is a Lie group isomorphism.\\
+
+\noindent \textbf{2}
+I'll directly compute $\Ad_U$ for $U=\begin{pmatrix}
+    w_1 & w_2\\
+    -\overline{w_2} & \overline{w_1}
+\end{pmatrix}\in \mathit{SU}(2)$ for each $E,F,G$.
+\begin{equation*}
+\begin{split}
+    \Ad_U(E) &= \frac{1}{2}\left.\dv{t}\right|_{t=0}\left(\begin{pmatrix}
+        w_1 & w_2 \\
+        -\overline{w_2} & \overline{w_1}
+    \end{pmatrix}
+    \begin{pmatrix}
+        e^{it} & 0\\
+        0 & e^{-it}
+    \end{pmatrix}
+    \begin{pmatrix}
+        \overline{w_1} & -w_2 \\
+        \overline{w_2} & w_1
+    \end{pmatrix}\right) \\
+    &=\frac{1}{2}\left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        e^{it}\abs{w_1}^2 + e^{-it}\abs{w_2}^2 & (-e^{it} + e^{-it})w_1w_2\\
+        (-e^{it}+e^{-it})\overline{w_1w_2} & e^{it}\abs{w_2}^2+e^{-it}\abs{w_1}^2
+    \end{pmatrix}\\
+    &=\frac{1}{2}\begin{pmatrix}
+        i\abs{w_1}^2-i\abs{w_2}^2 & -2iw_1w_2 \\
+        -2i\overline{w_1w_2} & i\abs{w_2}^2 - i \abs{w_1}^2
+    \end{pmatrix}\\
+    &=(\abs{w_1}^2-\abs{w_2}^2)E + 2\Im(w_1w_2)F - 2\Re(w_1w_2)G.
+\end{split}
+\end{equation*}
+
+\begin{equation*}
+\begin{split}
+    \Ad_U(F) &= -\frac{1}{2}\left.\dv{t}\right|_{t=0}\left(\begin{pmatrix}
+        w_1 & w_2 \\
+        -\overline{w_2} & \overline{w_1}
+    \end{pmatrix}
+    \begin{pmatrix}
+        0 & ie^{it}\\
+        ie^{-it} & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+        \overline{w_1} & -w_2 \\
+        \overline{w_2} & w_1
+    \end{pmatrix}\right) \\
+    &=-\frac{i}{2}\left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        e^{it}w_1\overline{w_2}+e^{-it}w_2\overline{w_1} & e^{it}w_1^2 - e^{-it}w_2^2\\
+        -e^{it}\overline{w_2}^2 + e^{-it}\overline{w_1}^2 & -e^{it}w_1\overline{w_2} - e^{-it}\overline{w_1}w_2
+    \end{pmatrix}\\
+    &=-\frac{1}{2}\begin{pmatrix}
+        -(w_1\overline{w_2} - \overline{w_1}w_2) & -(w_1^2+w_2^2) \\
+        (\overline{w_1}^2+\overline{w_2}^2) & w_1\overline{w_2} - \overline{w_1}w_2
+    \end{pmatrix}\\
+    &=2\Im(w_1\overline{w_2})E + \Re(w_1^2+w_2^2)F + \Im(w_1^2+w_2^2)G.
+\end{split}
+\end{equation*}
+
+\begin{equation*}
+\begin{split}
+    \Ad_U(G) &= \frac{1}{2}\left.\dv{t}\right|_{t=0}\left(\begin{pmatrix}
+        w_1 & w_2 \\
+        -\overline{w_2} & \overline{w_1}
+    \end{pmatrix}
+    \begin{pmatrix}
+        0 & e^{it}\\
+        -e^{-it} & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+        \overline{w_1} & -w_2 \\
+        \overline{w_2} & w_1
+    \end{pmatrix}\right) \\
+    &=\frac{1}{2}\left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        e^{it}w_1\overline{w_2}-e^{-it}w_2\overline{w_1} & e^{it}w_1^2 + e^{-it}w_2^2\\
+        -e^{it}\overline{w_2}^2 - e^{-it}\overline{w_1}^2 & -e^{it}w_1\overline{w_2} + e^{-it}\overline{w_1}w_2
+    \end{pmatrix}\\
+    &=\frac{1}{2}\begin{pmatrix}
+        i(w_1\overline{w_2} + \overline{w_1}w_2) & i(w_1^2-w_2^2) \\
+        -i(\overline{w_1}^2-\overline{w_2}^2) & -i(w_1\overline{w_2} + \overline{w_1}w_2)
+    \end{pmatrix}\\
+    &=2\Re(w_1\overline{w_2})E - \Im(w_1^2-w_2^2)F + \Re(w_1^2-w_2^2)G.
+\end{split}
+\end{equation*}
+
+Writing the above results in $\{E,F,G\}$ basis, we get a matrix
+\begin{equation}\label{HW9:Eq2}
+\Ad_U = \begin{pmatrix}
+    \abs{w_1}^2-\abs{w_2}^2 & 2\Im(w_1w_2) & - 2\Re(w_1w_2)\\
+    2\Im(w_1\overline{w_2}) & \Re(w_1^2+w_2^2) & \Im(w_1^2+w_2^2)\\
+    2\Re(w_1\overline{w_2}) & - \Im(w_1^2-w_2^2) & \Re(w_1^2-w_2^2)
+\end{pmatrix}
+\end{equation}
+I'll show that the above matrix is in $\mathit{SO}(3)$ in appendix. For $U=\begin{pmatrix}
+    w_1 & -\overline{w_2}\\
+    w_2 & \overline{w_1}
+\end{pmatrix}\in \mathit{SU}(2)$, we get
+\begin{equation*}
+\Ad_U = \begin{pmatrix}
+    \abs{w_1}^2-\abs{w_2}^2 & -2\Im(w_1\overline{w_2}) &  2\Re(w_1\overline{w_2})\\
+    -2\Im(w_1w_2) & \Re(w_1^2+\overline{w_2}^2) & \Im(w_1^2+\overline{w_2}^2)\\
+    -2\Re(w_1w_2) & - \Im(w_1^2-\overline{w_2}^2) & \Re(w_1^2-\overline{w_2}^2)
+\end{pmatrix}
+\end{equation*}
+
+To show that the $\Ad$ function is onto $\mathit{SO}(3)$, let's consider the following computations for $\theta\in [0,4\pi)$:
+\begin{equation*}
+\begin{split}
+    (\cos\theta/2, 0, -\sin\theta/2, 0)&\mapsto \Ad_{\begin{pmatrix}
+        \cos\theta/2 & - i\sin\theta/2 \\
+        - i\sin\theta/2 & + \cos\theta/2
+    \end{pmatrix}} = \begin{pmatrix}
+        \cos\theta & -\sin\theta & 0\\
+        \sin\theta & \cos\theta & 0\\
+        0 & 0 & 1
+    \end{pmatrix}\\
+    (\cos\theta/2, 0, 0, \sin\theta/2)&\mapsto \Ad_{\begin{pmatrix}
+        \cos\theta/2 & - \sin\theta/2 \\
+        \sin\theta/2 & \cos\theta/2
+    \end{pmatrix}} = \begin{pmatrix}
+        \cos\theta & 0 & \sin\theta\\
+        0 & 1 & 0\\
+        -\sin\theta & 0 & \cos\theta
+    \end{pmatrix}\\
+    (\cos\theta/2, -\sin\theta/2, 0, 0)&\mapsto \Ad_{\begin{pmatrix}
+        \exp(-i\theta/2) & 0 \\
+        0 & \exp(i\theta/2)
+    \end{pmatrix}} = \begin{pmatrix}
+        1 & 0 & 0\\
+        0 & \cos\theta & -\sin\theta\\
+        0 & \sin\theta & \cos\theta
+    \end{pmatrix}
+\end{split}
+\end{equation*}
+
+Therefore, for
+\begin{equation*}
+    q = \begin{pmatrix}
+        \cos\frac{\theta_1}{2} & -i\sin\frac{\theta_1}{2} \\
+        -i\sin\frac{\theta_1}{2} & \cos\frac{\theta_1}{2}
+    \end{pmatrix}\begin{pmatrix}
+        \cos\frac{\theta_2}{2} & -\sin\frac{\theta_2}{2} \\
+        \sin\frac{\theta_2}{2} & \cos\frac{\theta_2}{2}
+    \end{pmatrix}\begin{pmatrix}
+        \exp(-i\theta_3/2) & 0 \\
+        0 & \exp(i\theta_3/2)
+    \end{pmatrix}
+\end{equation*}
+which is in $\mathit{SU}(2)$, we get
+\begin{equation*}
+    \Ad_{q} = \begin{pmatrix}
+        \cos\theta_1 & -\sin\theta_1 & 0\\
+        \sin\theta_1 & \cos\theta_1 & 0\\
+        0 & 0 & 1
+    \end{pmatrix}\begin{pmatrix}
+        \cos\theta_2 & 0 & \sin\theta_2\\
+        0 & 1 & 0\\
+        -\sin\theta_2 & 0 & \cos\theta_2
+    \end{pmatrix}\begin{pmatrix}
+        1 & 0 & 0\\
+        0 & \cos\theta_3 & -\sin\theta_3\\
+        0 & \sin\theta_3 & \cos\theta_3
+    \end{pmatrix}
+\end{equation*}
+and surjective as any element in $\mathit{SO}(3)$ can be represented by Tait–Bryan angles. Computing the kernel, we get
+\begin{equation*}
+    \ker \Ad = \{I, -I\}.
+\end{equation*}
+
+It shows that $\Ad$ induces a smooth group homomorphism from $\mathit{SU}(2)$ to $\mathit{SO}(3)$ with index $2$, which is double covering map.\\
+
+\noindent \textbf{3}
+I'll first compute the tangent vectors at $(1,0,0,0)$ on $\mathbb{U}$.
+\begin{equation*}
+\begin{split}
+    \left.\dv{t}\right|_{t=0}(\cos t + i\sin t) &= i\\
+    \left.\dv{t}\right|_{t=0}(\cos t + j\sin t) &= j\\
+    \left.\dv{t}\right|_{t=0}(\cos t + k\sin t) &= k,
+\end{split}
+\end{equation*}
+so $\{ix_2+jx_3+kx_4:x_i\in\mathbb{R}\}\subset \mathrm{Lie}\mathbb{U}$. Since $\mathbb{U}$ is $3$-dim manifold, $\mathrm{Lie}\mathbb{U}$ is a $3$-dim $\mathbb{R}$ vector space, and $i,j,k$ are linearly independent vectors in $\mathrm{Lie}\mathbb{U}$, so 
+\begin{equation*}
+    \{ix_2+jx_3+kx_4:x_i\in\mathbb{R}\} = \mathrm{Lie}\mathbb{U}.
+\end{equation*}
+
+Let's check the commutator relation: 
+Using the computation \eqref{HW9:Eq1}, we get
+\begin{equation*}
+\begin{split}
+    \left(L_{(a,b,c,d)}\right)_*(i) &= -b+ia+jd-kc\\
+    \left(L_{(a,b,c,d)}\right)_*(j) &= -c-id+ja+kb\\
+    \left(L_{(a,b,c,d)}\right)_*(k) &= -d+ic-jb+ka
+\end{split}
+\end{equation*}
+for $(a,b,c,d)\in \mathbb{U}$. For computation, I'll consider the embedding of $\mathbb{U}$ into $\mathbb{R}^4$ and write the derivative along $i$th coordinate $\pdv{x^i}$. In this setting, $i\mapsto \pdv{x^2}$, $j\mapsto \pdv{x^3}$, and $k\mapsto \pdv{x^4}$. For $e=(1,0,0,0)$,
+\begin{multline*}
+    [i,j]:\left[-x^2\pdv{x^1}+x^1\pdv{x^2}+x^4\pdv{x^3}-x^3\pdv{x^4}, -x^3\pdv{x^1}-x^4\pdv{x^2}+x^1\pdv{x^3}+x^2\pdv{x^4}\right](e) \\
+    = \left(-x^2\pdv{x^3}+x^1\pdv{x^4}+x^4\pdv{x^1}+x^3\pdv{x^2} -\left(x^3\pdv{x^2}+x^4\pdv{x^1}-x^1\pdv{x^4}-x^2\pdv{x^3}\right)\right)(e) \\
+    =2\left.\pdv{x^4}\right|_e,
+\end{multline*}
+\begin{multline*}
+    [j,k]:\left[-x^3\pdv{x^1}-x^4\pdv{x^2}+x^1\pdv{x^3}+x^2\pdv{x^4}, -x^4\pdv{x^1}+x^3\pdv{x^2}-x^2\pdv{x^3}+x^1\pdv{x^4}\right](e) \\
+    = \left(-x^2\pdv{x^3}+x^1\pdv{x^4}+x^4\pdv{x^1}+x^3\pdv{x^2} -\left(x^3\pdv{x^2}+x^4\pdv{x^1}-x^1\pdv{x^4}-x^2\pdv{x^3}\right)\right)(e) \\
+    =2\left.\pdv{x^2}\right|_e,
+\end{multline*}
+and
+\begin{multline*}
+    [k,i]:\left[-x^4\pdv{x^1}+x^3\pdv{x^2}-x^2\pdv{x^3}+x^1\pdv{x^4}, -x^2\pdv{x^1}+x^1\pdv{x^2}+x^4\pdv{x^3}-x^3\pdv{x^4}\right](e) \\
+    = \left(-x^2\pdv{x^3}+x^1\pdv{x^4}+x^4\pdv{x^1}+x^3\pdv{x^2} -\left(x^3\pdv{x^2}+x^4\pdv{x^1}-x^1\pdv{x^4}-x^2\pdv{x^3}\right)\right)(e) \\
+    =2\left.\pdv{x^3}\right|_e.
+\end{multline*}
+
+Therefore, 
+\begin{equation*}
+\begin{split}
+    [i,j]&=2k=ij-ji\\
+    [j,k]&=2i=jk-kj\\
+    [k,i]&=2j=ki-ik
+\end{split}
+\end{equation*}
+in $\mathrm{Lie}\mathbb{U}$.
+
+Finally, we get
+\begin{equation*}
+\begin{split}
+    d\Psi(i) &= \left.\dv{t}\right|_{t=0}\Psi(\cos t+i\sin t)= \left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        \exp(it) & 0 \\
+        0 & \exp(-it)
+    \end{pmatrix} = \begin{pmatrix}
+        i & 0 \\
+        0 & -i
+    \end{pmatrix}=2E\\
+    d\Psi(j) &= \left.\dv{t}\right|_{t=0}\Psi(\cos t+j\sin t)= \left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        \cos t & i\sin t \\
+        i\sin t & \cos t
+    \end{pmatrix} = \begin{pmatrix}
+        0 & i \\
+        i & 0
+    \end{pmatrix}=2G\\
+    d\Psi(k) &= \left.\dv{t}\right|_{t=0}\Psi(\cos t+k\sin t)= \left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        \cos t & -\sin t \\
+        \sin t & \cos t
+    \end{pmatrix} = \begin{pmatrix}
+        0 & -1 \\
+        1 & 0
+    \end{pmatrix}=-2F,
+\end{split}
+\end{equation*}
+and $d\Psi$ preserves the commutator relation by the above computation. Therefore, it is a Lie-algebra isomorphism.\\
+
+\noindent \textbf{4}
+\begin{enumerate}
+    \item[(a)]Computing $g$ in basis $\{E,F,G\}$,
+\begin{equation*}
+\begin{split}
+    g(E,E) &= \tr\left(E^t E\right) = 2\\
+    g(E,F) &= \tr\left(E^t F\right) = 0\\
+    g(E,G) &= \tr\left(E^t G\right) = 0\\
+    g(F,F) &= \tr\left(F^t F\right) = 2\\
+    g(F,G) &= \tr\left(F^t G\right) = 0\\
+    g(G,G) &= \tr\left(G^t G\right) = 2.
+\end{split}
+\end{equation*}
+Since $g$ is non-degenerate two symmetric form, we can write a induced isomorphism $\tilde{g}:\mathrm{so}(3)^*\rightarrow \mathrm{so}(3)$, which is defined by $\tilde{g}(\mu) = \xi\in\mathrm{so}(3)$ for $\mu\in\mathrm{so}(3)^*$ satisfying $g(\xi, \cdot) = \mu(\cdot)$. In matrix form under basis $\{E^*, F^*, G^*\}$ for $\mathrm{so}(3)^*$ and $\{E,F,G\}$ for $\mathrm{so}(3)$, we can write
+\begin{equation*}
+    \tilde{g}=\begin{pmatrix}
+        1/2 & 0 & 0\\
+        0 & 1/2 & 0\\
+        0 & 0 & 1/2
+    \end{pmatrix},
+\end{equation*}
+i.e. for $\mu = \alpha E^*+\beta F^*+\gamma G^*\in \mathit{so}(3)^*$, 
+\begin{equation*}
+    \tilde{g}(\mu) = \frac{1}{2}(\alpha E + \beta F + \gamma G).
+\end{equation*}
+
+\item[(b)] For $A=\begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}\in \mathit{SO}(3)$,
+    
+$\Ad_A(E)$:
+\begin{equation*}
+\begin{split}
+    \left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}
+    \begin{pmatrix}
+        \cos t & \sin t & 0\\
+        -\sin t & \cos t & 0\\
+        0 & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+        a & d & g\\
+        b & e & h\\
+        c & f & i
+    \end{pmatrix}&=\begin{pmatrix}
+        0 & ae-bd & ah-bg\\
+        -ae+bd & 0 & dh-eg\\
+        -ah+bg & -dh+eg & 0
+    \end{pmatrix}\\
+    &=(ae-bd)E+(-ah+bg)F+(dh-eg)G.
+\end{split}
+\end{equation*}
+
+$\Ad_A(F)$:
+\begin{equation*}
+\begin{split}
+    \left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}
+    \begin{pmatrix}
+        \cos t & 0 & -\sin t\\
+        0 & 1 & 0\\
+        \sin t & 0 & \cos t
+    \end{pmatrix}
+    \begin{pmatrix}
+        a & d & g\\
+        b & e & h\\
+        c & f & i
+    \end{pmatrix}&=\begin{pmatrix}
+        0 & -af+cd & -ai+cg\\
+        af-cd & 0 & fg-id\\
+        ai-cg & id-fg & 0
+    \end{pmatrix}\\
+    &=(-af+cd)E+(ai-cg)F+(fg-id)G.
+\end{split}
+\end{equation*}
+
+$\Ad_A(G)$:
+\begin{equation*}
+\begin{split}
+    \left.\dv{t}\right|_{t=0}\begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & 0 & 0\\
+        0 & \cos t & \sin t\\
+        0 & -\sin t & \cos t
+    \end{pmatrix}
+    \begin{pmatrix}
+        a & d & g\\
+        b & e & h\\
+        c & f & i
+    \end{pmatrix}&=\begin{pmatrix}
+        0 & bf-ce & bi-ch\\
+        -bf+ce & 0 & ei-hf\\
+        -bi+ch & -ei+hf & 0
+    \end{pmatrix}\\
+    &=(bf-ce)E+(-bi+ch)F+(ei-hf)G.
+\end{split}
+\end{equation*}
+
+Computing the inverse of the matrix using minors,
+\begin{equation*}
+    \begin{pmatrix}
+        a & d & g\\
+        b & e & h\\
+        c & f & i
+    \end{pmatrix}=\begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}^{-1}=\begin{pmatrix}
+        ei-hf & -bi+ch & bf-ce\\
+        -di+gf & ai-cg & -af+cd\\
+        dh-eg & -ah+bg & ae-bd
+    \end{pmatrix}
+\end{equation*}
+since $\det A = 1$. Therefore, we get
+\begin{equation*}
+\begin{split}
+    \Ad_A E &= iE+fF + cG\\
+    \Ad_A F &= hE+eF + bG\\
+    \Ad_A G &= gE+dF + aG.
+\end{split}
+\end{equation*}
+Using the definition of $\Ad^*$, we get
+\begin{equation*}
+\begin{split}
+    \Ad_{A^{-1}}^* E^* &= iE^*+hF^* + gG^*\\
+    \Ad_{A^{-1}}^* F^* &= fE^*+eF^* + dG^*\\
+    \Ad_{A^{-1}}^* G^* &= cE^*+bF^* + aG^*.
+\end{split}
+\end{equation*}
+Therefore,
+\begin{equation*}
+    \Ad_{A} = \begin{pmatrix}
+        i & h & g\\
+        f & e & d\\
+        c & b & a
+    \end{pmatrix},
+\end{equation*}
+and
+\begin{equation*}
+    \Ad_{A}^* = \begin{pmatrix}
+        i & h & g\\
+        f & e & d\\
+        c & b & a
+    \end{pmatrix}
+\end{equation*}
+in basis $\{E,F,G\}$ and $\{E^*, F^*, G^*\}$. 
+
+For $\mu = \alpha E^*+\beta F^*+\gamma G^*$,
+\begin{equation*}
+\begin{split}
+    \tilde{g}\left(\Ad^*_A\mu\right) &= \tilde{g}\left((i\alpha+h\beta+g\gamma)E^*+(f\alpha+e\beta+d\gamma)F^*+(c\alpha+b\beta+a\gamma)G^*\right)\\
+    &=\frac{1}{2}\left((i\alpha+h\beta+g\gamma)E+(f\alpha+e\beta+d\gamma)F+(c\alpha+b\beta+a\gamma)G\right)\\
+    &=\Ad_A\left(\frac{1}{2}\left(\alpha E+\beta F+\gamma G\right)\right)\\
+    &=\Ad_A(\tilde{g}(\mu))
+\end{split}
+\end{equation*}
+Therefore, for $\mathcal{O}_\mu = \{\Ad_g^*(\mu):g\in \mathit{SO}(3)\}\subset \mathit{so}(3)^*$ and $\mathcal{O}^{\xi}=\{\Ad_g(\xi):g\in \mathit{SO}(3)\}\subset \mathit{so}(3)$, if I write $\xi_0 = \tilde{g}(\mu)$, $\tilde{g}$ maps $\mathcal{O}_\mu$ to $\mathcal{O}^{\xi_0}$. Furthermore, this computation shows that for any $\xi\in \mathrm{so}(3)$,
+\begin{equation*}
+\begin{split}
+    d\tilde{g}\left(\ad_\xi^*\mu\right) &=\left.\dv{t}\right|_{t=0}\tilde{g}\left(\Ad_{\exp(t\xi)}^*\mu\right)\\
+    &=\left.\dv{t}\right|_{t=0}\left(\Ad_{\exp(t\xi)}(\tilde{g}(\mu))\right)\\
+    &=\ad_{\xi}(\tilde{g}(\mu))
+\end{split}
+\end{equation*}
+
+Now, give a sympletic form on $\mathcal{O}_\mu$ as in the class: for $v\in \mathcal{O}_\mu$ and $\eta_1,\eta_2\in \mathrm{so}(3)$, set 
+\begin{equation*}
+    \omega_\mu (\ad^*_{\eta_1}(v), \ad^*_{\eta_2}(v)) = \langle v, [\eta_1, \eta_2]\rangle.
+\end{equation*}
+
+Let $\xi_0 = \tilde{g}(\mu)$. Let's define the induced sympletic form $\omega^{\xi_0} = \tilde{g}_*\omega_\mu$ on $\mathcal{O}^{\xi_0}$. For $w\in \mathcal{O}^{\xi_0}$ and tangent vectors $\ad_{\eta_i}(w)\in T_w\mathcal{O}^{\xi_0}$,
+\begin{equation*}
+\begin{split}
+    \omega^{\xi_0}(\ad_{\eta_1}(w), \ad_{\eta_2}(w)) &= \tilde{g}_*\omega_\mu (\ad_{\eta_1}(w), \ad_{\eta_2}(w)) \\
+    &= \omega_\mu (d\tilde{g}^{-1}\left(\ad_{\eta_1}(w)\right), d\tilde{g}^{-1}\left(\ad_{\eta_2}(w)\right))\\
+    &=\omega_\mu (\ad_{\eta_1}(\tilde{g}^{-1}(w)), \ad_{\eta_2}(\tilde{g}^{-1}(w)))\\
+    &=\langle \tilde{g}^{-1}(w), [\eta_1, \eta_2]\rangle
+\end{split}
+\end{equation*}
+By the definition of $\tilde{g}$, $\langle \tilde{g}^{-1}(w), [\eta_1, \eta_2]\rangle = \tr\left(w^t[\eta_1, \eta_2]\right)$, so
+\begin{equation*}
+    \omega^{\xi_0}(\ad_{\eta_1}(w), \ad_{\eta_2}(w))=\tr\left(w^t[\eta_1, \eta_2]\right).
+\end{equation*}
+
+\item[(c)] For $\mu = \alpha E^*+\beta F^*+\gamma G^*$ and $A=\begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}\in \mathit{SO}(3)$,
+\begin{equation*}
+    \Ad^*_{A} \mu= (i\alpha+h\beta+g\gamma)E^*+(f\alpha+e\beta+d\gamma)F^*+(c\alpha+b\beta+a\gamma)G^*
+\end{equation*}
+
+Let $r = \sqrt{\alpha^2+\beta^2+\gamma^2}$ and define $\varphi:\mathcal{O}_\mu\rightarrow S^2(r)$ by the above equation, i.e.
+\begin{equation*}
+    \varphi(\Ad_A^*\mu) = \begin{pmatrix}
+        i & h & g\\
+        f & e & d\\
+        c & b & a
+    \end{pmatrix}\begin{pmatrix}
+        \alpha\\ \beta\\ \gamma
+    \end{pmatrix}.
+\end{equation*}
+Let's write $\xi_0 = \begin{pmatrix}
+    \alpha\\ \beta\\ \gamma
+\end{pmatrix}$ in $\mathbb{R}^3$. As we have seen, $\varphi$ is well-defined function, and its image is in $S^2(r)$ since
+\begin{equation*}
+    \begin{pmatrix}
+        i & h & g\\
+        f & e & d\\
+        c & b & a
+    \end{pmatrix} = \begin{pmatrix}
+        0 & 0 & 1\\
+        0 & 1 & 0\\
+        1 & 0 & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+        a & b & c\\
+        d & e & f\\
+        g & h & i
+    \end{pmatrix}
+    \begin{pmatrix}
+        0 & 0 & 1\\
+        0 & 1 & 0\\
+        1 & 0 & 0
+    \end{pmatrix},
+\end{equation*}
+so $\norm{\varphi(A)} = r$ in Euclidean norm. Also, $\mathit{SO}(3)$ can be viewed as the set of basis change matrix, so for any $\xi\in S^2(r)$, there exists $B\in \mathit{SO}(3)$ such that $\xi = B\xi_0$. By setting 
+\begin{equation*}
+    A = \begin{pmatrix}
+        0 & 0 & 1\\
+        0 & 1 & 0\\
+        1 & 0 & 0
+    \end{pmatrix}
+    B
+    \begin{pmatrix}
+        0 & 0 & 1\\
+        0 & 1 & 0\\
+        1 & 0 & 0
+    \end{pmatrix},
+\end{equation*}
+we get $\varphi(\Ad_A^*\mu) = B\xi_0 = \xi$. Therefore, $\varphi(A)$ is surjective onto $S^2(r)$. It is obviously injective since it is defined by the coefficient of $E^*, F^*, G^*$ in $\Ad_A^*\mu$. Finally, by identifying $\mathrm{so}(3)^*$ as $\mathbb{R}^3$ by mapping $\{E^*, F^*, G^*\}$ to $i$th coordinate, we get a diffeomorphism since it is just sending coefficient of $E^*,F^*,G^*$ to $\mathbb{R}^3$.
+\end{enumerate}
+\newpage
+Appendix: I'll check that \eqref{HW9:Eq2} is in $\mathit{SO}(3)$. In this computation, I'll set $w_1 = a+ib$ and $w_2=c+id$. Just computing the inner-product of each columns, we get
+
+\begin{equation*}
+\begin{split}
+    (\abs{w_1}^2-\abs{w_2}^2)^2 + 4\Im(w_1\overline{w_2})^2  + 4\Re(w_1\overline{w_2})^2 &=\left((a^2+b^2)-(c^2+d^2)\right)^2 + 4((bc-ad)^2+(ac+bd)^2)\\ &=\left((a^2+b^2)-(c^2+d^2)\right)^2 + 4(a^2+b^2)(c^2+d^2)\\
+    &=(a^2+b^2+c^2+d^2)^2 = 1
+\end{split}
+\end{equation*}
+
+\begin{equation*}
+\begin{split}
+    4\Im(w_1\overline{w_2})^2 + \Re(w_1^2+w_2^2)^2 + \Im(w_1^2+w_2^2)^2 &= 4(-ad+bc)^2+(a^2-b^2+c^2-d^2)^2 + 4(ab+cd)^2 \\
+    &=(a^2+b^2+c^2+d^2)^2 = 1
+\end{split}
+\end{equation*}
+
+\begin{equation*}
+\begin{split}
+    4\Re(w_1\overline{w_2})^2 + \Im(w_1^2-w_2^2)^2 + \Re(w_1^2-w_2^2)^2 &= 4(ac+bd)^2 + 4(ab-cd)^2 + (a^2-b^2-c^2+d^2)^2 \\
+    &=(a^2+b^2+c^2+d^2)^2 = 1
+\end{split}
+\end{equation*}
+
+\begin{equation*}
+\begin{split}
+    -2(\abs{w_1}^2-\abs{w_2}^2)&\Im(w_1\overline{w_2})-2\Im(w_1w_2)\Re(w_1^2+w_2^2) + 2\Re(w_1w_2)\Im(w_1^2+w_2^2)\\
+    &=-2(a^2+b^2-c^2-d^2)(-ad+bc) - 2(ad+bc)(a^2-b^2+c^2-d^2) + 4(ac-bd)(ab+cd)\\
+    &=4ad(b^2-c^2)-4bc(a^2-d^2) + 4(ac-bd)(ab+cd) = 0
+\end{split}
+\end{equation*}
+
+\begin{equation*}
+\begin{split}
+    2(\abs{w_1}^2-\abs{w_2}^2)&\Re(w_1\overline{w_2})-2\Im(w_1w_2)\Im(w_1^2-w_2^2) - 2\Re(w_1w_2)\Re(w_1^2-w_2^2)\\
+    &=2(a^2+b^2-c^2-d^2)(ac+bd) - 4(ad+bc)(ab-cd) - 2(ac-bd)(a^2-b^2-c^2+d^2)\\
+    &=4ac(b^2-d^2)+4bd(a^2-c^2) - 4(ad+bc)(ab-cd) = 0
+\end{split}
+\end{equation*}
+
+
+\begin{equation*}
+\begin{split}
+    -4\Im(w_1\overline{w_2})&\Re(w_1\overline{w_2})+\Re(w_1^2+w_2^2)\Im(w_1^2-w_2^2) - \Im(w_1^2+w_2^2)\Re(w_1^2-w_2^2)\\
+    &=-4(-ad+bc)(ac+bd) + 2(a^2-b^2+c^2-d^2)(ab-cd) - 2(ab+cd)(a^2-b^2-c^2+d^2)\\
+    &=4ab(c^2-d^2)-4cd(a^2-b^2) +4(ad-bc)(ac+bd) = 0.
+\end{split}
+\end{equation*}
+
+Therefore, it is in $O(3)$. To show that it is in $O(3)$, I'll show that the cross product of the first two columns is same as third column. Since
+\begin{equation*}
+\begin{split}
+    \Im(w_1\overline{w_2})\Im(w_1^2-w_2^2) &+\Re(w_1\overline{w_2})\Re(w_1^2+w_2^2) \\
+    &=2(-ad+bc)(ab-cd)+(ac+bd)(a^2-b^2+c^2-d^2)\\
+    &= a^3 c + a c^3 - b^3 d - b d^3\\
+    &=(ac-bd)(a^2+b^2+c^2+d^2)\\
+    &=\Re(w_1w_2),
+\end{split}
+\end{equation*}
+\begin{equation*}
+\begin{split}
+    (\abs{w_1}^2-\abs{w_2}^2)\Im(w_1^2-w_2^2)&+ 4\Re(w_1\overline{w_2})\Im(w_1w_2) \\
+    &=2(a^2+b^2-c^2-d^2)(ab-cd) + 4(ac+bd)(ad+bc)\\
+    &=2(ab+cd)(a^2+b^2+c^2+d^2)\\
+    &=\Im(w_1^2+w_2^2),
+\end{split}
+\end{equation*}
+and
+\begin{equation*}
+\begin{split}
+    (\abs{w_1}^2-\abs{w_2}^2)\Re(w_1^2+w_2^2)& - 4\Im(w_1\overline{w_2})\Im(w_1w_2) \\
+    &=2(a^2+b^2-c^2-d^2)(a^2-b^2+c^2-d^2) - 4(bc-ad)(bc+ad)\\
+    &=(a^2-b^2-c^2+d^2)(a^2+b^2+c^2+d^2)\\
+    &=\Re(w_1^2-\overline{w_2}^2),
+\end{split}
+\end{equation*}
+we compute
+\begin{equation*}
+\begin{split}
+    &\left(\abs{w_1}^2-\abs{w_2}^2, 2\Im(w_1\overline{w_2}), 2\Re(w_1\overline{w_2})\right)\times \left(2\Im(w_1w_2), \Re(w_1^2+w_2^2), -\Im(w_1^2-w_2^2)\right)\\
+    &=\left(-2\Re(w_1w_2), \Im(w_1^2+w_2^2), \Re(w_1^2-w_2^2)\right),
+\end{split}
+\end{equation*}
+which is third column. Therefore, it is in $\mathit{SO}(3)$.
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

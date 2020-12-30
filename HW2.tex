@@ -1,0 +1,431 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, mathrsfs, physics}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node, auto-pst-pdf}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW2}
+\end{center}
+박성빈, 수학과
+
+Notation: In this homework, I'll use Einstein notation.
+
+\noindent \textbf{1}
+(a) Let $\phi:M\rightarrow \mathbb{R}^3$ be the immersion. Choose $p\in M$ and choose a local chart $\{U, t\}$. Let $t^1$, $t^2$ be a local coordinate associated with $t$. Let's denote $$d\phi(p)\left(\left.\pdv{t^1}\right|_{\phi(p)}\right) = \sum_{i=1}^3 \left.\pdv{\phi^i}{t^1}\right|_{p}\left(\left.\pdv{x^i}\right|_{\phi(p)}\right)$$ and $$d\phi(p)\left(\left.\pdv{t^2}\right|_{\phi(p)}\right) = \sum_{i=1}^3 \left.\pdv{\phi^i}{t^2}\right|_{p}\left.\pdv{x^i}\right|_{\phi(p)}.$$
+
+Let's write $$V(t) = \alpha(t)\left.\pdv{t_1}\right|_{\gamma(t)} + \beta(t)\left.\pdv{t_2}\right|_{\gamma(t)}$$ which is a smooth vector field on $\gamma^*TM$.
+
+Since $$d\gamma(t_0)\left(\left.\pdv{t}\right|_{t_0}\right) = \left.\dv{\gamma^1}{t}\right|_{t_0}\left.\pdv{t^1}\right|_{\gamma(t_0)} + \left.\dv{\gamma^2}{t}\right|_{t_0}\left.\pdv{t^2}\right|_{\gamma(t_0)},$$
+
+we get $$d(\phi\circ \gamma(t_0))\left(\left.\pdv{t}\right|_{t_0}\right) = \left.\dv{\gamma^j}{t}\right|_{t_0}
+\left.\pdv{\phi^i}{t^j}\right|_{\gamma(t_0)}\left.\pdv{x^i}\right|_{\varphi\circ\gamma(t_0)},$$
+
+which is also smooth vector field on $(\phi\circ \gamma)^*TM$.
+
+From now on, I'll show that $\left(\dv{V}{t}-\frac{DV}{dt}\right)(t_0)$, such that $\gamma(t_0) = p$ and identified with a vector in $\mathbb{R}^3$, is perpendicular to $T_{\gamma(t_0)}M$ by showing that
+\begin{equation*}
+    \left\langle \left.\dv{\left(d\phi(\gamma(t))\left(V(t)\right)\right)}{t}\right|_{t_0}- \left.d\phi\right|_{\gamma(t_0)}\left(\left.\frac{DV}{dt}\right|_{t_0}\right),  \left.d\phi\right|_{\gamma(t_0)}\left(\left.\pdv{t^i}\right|_{\gamma(t_0)}\right)\right\rangle = 0
+\end{equation*}
+
+for all $i$. (To distinguish the inner product in $\mathbb{R}^3$ and $M$, I'll write the inner product in $M$ by $\langle\cdot,\cdot\rangle_M$.) It ends the proof; since $\frac{DV}{dt}(t_0)\in T_{\gamma(t_0)}M$, $\dv{V}{t}(t)$ is perpendicular to $T_{\gamma(t)}M$ if and only if $\frac{DV}{dt}(t) = 0$.
+
+Before start the proof, I'll first show the proposition:
+\begin{proposition}
+In the setting in the problem, we get
+\begin{equation*}
+    \left\langle \left(\nabla_{\pdv{t^j}}\pdv{t^i}\right), \pdv{t^k}\right\rangle_M(\gamma(t_0))=\sum_{s=1}^3\left.\frac{\partial^2\phi^s}{\partial t^i\partial t^j}\right|_{\gamma(t_0)}\left.\frac{\partial\phi^s}{\partial t^k}\right|_{\gamma(t_0)}.
+\end{equation*}
+for $i=1,2$.
+\end{proposition}
+\begin{proof}
+WLOG, I'll compute for the case $i=1$. (If $i=2$, exchange the index $1$ and $2$.) Using Koszul formula,
+\begin{equation*}
+    \left\langle \left(\nabla_{\pdv{t^j}}\pdv{t^1}\right), \pdv{t^k}\right\rangle_M==
+    \begin{cases}
+    \frac{1}{2}\pdv{t^1}\left\langle\pdv{t^1}, \pdv{t^1}\right\rangle_M & (j,k)=(1,1) \\
+    \pdv{t^1}\left\langle\pdv{t^1}, \pdv{t^2}\right\rangle_M - \frac{1}{2}\pdv{t^2}\left\langle\pdv{t^1}, \pdv{t^1}\right\rangle_M & (j,k) = (1,2)\\
+    \frac{1}{2}\pdv{t^2}\left\langle\pdv{t^1}, \pdv{t^1}\right\rangle_M & (j,k) = (2,1)\\
+    \frac{1}{2}\pdv{t^1}\left\langle\pdv{t^2}, \pdv{t^2}\right\rangle_M & (j,k) = (2,2).
+    \end{cases}
+\end{equation*}
+
+By computing the inner product and derivative,
+\begin{equation*}
+\begin{split}
+    \left\langle \left(\nabla_{\pdv{t^j}}\pdv{t^1}\right), \pdv{t^k}\right\rangle_M&=
+    \begin{cases}
+    \frac{\partial^2\phi^i}{\partial t^1\partial t^1}\frac{\partial\phi^i}{\partial t^1} & (j,k)=(1,1) \\
+    \frac{\partial^2\phi^i}{\partial t^1\partial t^1}\frac{\partial\phi^i}{\partial t^2} & (j,k) = (1,2)\\
+    \frac{\partial^2\phi^i}{\partial t^1\partial t^2}\frac{\partial\phi^i}{\partial t^1} & (j,k) = (2,1)\\
+    \frac{\partial^2\phi^i}{\partial t^1\partial t^2}\frac{\partial\phi^i}{\partial t^2} & (j,k)=(2,2).
+    \end{cases}\\
+    &= \sum_{i=1}^3 \frac{\partial^2\phi^i}{\partial t^1\partial t^j}\frac{\partial\phi^i}{\partial t^k}
+\end{split}
+\end{equation*}
+
+\end{proof}
+
+$\dv{V}{t}$ can be rewritten as follows in $\mathbb{R}^3$:
+\begin{equation*}
+\begin{split}
+    \left.\dv{\left(d\phi(\gamma(t))\left(V(t)\right)\right)}{t}\right|_{t_0} &= \left.\dv{\alpha}{t}\right|_{t_0}d\phi|_{\gamma(t_0)}\left(\left.\pdv{t^1}\right|_{\gamma(t_0)}\right) + \alpha(\gamma(t_0)) \left.\dv{t}\pdv{\phi^i}{t^1}(\gamma(t))\right|_{t_0}\left.\pdv{x^i}\right|_{\phi(\gamma(t_0))}\\
+    &\phantom{=}+\left.\dv{\beta}{t}\right|_{t_0}d\phi|_{\gamma(t_0)}\left(\left.\pdv{t^2}\right|_{\gamma(t_0)}\right) + \beta(\gamma(t_0)) \left.\dv{t}\pdv{\phi^i}{t^2}(\gamma(t))\right|_{t_0}\left.\pdv{x^i}\right|_{\phi(\gamma(t_0))}\\
+    &=\left.\dv{\alpha}{t}\right|_{t_0}d\phi|_{\gamma(t_0)}\left(\left.\pdv{t^1}\right|_{\gamma(t_0)}\right) + \alpha(\gamma(t_0)) \left.\frac{\partial^2\phi^i}{\partial t^1 \partial t^j}\right|_{\gamma(t_0)}\left.\dv{\gamma^j}{t}\right|_{t_0}\left.\pdv{x^i}\right|_{\phi(\gamma(t_0))}\\
+    &\phantom{=}+\left.\dv{\beta}{t}\right|_{t_0}d\phi|_{\gamma(t_0)}\left(\left.\pdv{t^2}\right|_{\gamma(t_0)}\right) + \beta(\gamma(t_0)) \left.\frac{\partial^2\phi^i}{\partial t^2 \partial t^j}\right|_{\gamma(t_0)}\left.\dv{\gamma^j}{t}\right|_{t_0}\left.\pdv{x^i}\right|_{\phi(\gamma(t_0))}
+\end{split}
+\end{equation*}
+
+$\frac{DV}{dt}$ can be rewritten as follows in $\mathbb{R}^3$:
+\begin{equation*}
+\begin{split}
+    \left.d\phi\right|_{\gamma(t_0)}\left(\left.\frac{DV}{dt}\right|_{t_0}\right) &= d\phi|_{\gamma(t_0)}\left(\nabla^\gamma_{\pdv{t}}  \left(\alpha(t)\pdv{t_1}\right) + \nabla^\gamma_{\pdv{t}}\left(\beta(t)\pdv{t_2}\right)\right)(t_0)\\
+    &=\left.\dv{\alpha}{t}\right|_{t_0}d\phi(\gamma(t_0))\left(\left.\pdv{t^1}\right|_{\gamma(t_0)}\right) + \left.\dv{\beta}{t}\right|_{t_0}d\phi(\gamma(t_0))\left(\left.\pdv{t^2}\right|_{\gamma(t_0)}\right)\\
+    &\phantom{=}+\alpha(t_0)d\phi|_{\gamma(t_0)}\nabla_{\dv{\gamma}{t}}\left(\left.\pdv{t^1}\right|_{\gamma(t)}\right)(t_0)+\beta(t_0)d\phi|_{\gamma(t_0)}\nabla_{\dv{\gamma}{t}}\left(\left.\pdv{t^2}\right|_{\gamma(t)}\right)(t_0)\\
+    &=\ldots + \alpha(t_0) \left.\dv{\gamma^j}{t}\right|_{t_0}\left.d\phi\right|_{\gamma(t_0)} \left( \left(\nabla_{\pdv{t^j}}\pdv{t^1}\right)(t_0)\right) + \beta(t_0) \left.\dv{\gamma^j}{t}\right|_{t_0}\left.d\phi\right|_{\gamma(t_0)} \left( \left(\nabla_{\pdv{t^j}}\pdv{t^2}\right)(t_0)\right)
+\end{split}
+\end{equation*}
+
+Note that $\frac{\partial V}{\partial t} (t_0)$ and $\frac{DV}{dt}(t_0)$ have the same terms which is multiplied with $\left.\dv{\alpha}{t}\right|_{t_0}$ or $\left.\dv{\beta}{t}\right|_{t_0}$, so there is no such term in $\dv{V}{t}-\frac{DV}{dt}$. Also, WLOG, I'll assume $\beta = 0$ and only consider the terms multiplied with $\alpha$ in $\dv{V}{t}-\frac{DV}{dt}$. (For $\beta$ term, the proof works same way.) Now, I need to show that
+\begin{equation*}
+    \alpha(\gamma(t_0))\left.\dv{\gamma^j}{t}\right|_{t_0} \left\langle \left.\frac{\partial^2\phi^i}{\partial t^1 \partial t^j}\right|_{\gamma(t_0)}\left.\pdv{x^i}\right|_{\phi(\gamma(t_0))} - \left.d\phi\right|_{\gamma(t_0)} \left( \left(\nabla_{\pdv{t^j}}\pdv{t^1}\right)(t_0)\right), \left.d\phi\right|_{\gamma(t_0)} \left(\left.\pdv{t^k}\right|_{\gamma(t_0)}\right)\right\rangle = 0
+\end{equation*}
+for all $k=1,2$.
+
+However,
+\begin{equation*}
+    \begin{split}
+        \left\langle \left.\frac{\partial^2\phi^i}{\partial t^1 \partial t^j}\right|_{\gamma(t_0)}\left.\pdv{x^i}\right|_{\phi(\gamma(t_0))}, \left.\pdv{\phi^l}{t^k}\right|_{p}\left.\pdv{x^l}\right|_{\phi(\gamma(t_0))}\right\rangle&= \sum_{i=1}^3 \left.\frac{\partial^2\phi^i}{\partial t^1 \partial t^j}\right|_{\gamma(t_0)}\left.\pdv{\phi^i}{t^k}\right|_{\gamma(t_0)}
+    \end{split}
+\end{equation*}
+and using the above proposition,
+\begin{equation*}
+    \begin{split}
+       \left\langle \left.d\phi\right|_{\gamma(t_0)} \left( \left(\nabla_{\pdv{t^j}}\pdv{t^1}\right)(\gamma(t_0))\right), \left.d\phi\right|_{\gamma(t_0)} \left(\left.\pdv{t^k}\right|_{\gamma(t_0)}\right)\right\rangle&= \left\langle \left(\nabla_{\pdv{t^j}}\pdv{t^1}\right), \pdv{t^k}\right\rangle_M(\gamma(t_0)) \\
+       &=\sum_{i=1}^3 \left.\frac{\partial^2\phi^i}{\partial t^1 \partial t^j}\right|_{\gamma(t_0)}\left.\pdv{\phi^i}{t^k}\right|_{\gamma(t_0)}.
+    \end{split}
+\end{equation*}
+
+(b) From now on, I'll calculate any specific calculation by pushing functions on $S^2$ to $\mathbb{R}^3$ by the embedding $\phi:S^2\rightarrow \mathbb{R}^3$. Fix $p\in S^2$ and consider a constant speed great circles $\gamma(t):I\rightarrow S^2$ such that $\gamma(0) = p$. Since $\dv{t}\norm{\gamma(t)} = 0$ in $\mathbb{R}^3$, we get $\langle\dot{\gamma}(t), \gamma(t)\rangle = 0$. (More precisely, consider $\phi\circ \gamma:I\rightarrow \mathbb{R}^3$. Then, $\dv{(\phi\circ \gamma)}{t}(t_0) = d\phi(\gamma(t_0))\left(\left.\dv{\gamma}{t}\right|_{t_0}\right)$ and $\dv{t}\left\langle \phi\circ \gamma, \phi\circ \gamma\right\rangle = \left\langle \dv{(\phi\circ \gamma)}{t}, \phi\circ \gamma\right\rangle = 0$.) Also, $\gamma(t)$ is a constant speed curve, so by the same reason, $\langle\ddot{\gamma}(t), \dot{\gamma}(t)\rangle = 0$.
+
+Now, let $n = p\times \gamma'(0)$, which is cross product. Then as a great circle through $p$, $n\perp \gamma(t)$, i.e. $\langle \gamma(t), n\rangle = 0$. Furthermore, we get $\langle \gamma'(t), n\rangle$, $\langle \gamma''(t), n\rangle = 0$. It means that $\gamma'(t)\times n$ is parallel to $\gamma(t)$ and $\gamma''(t)$, so the two vectors are parallel. Since $\gamma(t)$ is perpendicular to $T_{\gamma(t)}S^2$, so $\dv{\dot{\gamma}}{t}$ is. (For any $x\in S^2$ and any curve $c:[0,1]\rightarrow S^2$ with $c(0) = x$, $\norm{c}=1$, so $\langle c'(0), c(0)\rangle = 0$, so the vector $x$ is perpendicular to $T_x S^2$ in $\mathbb{R}^3$.) Finally, we get the velocity field $\dot{\gamma}$ on $\gamma(t)$ is parallel by the results of above problem, and $\gamma(t)$ is the geodesic through $p$.\\
+
+\noindent \textbf{2}
+
+I'll first compute $g_{ij}$ at $(x_0, y_0)$.
+
+\begin{equation*}
+    \begin{split}
+        g_{11} &= g_{22} = \frac{1}{y^2}\\
+        g_{12} &= g_{21} = 0.
+    \end{split}
+\end{equation*}
+Therefore, we get
+\begin{equation*}
+    \begin{split}
+        g^{11} &= g^{22} = y^2\\
+        g^{12} &= g^{21} = 0.
+    \end{split}
+\end{equation*}
+
+Now, let's compute Christoffel symbol:
+
+\begin{equation*}
+\begin{split}
+    \Gamma_{11}^1 = \Gamma_{22}^1 &= \frac{1}{2}\sum_{k=1}^2 g^{1k}\left(\pdv{g_{k1}}{x^1}+\pdv{g_{k1}}{x^1} - \pdv{g_{11}}{x^k}\right) = 0 \\
+    \Gamma_{12}^1 = \Gamma_{21}^1 &= \frac{1}{2}\sum_{k=1}^2 g^{1k}\left(\pdv{g_{k1}}{x^2}+\pdv{g_{k2}}{x^1} - \pdv{g_{12}}{x^k}\right) = \frac{y^2}{2}\left(-\frac{2}{y^3}\right) = -\frac{1}{y}\\
+    \Gamma_{11}^2 &= \frac{1}{2}\sum_{k=1}^2 g^{2k}\left(\pdv{g_{k1}}{x^1}+\pdv{g_{k1}}{x^1} - \pdv{g_{11}}{x^k}\right) = \frac{y^2}{2}\left(\frac{2}{y^3}\right) = \frac{1}{y}\\
+    \Gamma_{22}^2 &= \frac{1}{2}\sum_{k=1}^2 g^{2k}\left(\pdv{g_{k2}}{x^2}+\pdv{g_{k2}}{x^2} - \pdv{g_{22}}{x^k}\right) = \frac{y^2}{2}\left(-\frac{2}{y^3}\right) = -\frac{1}{y}\\
+    \Gamma_{12}^2 = \Gamma_{21}^2 &= \frac{1}{2}\sum_{k=1}^2 g^{2k}\left(\pdv{g_{k1}}{x^2}+\pdv{g_{k2}}{x^1} - \pdv{g_{12}}{x^k}\right) = 0.
+\end{split}
+\end{equation*}
+
+To find a geodesic starting at $(x_0,y_0)$ with given tangent vector $(v_x, v_y)$, I need to solve the ODE
+\begin{equation*}
+    \begin{split}
+        \frac{d^2\gamma^1}{dt^2} &= \frac{2}{\gamma^2(t)} \dv{\gamma^1}{t}\dv{\gamma^2}{t}\\
+        \frac{d^2\gamma^2}{dt^2} &= -\frac{1}{\gamma^2(t)}\left(\left(\dv{\gamma^1}{t}\right)^2-\left(\dv{\gamma^2}{t}\right)^2\right)\\
+    \end{split}
+\end{equation*}
+
+If $v_x = 0$, then set $\gamma(t) = (x_0, y_0e^{(v_y/y_0)t})$, then 
+\begin{equation*}
+\begin{split}
+     \frac{d^2\gamma^1}{dt^2} &= 0 =\frac{2}{\gamma^2(t)} \dv{\gamma^1}{t}\dv{\gamma^2}{t}\\
+     \frac{d^2\gamma^2}{dt^2} &= \frac{v_y^2}{y_0}e^{(v_y/y_0)t} = -\frac{1}{y_0e^{(v_y/y_0)t}}\left(-v_y^2 e^{2(v_y/y_0)t}\right) = -\frac{1}{\gamma^2(t)}\left(\left(\dv{\gamma^1}{t}\right)^2-\left(\dv{\gamma^2}{t}\right)^2\right)
+\end{split}
+\end{equation*}
+If $v_x\neq 0$, let $c_1 = x_0+v_yy_0/v_x$ and $c_2 = \sqrt{x_0^2+y_0^2}$. Set $\gamma(t) = (c_1 + c_2\tanh{\left(v_0t/c_2\right)}, c_2\sech{\left(v_0t/c_2\right)})$, where $v_0 = (c_2/y_0)^2v_x$. Since $\gamma(t)$ is on $(x-c_1)^2+y^2 = (c_2)^2$ with $y>0$ and $\tanh(t)$ has range $(-1,1)$ for $(-\infty, \infty)$, there exists $t_0$ such that $(x_0, y_0) = \gamma(t_0)$. Also, 
+\begin{equation*}
+\begin{split}
+    \gamma'(t_0) &= (v_0\sech^2\left(v_0t_0/c_2\right), -v_0\sech\left(v_0t_0/c_2\right)\tanh\left(v_0t_0/c_2\right)\\
+    &=(v_0(y_0/c_2)^2, -v_0(y_0/c_2)((x_0-c_1)/c_2))\\
+    &=(v_x, -v_x(c_2/y_0)(-v_yy_0/c_2v_x))\\
+    &=(v_x, v_y).
+\end{split}
+\end{equation*}
+For $\gamma(t)$, it satisfies the geodesic ODE as we did 
+\begin{equation*}
+\begin{split}
+    \frac{d^2\gamma^1}{dt^2} &= -2c_2\left(v_0/c_2\right)^2 (\sech{(v_0/c_2)t})^2 \tanh{(v_0/c_2)t}\\
+    \frac{2}{\gamma^2(t)} \dv{\gamma^1}{t}\dv{\gamma^2}{t} &= -\frac{2}{c_2\sech{(v_0/c_2)t}}v_0\sech^2\left((v_0/c_2)t\right)v_0\sech\left((v_0/c_2)t\right)\tanh\left((v_0/c_2)t\right)\\
+    &=\frac{d^2\gamma^1}{dt^2}\\
+    \frac{d^2\gamma^2}{dt^2}&=c_2\left(v_0/c_2\right)^2\sech\left((v_0/c_2)t\right)\left( \tanh^2\left((v_0/c_2)t\right)-\sech^2\left((v_0/c_2)t\right)\right)\\
+    -\frac{1}{\gamma^2(t)}\left(\left(\dv{\gamma^1}{t}\right)^2-\left(\dv{\gamma^2}{t}\right)^2\right) &= -\frac{1}{c_2\sech{(v_0/c_2)t}}\left(\left(v_0\sech^2\left((v_0/c_2)t\right)\right)^2 - \left(v_0\sech\left((v_0/c_2)t\right)\tanh\left((v_0/c_2)t\right)\right)^2\right)\\\\
+    &=\frac{d^2\gamma^2}{dt^2},
+\end{split}
+\end{equation*}
+so $\gamma(t + t_0)$ satisfies the ODE with the initial condition at $t=0$.
+
+Therefore, I solved the second order ODE with initial conditions, and by the uniqueness of solution of system of second order ODE with initial conditions, I found all possible geodesics starting at $(x_0,y_0)$. Also, if $v_x=0$, then it is a vertical straight line, and if $v_x\neq 0$, then it is upper half circles with its boundary points lying on $\partial \mathbb{H}$ as $t\rightarrow \pm \infty$.\\
+
+\noindent \textbf{3}
+To show that the vector field $G$ which was defined in a coordinate system is really well-defined vector field on $TM$, I need to check that the form of $G$ is invariant under coordinate transformation. From now on, I'll compute the transformation law from a canonical coordinate to another canonical coordinate and apply the law to $G$ to check the well-definedness.
+
+Choose $p\in M$ and local coordinate $x=(x^1, \ldots, x^n)$ of a neighborhood $U$ of $p$.
+
+The canonical coordinate of $TM$ of $\pi^{-1}(U)$, where $\pi:TM\rightarrow M$ is the canonical projection, is $x^1, \ldots, x^n, v^1, \ldots, v^n$ such that for any $\xi\in T_pM$ which is written as 
+\begin{equation*}
+    \xi = \sum_{i=1}^n a^i \left.\pdv{x^i}\right|_{p},
+\end{equation*}
+the canonical coordinate maps
+\begin{equation*}
+    \xi\mapsto (x^1(p), \ldots, x^n(p), a^1, \ldots, a^n).
+\end{equation*}
+Let the canonical coordinate map associated with $x$ be $x_*$.
+
+Let $y_*=(y^1, \ldots, y^n, w^1, \ldots, w^n)$ be another canonical map of $\pi^{-1}(V)$ such that $p\in U\cap V$, then the transformation equation from $x_*$ to $y_*$ in $TM$ is written as
+
+\begin{equation*}
+    (y_*\circ x_*^{-1})(x(p), a^1, \ldots, a^n) = \left((y\circ x^{-1})(p), \sum_{i=1}^n a^i D_i(y^1\circ x^{-1})(p), \cdots, \sum_{i=1}^n a^i D_i(y^n\circ x^{-1})(p)\right),
+\end{equation*}
+where $D_i$ is the partial derivative along $i$th coordinate in $\mathbb{R}^n$. It also can be written as
+\begin{equation*}
+    \left.\pdv{x^i}\right|_{p} = \sum_{j=1}^n \frac{\partial y^j}{\partial x^i}(p)\left.\pdv{y^j}\right|_{p}
+\end{equation*}
+
+Now, I check how $\Gamma_{ij}^k$, which is defined on $TM$, transforms.
+\begin{proposition}
+Under the above setting, Christoffel symbol $\Gamma_{ij}^k$ in coordinate system $x_*$ transforms to $y_*$ by
+\begin{equation*}
+    \Gamma_{ij}^k\mapsto \tilde{\Gamma}_{\alpha\beta}^\gamma \pdv{x^k}{y^\gamma}\pdv{y^\alpha}{x^i}\pdv{y^\beta}{x^j} + \pdv{x^k}{y^\gamma}\frac{\partial^2 y^\gamma}{\partial x^i \partial x^j}
+\end{equation*}
+where $\tilde{\Gamma}_{\alpha\beta}^\gamma$ is the Christoffel symbol in $y_*$.
+\end{proposition}
+\begin{proof}
+Since $\Gamma_{ij}^k = dx^k\left(\nabla_{\pdv{x^i}}\pdv{x^j} \right)$, applying the transformation rule,
+\begin{equation*}
+    \begin{split}
+        \Gamma_{ij}^k = dx^k\left(\nabla_{\pdv{x^i}}\pdv{x^j} \right) &= \pdv{x^k}{y^\gamma}dy^\gamma \left(\nabla_{\pdv{y^\alpha}{x^i}\pdv{y^\alpha}}\pdv{y^\beta}{x^j}\pdv{y^\beta} \right)\\
+        &=\pdv{x^k}{y^\gamma}\pdv{y^\alpha}{x^i}dy^\gamma \left(\pdv{y^\beta}{x^j}\nabla_{\pdv{y^\alpha}}\pdv{y^\beta} + \pdv{y^\alpha}\left(\pdv{y^\beta}{x^j}\right)\pdv{y^\beta} \right)\\
+        &=\tilde{\Gamma}_{\alpha\beta}^\gamma \pdv{x^k}{y^\gamma}\pdv{y^\alpha}{x^i}\pdv{y^\beta}{x^j} + \pdv{x^k}{y^\gamma}\pdv{y^\alpha}{x^i}\pdv{x^t}{y^\alpha}\frac{\partial^2 y^\beta}{\partial x^j \partial x^t}dy^\gamma\left(\pdv{y^\beta}\right)\\
+        &=\tilde{\Gamma}_{\alpha\beta}^\gamma \pdv{x^k}{y^\gamma}\pdv{y^\alpha}{x^i}\pdv{y^\beta}{x^j} + \pdv{x^k}{y^\gamma}\frac{\partial^2 y^\gamma}{\partial x^i \partial x^j}
+    \end{split}
+\end{equation*}
+\end{proof}
+
+Now, let's consider $T(TM)$. Let $\Pi:T(TM)\rightarrow TM$ be the canonical projection. Following what we did in $TM$, give the canonical coordinate on $\Pi^{-1}(\pi^{-1}(U))$ by $X = (x^1, \ldots, v^1, \ldots, v^n, \alpha^1, \ldots, \alpha^{2n})$ such that for any $\Xi\in T_{\xi}(TM)$ which is written as,
+\begin{equation*}
+    \Xi = \sum_{i=1}^n b^i \left.\pdv{x^i}\right|_{\xi} + b^{n+i}\left.\pdv{v^i}\right|_{\xi},
+\end{equation*}
+the canonical coordinate maps
+\begin{equation*}
+    \Xi\mapsto (x_*(\xi), b^1, \ldots, b^{2n}).
+\end{equation*}
+
+Again, let $Y = (y_*, \beta^1, \ldots, \beta^{2n})$ be another canonical map of $\Pi^{-1}(\pi^{-1}(V))$, then the transformation equation form $X$ to $Y$ is written as
+\begin{equation*}
+    (Y\circ X^{-1})(x_*(\xi), b^1, \ldots, b^{2n}) = \left((y_*\circ x_*^{-1})(\xi), \sum_{i=1}^{2n} b^i D_i(y_*^1\circ x_*^{-1})(p),\cdots, \sum_{i=1}^{2n} b^i D_i(y_*^{2n}\circ x_*^{-1})(p)\right).
+\end{equation*}
+
+Note that we again get
+\begin{equation*}
+    \left.\pdv{x_*^i}\right|_{\xi} = \sum_{j=1}^{2n} \frac{\partial y_*^{j}}{\partial x_*^i}(\xi)\left.\pdv{y_*^j}\right|_{\xi} .
+\end{equation*}
+
+Let's computing $\pdv{y_*^{j}}{x_*^i}$ directly. For $i=1,\ldots, n$,
+\begin{equation*}
+    \left.\pdv{y_*^{j}}{x_*^i}\right|_{\xi} = D_i(y_*^j\circ x_*^{-1})(\xi) =
+    \begin{cases}
+    D_i(y^j\circ x^{-1})(p) = \left.\pdv{y^j}{x^i}\right|_{p} & j=1,\ldots, n\\
+    \sum_{k=1}^n v^k(\xi)D_{ik}(y^{j-n}\circ x^{-1})(p) = \sum_{k=1}^n v^k(\xi)\left.\frac{\partial^2 y^{j-n}}{\partial x^i \partial x^k}\right|_{p} & j=n+1, \ldots, 2n.
+    \end{cases}
+\end{equation*}
+
+For $i=n+1, \ldots, 2n$,
+\begin{equation*}
+    \left.\pdv{y_*^{j}}{x_*^i}\right|_{\xi} = D_i(y_*^j\circ x_*^{-1})(\xi) =
+    \begin{cases}
+    0 & j=1,\ldots, n\\
+    D_{i-n}(y^{j-n}\circ x^{-1})(p) = \left.\frac{\partial y^{j-n}}{\partial x^{i-n}}\right|_{p} & j=n+1, \ldots, 2n.
+    \end{cases}
+\end{equation*}
+
+Since $x_*^i = x^i$ (resp. $y_*^i = y^i$) for $1\leq i\leq n$ and $x_*^i = v^i$ (resp. $y_*^i = w^i$) for $n+1\leq i\leq 2n$, we get
+\begin{equation*}
+\begin{split}
+    \pdv{x^i} &= \sum_{j=1}^n \pdv{y^j}{x^i}\pdv{y^j} + \sum_{k=1}^n v^k \frac{\partial^2 y^j}{\partial x^k \partial x^i}\pdv{w^j} = \sum_{j=1}^n \pdv{y^j}{x^i}\pdv{y^j} + \sum_{k=1}^n \left(\sum_{l=1}^n \pdv{x^k}{y^l}w^l\right) \frac{\partial^2 y^j}{\partial x^k \partial x^i}\pdv{w^j}\\
+     \pdv{v^i} &= \sum_{j=1}^n \pdv{y^j}{x^i}\pdv{w^j}
+\end{split}
+\end{equation*}
+
+and
+
+\begin{equation*}
+    v^i = \sum_{j=1}^n \pdv{x^i}{y^j} w^j.
+\end{equation*}
+
+Now, we can compute the transformation from $X$ to $Y$ for each terms in $G$. For first term,
+
+\begin{equation*}
+    \begin{split}
+        v^k\pdv{x^k} &= w^\alpha\pdv{x^k}{y^\alpha}\left(\pdv{y^\beta}{x^k}\pdv{y^\beta} + \pdv{x^l}{y^\beta}w^\beta \frac{\partial^2 y^\gamma}{\partial x^l \partial x^k}\pdv{w^\gamma} \right)\\
+        &=w^\alpha \pdv{y^\alpha} + w^\alpha w^\beta \pdv{x^k}{y^\alpha}\pdv{x^l}{y^\beta}\frac{\partial^2 y^\gamma}{\partial x^l \partial x^k}\pdv{w^\gamma}.
+    \end{split}
+\end{equation*}
+
+For second term,
+\begin{equation*}
+\begin{split}
+    \Gamma_{ij}^k v^i v^j\pdv{v^k} &= \pdv{x^k}{y^\gamma}\pdv{y^\alpha}{x^i}\left(\tilde{\Gamma}_{\alpha\beta}^\gamma \pdv{y^\beta}{x^j} + \pdv{x^t}{y^\alpha}\frac{\partial^2 y^\gamma}{\partial x^t \partial x^j}\right)w^{\delta_1}\pdv{x^i}{y^{\delta_1}} w^{\delta_2}\pdv{x^j}{y^{\delta_2}}\pdv{y^{\delta_3}}{x^k}\pdv{w^{\delta_3}}\\
+    &=\delta_{\gamma}^{\delta_3}\delta^\alpha_{\delta_1}\left(\tilde{\Gamma}_{\alpha\beta}^{\gamma}\delta_{\delta_2}^{\beta} + \pdv{x^t}{y^\alpha}\frac{\partial^2 y^\gamma}{\partial x^t \partial x^j}\pdv{x^j}{y^{\delta_2}}\right)w^{\delta_1}w^{\delta_2}\pdv{w^{\delta_3}}\\
+    &=\left(\tilde{\Gamma}_{\alpha\beta}^\gamma + \pdv{x^t}{y^\alpha}\pdv{x^j}{y^\beta}\frac{\partial^2 y^\gamma}{\partial x^t \partial x^j} \right) w^\alpha w^\beta \pdv{w^\gamma}
+\end{split}
+\end{equation*}
+
+Note that the second term in each term coincides by changing internal index, $v^k\pdv{x^k} - \Gamma_{ij}^k v^i v^j\pdv{v^k}$ remains the same form under coordinate transformation. Therefore, $G$ is a vector field on $TM$.\\
+
+\noindent \textbf{4}
+
+If $\frac{\partial g_{ij}}{\partial x^k}(p) = 0$ for all $i,j$ and $k$, then we can easily see $\Gamma_{ij}^k(p) = 0$ by the definition, so I'll show the converse. Consider $\Gamma_{kij}(p) = g_{kt}(p)\Gamma^t_{ij}(p)$, (Note that $g$ is positive definite, so inverse is well-defined) then 
+
+\begin{equation*}
+\begin{split}
+    \Gamma_{kij}(p) &= \left(g_{kt}g^{ts}\left(\pdv{g_{is}}{x^j}+\pdv{g_{js}}{x^i} - \pdv{g_{ij}}{x^s}\right)\right)(p)\\
+    &=\delta_k^s\left(\pdv{g_{is}}{x^j}+\pdv{g_{js}}{x^i} - \pdv{g_{ij}}{x^s}\right)(p)\\
+    &=\left(\pdv{g_{ik}}{x^j}+\pdv{g_{jk}}{x^i} - \pdv{g_{ij}}{x^k}\right)(p).
+\end{split}    
+\end{equation*}
+
+By the assumption, we get $\Gamma_{kij}(p) = 0$ for all $i,j,k$. By taking cyclic permutation of $i,j,k$, we get
+\begin{equation*}
+    \begin{split}
+        \Gamma_{ijk} = \left(\pdv{g_{ji}}{x^k}+\pdv{g_{ki}}{x^j} - \pdv{g_{jk}}{x^i}\right)(p) &= 0\\
+        \Gamma_{jki} = \left(\pdv{g_{kj}}{x^i}+\pdv{g_{ij}}{x^k} - \pdv{g_{ki}}{x^j}\right)(p) &= 0.
+    \end{split}
+\end{equation*}
+Since $g_{ij} = g_{ji}$ for any $i,j$, if we add the two lines, we get $2\frac{\partial g_{ij}}{\partial x^k}(p) = 0$.
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

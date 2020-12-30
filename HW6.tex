@@ -1,0 +1,482 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, physics, cancel}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclareMathOperator{\Ric}{Ric}
+\DeclareMathOperator{\ad}{ad}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\intprodl}{%
+    \mathbin{\scalebox{1.5}{$\lrcorner$}}%
+}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW6}
+\end{center}
+박성빈, 수학과
+
+Notation: 
+\noindent \textbf{1}
+\begin{enumerate}
+    \item[(a)]
+    I'll replace the notion of degrees of $A$ and $B$ by $k\mapsto a$ and $l\mapsto b$. Choose $C\in \Gamma(\Lambda^*TP)$, and let $c$ be the degree of $C$, then
+    \begin{equation*}
+        [\ad_A, \ad_B]C = [A,[B,C]] - (-1)^{(a-1)(b-1)}[B,[A,C]],
+    \end{equation*}
+    and
+    \begin{equation*}
+        \ad_{[A,B]}C = [[A,B], C].
+    \end{equation*}
+    
+    From the graded Jacobi identity, we get
+    \begin{equation}\label{HW6:2_Eq1}
+    \begin{split}
+        (-1)^{(a-1)(c-1)}&\left((-1)^{(a-1)(c-1)}[[A,[B,C]] + (-1)^{(b-1)(a-1)}[B,[C,A]] + (-1)^{(c-1)(b-1)}[C, [A,B]]\right) \\
+        &=[A,[B,C]] + (-1)^{(a-1)(b+c-2)}[B,[C,A]] + (-1)^{(c-1)(a+b-2)}[C, [A,B]]\\
+        &=[A,[B,C]] + (-1)^{(a-1)(b+c-2) + (a-1)(c-1) + 1}[B,[A,C]] + (-1)^{(c-1)(a+b-2) + (a+b-2)(c-1) + 1}[[A,B], C]\\
+        &=[A,[B,C]] - (-1)^{(a-1)(b-1)}[B,[A,C]] -[[A,B], C]\\
+        &=0.
+    \end{split}
+    \end{equation}
+    Therefore, we get $\ad_{[A,B]}C = [\ad_A, \ad_B]C$ for all $C$ and
+    \begin{equation*}
+        \ad_{[A,B]} = [\ad_A, \ad_B].
+    \end{equation*}
+    \item[(b)]
+    If we compute $[\ad_A B, C] + (-1)^{(a-1)(b-1)}[B, \ad_A C]$, then by \eqref{HW6:2_Eq1},
+    \begin{equation*}
+        \begin{split}
+            [\ad_A B, C] + (-1)^{(a-1)(b-1)}[B, \ad_A C] = [[A,B],C] + (-1)^{(a-1)(b-1)}[B, [A,C]].
+        \end{split}
+    \end{equation*}
+    Since
+    \begin{equation*}
+    \begin{split}
+        \ad_A[B,C] &= [A,[B,C]]\\
+        &=(-1)^{(a-1)(b-1)}[B, [A,C]] + [[A,B],C],
+    \end{split}
+    \end{equation*}
+    we get
+    \begin{equation*}
+        \ad_A[B,C] = [\ad_A B, C] + (-1)^{(a-1)(b-1)}[B, \ad_A C].
+    \end{equation*}
+\end{enumerate}
+
+\noindent \textbf{2}
+Since $V$ is a finite $\mathbb{R}$-vector space, I safely assume $V$ be $\mathbb{R}^n$ for some $n$ by taking a vector space isomorphism between $V$ and $\mathbb{R}^n$.
+
+I'll first show the following proposition.
+\begin{proposition}\label{HW6:2_prop1}
+    Let $f$ be a smooth function on a convex open set $0\in U\subset \mathbb{R}^n$ with $f(0)=df(0) = 0$. Then, there exists $h_{ij}(x)\in C^\infty(U)$ satisfying
+    \begin{equation}
+        f(x) = \sum_{i,j} x^i x^j h_{ij}(x).
+    \end{equation}
+    such that $h_{ij}(0) = \frac{1}{2}D_i D_j f(0)$.
+\end{proposition}
+\begin{proof}
+Since $f(0) = 0$, there exists $g_i(x)\in C^\infty(\mathbb{R}^n)$ such that $f(x) = \sum_{i=1}^n x^ig_i(x)$ with $g_i(0) = D_i f(0)$. Now, set $f_i(x) = x^ig_i(x)$. Since $df_i(0) = 0$, $g_i(0) = D_if(0) = 0$. Therefore, we again set $g_i(x) = \sum_{j=1}^n x^j h_{ij}(x)$ where $h_{ji}(0)= D_jg_i(0)$.
+In this setting, we get
+\begin{equation*}
+    f(x) = \sum_{i,j}x^ix^jh_{ij}(x).
+\end{equation*}
+Since
+\begin{equation*}
+    g_i(x) = \int_0^1 D_i f(tx)dt,
+\end{equation*}
+so
+\begin{equation*}
+    D_j g_i(x) = \int_0^1 t D_j D_if(tx)dt,
+\end{equation*}
+and
+\begin{equation*}
+    h_{ij}(0) = D_j g_i(0) = \int_0^1 t D_j D_i f(0) dt = \frac{1}{2} D_j D_i f(0).
+\end{equation*}
+\end{proof}
+
+Second, I'll show a lemma which will be useful for calculation.
+\begin{lemma}
+Let $f(t,x), g(t,x):[0,1]\times M\rightarrow M$ be differentiable functions. Denoting $f^t(x)=f(t,x)$, $g^t(x) = g(t,x)$, and $h(t,x) = f(t, g(t,x))$ by $(f^t\circ g^t)(x)$, we get
+\begin{equation*}
+    \frac{d\left(f^t\circ g^t\right)}{dt}(t_0, x_0) = \left.\frac{df^t}{dt}\right|_{t_0}\left(g^{t_0}(x_0)\right) + df^{t_0}\left(\frac{dg^t}{dt}(t_0, x_0)\right).
+\end{equation*}
+\end{lemma}
+\begin{proof}
+For fixed $x_0\in M$, choose local coordinates at $x_0$, $g(x_0)$, and $f(g(x_0))$ and replace $M$ by $\mathbb{R}^n$ near each point using the coordinates. Directly computing the formula in this setting using the chain rule,
+\begin{equation*}
+\begin{split}
+    \lim_{h\rightarrow 0}\frac{f^{t_0+h}\circ g^{t_0+h} - f^{t_0}\circ g^{t_0}}{h} &= \lim_{h\rightarrow 0}\frac{f^{t_0+h}\circ g^{t_0+h} - f^{t_0}\circ g^{t_0+h} + f^{t_0}\circ g^{t_0+h} - f^{t_0}\circ g^{t_0}}{h}\\
+    &=\lim_{h\rightarrow 0}\left.\frac{df^{t}}{dt}\right|_{t_0}\left(g^{t_0+h}\right) + \lim_{h\rightarrow 0}\frac{f^{t_0}\circ g^{t_0+h} - f^{t_0}\circ g^{t_0}}{h}\\
+    &=\left.\frac{df^t}{dt}\right|_{t_0}\circ g^{t_0} + df^{t_0}\left(\left.\dv{g^t}{t}\right|_{t_0}\right).
+\end{split}
+\end{equation*}
+\end{proof}
+
+Let $f^t(x) = Q(x,x)+t(f(x)-Q(x,x))$ for $t\in[0,1]$. What I want to find is the collection of local diffeomorphisms $\varphi_t(x)$ for $t\in [0,1]$ satisfying
+\begin{equation*}
+    f^t\circ \varphi_t(x) = Q(x,x).
+\end{equation*}
+
+Let $X_t = \dv{\varphi_t}{t}\circ \varphi_t^{-1}$. Taking derivative about $t$, we get
+\begin{equation*}
+    \left(X_t[f^t] + \dv{f^t}{t}\right)\circ \varphi_t= 0
+\end{equation*}
+with $\varphi_0 = \textrm{id}$. Now, let's solve the problem
+\begin{equation}\label{HW6:1_Eq1}
+    \begin{split}
+        X_t[f^t](x) = -f(x)+Q(x,x).
+    \end{split}
+\end{equation}
+
+Let's write $X_t = a^k(t)\pdv{x^k}$, $Q(x,x)=x^ix^jQ_{ij}$, and $f(x) = x^ix^jh_{ij}(x)$ using the proposition \ref{HW6:2_prop1}. Since $d^2f(0)$ is non-singular, there exists an open set $0\in U$ such that $h_{ij}(x)$ is non-singular on $U$. Also, note that $Q_{ij} = h_{ij}(0)$. Computing further more, we get
+\begin{equation*}
+\begin{split}
+    X_t[f^t](x) &= (1-t)Q_{ij}X_t(x^ix^j) + tX_t(x^ix^jh_{ij}) \\
+    &=((1-t)Q_{ij} + th_{ij}(x))X_t(x^ix^j) + tx^ix^jX_t(h_{ij})\\
+    &=((1-t)h_{ij}(0) + th_{ij}(x))(2x^i a^j) + tx^ix^ja^k\pdv{h_{ij}}{x^k}
+\end{split}
+\end{equation*}
+Writing it using matrix form and (natural) inner product form in $\mathbb{R}^n$, we get
+\begin{equation*}
+    \begin{pmatrix}
+    x^1 & x^2 & \hdots & x^n
+    \end{pmatrix}
+    2\left((1-t)h_{ij}(0) + th_{ij}(x) + \frac{1}{2}tx^k\pdv{h_{ik}}{x^j}\right)
+    \begin{pmatrix}
+    a^1 \\ a^2 \\ \vdots \\ a^n
+    \end{pmatrix}
+    =\begin{pmatrix}
+    x^1 & x^2 & \hdots & x^n
+    \end{pmatrix}
+    \left(-h_{ij}+Q_{ij}\right)
+    \begin{pmatrix}
+    x^1 \\ x^2 \\ \vdots \\ x^n
+    \end{pmatrix}
+\end{equation*}
+
+If we make $U$ small enough, we can make $tx^k\pdv{h_{ik}}{x^j}$ small enough and the matrix in LHS invertible for all $t$ as $\lim_{x\rightarrow 0}h_{ij}(x) = h_{ij}(0)$. Shrinking $U$ furthermore, we can choose a small enough $\epsilon>0$ such that we can set $a^i$ by
+\begin{equation}\label{HW6:1_Eq2}
+    \begin{pmatrix}
+    a^1 \\ a^2 \\ \vdots \\ a^n
+    \end{pmatrix}
+    =\frac{1}{2}\left((1-t)h_{ij}(0) + th_{ij}(x) + \frac{1}{2}tx^k\pdv{h_{ik}}{x^j}\right)^{-1}
+    \left(-h_{ij}(x)+h_{ij}(0)\right)
+    \begin{pmatrix}
+    x^1 \\ x^2 \\ \vdots \\ x^n
+    \end{pmatrix}
+\end{equation}
+for all $t\in (-\epsilon, 1+\epsilon)$. It shows for each $t\in [0,1]$, we can find $X_t$ satisfying \eqref{HW6:1_Eq1} with the differential at $t=0$ and $t=1$ is defined. Now, we need to solve the ODE:
+\begin{equation*}
+    \dv{\varphi_t}{t} = X_t(\varphi_t).
+\end{equation*}
+
+To apply time-independent vector field theory to solve the above equation, I'll use some argument. (The argument is in \textit{Real and Functional Analysis}, Lang.) Let $N = (-\epsilon, 1+\epsilon)\times U$ and set $\overline{X}(t,x) = (1, X_t(x))$ as a vector field on $N$. Let $\overline{\varphi}:(-\delta, \delta)\rightarrow N$ be a flow of $\overline{X}$ for some $\delta>0$ such that it satisfies
+\begin{equation}\label{HW6:1_Eq3}
+    \dv{\overline{\varphi}}{s} = \overline{X}(\overline{\varphi})
+\end{equation}
+with $\overline{\varphi}(0) = (t,x)$. Note that $s$ represents the time for the flow on $N$. Since the first component of $\overline{X}$ is $1$, we get
+\begin{equation*}
+    \overline{\varphi}(s) = (s+t, \overline{\varphi}_2(s))
+\end{equation*}
+for some function $\overline{\varphi}_2(s)$ with initial condition $\overline{\varphi}_2(0) = x$. Then $\overline{\varphi}_2$ also satisfies
+\begin{equation*}
+    \dv{\overline{\varphi}_2}{s} = X_{t+s}(\overline{\varphi}_2(s))
+\end{equation*}
+by the definition of $\overline{X}$. Therefore, if we set $\alpha(s) = \overline{\varphi}_2(s)$ with initial condition $\overline{\varphi}_2(0) = (0,x)$, then we get
+\begin{equation*}
+    \dv{\alpha}{s} = X_{s}(\alpha).
+\end{equation*}
+with $\alpha(0) = x$. It means that if we solve the \eqref{HW6:1_Eq3}, where $\overline{X}$ is time-independent vector field on $N$, with the initial condition $\overline{\varphi}(0) = (0,x)$ for $x$ in some open neighborhood of $\mathbb{R}^n$, then we get the solution of original ODE $\varphi_t$ with initial condition $\varphi_0(x) = x$ for $x$ in the neighborhood. Now, I can use the standard ODE theory.
+
+Take a closed ball $\Omega$ of $0$ with radius $R$ in $U$. Note that 
+\begin{equation*}
+    \norm{\frac{1}{2}\left((1-t)h_{ij}(0) + th_{ij}(x) + \frac{1}{2}tx^k\pdv{h_{ik}}{x^j}\right)^{-1}
+    \left(-h_{ij}(x)+h_{ij}(0)\right)}
+\end{equation*}
+is a smooth function on $N$, so there exists $C>0$ bounding the value on $[0,1]\times \Omega$. Therefore, $\norm{a^i(t,x)} \leq C\norm{x^i}$ on $[0,1]\times \Omega$; the norm is the Euclidean norm on $\mathbb{R}^n$. By noting $\norm{x^i} = \norm{x}$, we get
+\begin{equation*}
+    \dv{\norm{x}}{t} = \frac{\sum_{i=1}^n x^i (x^i)'}{\norm{x}}\leq \norm{(x^i)'} = \norm{a^i(t,x)}\leq C\norm{x}.
+\end{equation*}
+Therefore, if we take an open ball $\Omega'$ has radius smaller than $Re^{-C}$, we can assume if there exists a flow $\overline{\varphi}(s,0,x)$ of $\overline{X}$, which has initial condition $(0,x)$ at $s=0$, with $x\in \Omega'$, then $\overline{\varphi}_2(s,0,x)\in \Omega$ for all $s\in [0,1]$. Since $[0,1]\times \Omega$ is compact in $N$, using $C^\infty$ Uryshon lemma, we can construct a vector field $\overline{Y}$ such that $\overline{X}=\overline{Y}$ on $[0,1]\times \Omega$ and has a compact support. Since $\overline{Y}$ has compact support, the flow $\overline{\varphi}_{\overline{Y}}(s,0,x)$ is well-defined for $s\in \mathbb{R}$ and $x\in \Omega'$. Since we are only interested in the time domain $s\in [0,1]$ and I already showed that $\overline{\varphi}_2(s,0,x) \in \Omega$ for all $s\in [0,1]$ if $x\in \Omega'$, the flow calculated by $\overline{X}$ should be same as the flow $\overline{\varphi}_{\overline{Y}}(s,0,x)$ by the construction of $\overline{Y}$. Therefore, $\overline{\varphi}_2|_{\Omega'}(1,0)$ is the desired diffeomorphism with a neighborhood $\Omega'\subset \mathbb{R}^n$. (This is a local diffeomorphism of $\Omega'$; $\overline{\varphi}_{\overline{Y}}^s$ is a collection of diffeomorphisms on $N$ and by choosing $s=1$ and restricting $t=0$, and $x\in \Omega'$, whose image is contained in $t=1$ plane, then we get bijective and bi-$C^\infty$ $\overline{\varphi}_2|_{\Omega'}(1,0)$.)\\
+
+\noindent \textbf{3}
+
+I'll first show the following lemma:
+\begin{lemma}
+Let $f\in C^\infty(M)$ and $X_f$ be the associated Hamiltonian vector field. Let $\varphi:M\rightarrow M$ be a sympletic diffeomorphism, then it satisfies
+\begin{equation*}
+    \varphi^*(X_f) = X_{f\circ \varphi}.
+\end{equation*}
+\end{lemma}
+\begin{proof}
+By the definition of sympletic diffeomoprhism, we get $\varphi^*\omega = \omega$, so for any vector field $g\in C^\infty(M)$ and $p\in M$, we get
+\begin{equation*}
+\begin{split}
+    (\varphi^*(X_f))(p)(g) &= \omega(p)\left(X_g(p), d\varphi^{-1}\left(X_f(\varphi(p))\right)\right)\\
+    &= (\varphi^*\omega)(p)\left(X_g(p), d\varphi^{-1}\left(X_f(\varphi(p))\right)\right)\\
+    &= \omega(\varphi(p))\left(d\varphi \left(X_g(p)\right),X_f\left(\varphi(p)\right)\right)\\
+    &=-(\varphi^*(X_f\intprodl \omega))(p)(X_g)\\
+    &=-(\varphi^*(df))(p)(X_g)\\
+    &=-d(f\circ \varphi)(p)(X_g)\\
+    &=X_{f\circ \varphi}(p)(g).
+\end{split}
+\end{equation*}
+Therefore, we get $\varphi^*(X_f) = X_{f\circ \varphi}$.
+\end{proof}
+
+Using the lemma, we can directly compute the Hamiltonian function since each $\phi^t_H$ and $\phi^t_K$ is sympletic diffeomorphism for each $t$. For $(\phi_H^t)^{-1}$,
+\begin{equation*}
+\begin{split}
+0 &= \dv{(\textrm{id}_M)}{t} = \dv{\left(\left(\phi^t_H\right)^{-1}\circ \phi^t_H\right)}{t}\\
+&=\frac{d\left(\phi^t_H\right)^{-1}}{dt}\left(\phi^t_H\right) + d\left(\phi^t_H\right)^{-1}\left(\dv{\phi^t_H}{t}\circ \left(\phi^t_H\right)^{-1}\circ \phi^t_H\right)\\
+&=X_{\overline{H}_t} + d\left(\phi^t_H\right)^{-1}\left(X_{H_t}\circ\phi^t_H\right)\\
+&=X_{\overline{H}_t} + \left(\phi^t_H\right)^*\left(X_{H_t}\right)\\
+&=X_{\overline{H}_t} + X_{H_t\circ \phi^t_H}.
+\end{split}
+\end{equation*}
+
+Since for any $g\in C^\infty(M)$,
+\begin{equation*}
+\begin{split}
+X_{\overline{H}_t}[g] &= -X_{H_t\circ \phi^t_H}[g] \\
+&= -\{g,H_t\circ \phi^t_H\}\\
+&=\{g,-H_t\circ \phi^t_H\}\\
+&=X_{-H_t\circ \phi^t_H}[g],
+\end{split}
+\end{equation*}
+so $\overline{H}(t,x) = -H\left(t, \phi^t_H(x)\right)$.
+
+For $\phi_H^t\circ \phi^t_K$
+\begin{equation*}
+\begin{split}
+\dv{\left(\phi^t_H\circ \phi^t_K\right)}{t} &=\frac{d \phi^t_H}{d t}(\phi_K^t) +  d\phi_H^t\left(\dv{\phi_K^t}{t}\right)\\
+&=\frac{d \phi^t_H}{d t}\left(\left(\phi^t_H\right)^{-1}\circ \phi^t_H \circ \phi_K^t\right) + d\phi_H^t\left(\dv{\phi_K^t}{t}\circ \left(\phi_K^t\right)^{-1}\circ \phi_K^t\right)\\
+&=X_{H_t}\left(\phi^t_H \circ \phi_K^t\right) + d\phi_H^t\left(X_{K_t}\circ \phi_K^t\right)\\
+&=X_{H_t}\left(\phi^t_H \circ \phi_K^t\right) + \left(\left((\phi_H^t)^{-1}\right)^*X_{K_t}\right)\left(\phi_H^t\circ \phi_K^t\right)\\
+&=X_{H_t}\left(\phi^t_H \circ \phi_K^t\right) + \left(X_{K_t\circ (\phi_H^t)^{-1}}\right)\left(\phi_H^t\circ \phi_K^t\right)
+\end{split}
+\end{equation*}
+
+Since for any $g\in C^\infty(M)$,
+\begin{equation*}
+\begin{split}
+\left(X_{H_t}+X_{K_t\circ (\phi_H^t)^{-1}}\right)[g] &= \left(X_{H_t}\right)[g]+\left(X_{K_t\circ (\phi_H^t)^{-1}}\right)[g]\\
+&=\{g,H_t\} + \{g,K_t\circ (\phi_H^t)^{-1}\}\\
+&=\{g, H_t + K_t\circ (\phi_H^t)^{-1}\}\\
+&=X_{H_t + K_t\circ (\phi_H^t)^{-1}}[g],
+\end{split}
+\end{equation*}
+we get
+\begin{equation*}
+H\#K(t,x) = H(t,x) + K(t,(\phi_H^t)^{-1}(x)).
+\end{equation*}
+\\
+\noindent \textbf{4}
+I'll compute the $G$ on the coordinate system. Choose a point $q$ in $N$ and choose a local coordinate $q$ at $x$. Choose a canonical local coordinate $(q,v)$ at $T_qN$ and $(q,p)$ at $T^*_qN$. Let's first compute how the bundle isomorphism $\tilde{g}$ acts. Let $v\in T_qN$
+\begin{equation*}
+    v = a^i \left.\pdv{v^i}\right|_q,
+\end{equation*}
+then
+\begin{equation*}
+    \tilde{g}(q,v)\left(\left.\pdv{q^j}\right|_{q}\right) = g\left(a^i \left.\pdv{q^i}\right|_q,\left.\pdv{q^j}\right|_{q} \right) = a^ig_{ij}(q),
+\end{equation*}
+so $\tilde{g}(q,v) = (q, v^ig_{ij})$. Conversely,
+\begin{equation*}
+    \tilde{g}^{-1}(q,p) = (q, p_ig^{ij}).
+\end{equation*}
+
+
+Let $f:TN\rightarrow \mathbb{R}$, then
+\begin{equation*}
+\begin{split}
+    Gf(q,v) &= \left(d(\tilde{g}^{-1})X_{H_g}(\tilde{g}(q,v))\right)(f)\\
+    &=X_{H_g}(\tilde{g}(q,v))\left(f\circ \tilde{g}^{-1}\right)\\
+    &=\omega_0\left(X_{f\circ \tilde{g}^{-1}}, X_{E\circ \tilde{g}^{-1}}\right)(\tilde{g}(q,v))\\
+    &=\{f\circ \tilde{g}^{-1}, E\circ \tilde{g}^{-1}\}(\tilde{g}(q,v))\\
+    &=\left(\sum_{i=1}^n \pdv{f\circ \tilde{g}^{-1}}{q^i}\pdv{E\circ \tilde{g}^{-1}}{p^i} - \pdv{f\circ \tilde{g}^{-1}}{p^i}\pdv{E\circ \tilde{g}^{-1}}{q^i}\right)(\tilde{g}(q,v))
+\end{split}
+\end{equation*}
+
+Now, I'll explicitly compute the formula. In this calculation, I'll implicitly use the Riemannian tensor, Levi-Civita, and Christofell symbol's property; for example, $\Gamma_{ij}^k=\Gamma_{ji}^k$.From now on, I'll use Einstein notation.
+
+Let's start the computation by noting that
+\begin{equation*}
+    d\tilde{g}^{-1}\left(\pdv{q^k}\right) = \pdv{q^k} + p_i\pdv{g^{ij}}{q^k}\pdv{v^j},
+\end{equation*}
+and
+\begin{equation*}
+    d\tilde{g}^{-1}\left(\pdv{p^k}\right) = g^{kj}\pdv{v^j}.
+\end{equation*}
+
+Computing each elements,
+\begin{equation*}
+    \begin{split}
+         \pdv{f\circ \tilde{g}^{-1}}{q^i}&= \pdv{f}{q^j}\pdv{(\tilde{g}^{-1})^j}{q^i} + \pdv{f}{v^j}\pdv{(\tilde{g}^{-1})^{n+j}}{q^i}\\
+         &=\pdv{f}{q^i} + p_k\pdv{g^{kj}}{q^i}\pdv{f}{v^j}\\
+         &=\pdv{f}{q^i} + v^lg_{lk}\pdv{g^{kj}}{q^i}\pdv{f}{v^j}\\
+         &=\pdv{f}{q^i} - v^lg^{kj}\pdv{g_{lk}}{q^i}\pdv{f}{v^j}\\
+         &=\pdv{f}{q^i} - v^lg^{kj}\left(\Gamma_{il}^s g_{sk} + \Gamma_{ik}^tg_{tl}\right)\pdv{f}{v^j}\\
+         &=\pdv{f}{q^i} - v^l(\Gamma_{il}^j + g^{jk}\Gamma_{ik}^sg_{sl})\pdv{f}{v^j},
+    \end{split}
+\end{equation*}
+In the middle step, I used the identity $g_{lk}g^{kj} = \delta^j_l$, so $\dv{(g_{lk}g^{kj})}{t} = 0$.
+
+\begin{equation*}
+    \begin{split}
+         \pdv{f\circ \tilde{g}^{-1}}{p^i}&= \pdv{f}{q^j}\pdv{(\tilde{g}^{-1})^j}{p^i} + \pdv{f}{v^j}\pdv{(\tilde{g}^{-1})^{n+j}}{p^i} = g^{ij}\pdv{f}{v^j},
+    \end{split}
+\end{equation*}
+
+\begin{equation*}
+    \begin{split}
+         \pdv{E\circ \tilde{g}^{-1}}{q^i}&=\pdv{E}{q^i} + p_k\pdv{g^{kj}}{q^i}\pdv{E}{v^j}\\
+         &=v^jv^k\Gamma_{ij}^l g_{lk} + p_k\pdv{g^{kj}}{q^i}g_{sj}v^s\\
+         &=v^jv^k\Gamma_{ij}^l g_{lk} - v^\alpha(\Gamma_{i\alpha}^j + g^{jk}\Gamma_{ik}^\beta g_{\beta \alpha})g_{sj}v^s\\
+         &=v^jv^k\Gamma_{ij}^l g_{kl} - v^\alpha v^s \Gamma_{i\alpha}^j g_{sj} - v^\alpha g^{jk}\Gamma_{ik}^\beta g_{\beta\alpha}g_{sj}v^s\\
+         &=- v^\alpha \Gamma_{i\gamma}^\beta g_{\beta\alpha}v^\gamma,
+    \end{split}
+\end{equation*}
+and
+\begin{equation*}
+    \begin{split}
+         \pdv{E\circ \tilde{g}^{-1}}{p^i}&=g^{ij}\pdv{E}{v^j} = g^{ij}g_{sj}v^s = v^i.
+    \end{split}
+\end{equation*}
+
+Therefore, 
+\begin{equation}\label{HW6:4_1}
+    \begin{split}
+        \left(\pdv{f\circ \tilde{g}^{-1}}{q^i}\right)\left(\pdv{E\circ \tilde{g}^{-1}}{p^i}\right) &= v^i\left(\pdv{f}{q^i} - v^l(\Gamma_{il}^j + g^{jk}\Gamma_{ik}^sg_{sl})\pdv{f}{v^j}\right)\\
+        &=v^i\pdv{f}{q^i} - v^iv^l\Gamma_{il}^j\pdv{f}{v^j} - v^iv^l\Gamma_{ik}^sg^{jk} g_{sl}\pdv{f}{v^j}
+    \end{split}
+\end{equation}
+and
+\begin{equation}\label{HW6:4_2}
+\begin{split}
+    \left(\pdv{f\circ \tilde{g}^{-1}}{p^i}\right)\left(\pdv{E\circ \tilde{g}^{-1}}{q^i}\right) &= -g^{ij}\pdv{f}{v^j}\left(v^\alpha v^\gamma\Gamma_{i\gamma}^\beta g_{\beta\alpha}\right)\\
+    &=-v^\gamma v^\alpha  \Gamma_{\gamma i}^\beta g^{ji}g_{\beta\alpha}\pdv{f}{v^j}.
+\end{split}
+\end{equation}
+Since the third term in \eqref{HW6:4_1} and \eqref{HW6:4_2} coincides, we get
+\begin{equation*}
+    \sum_{i=1}^n \left(\pdv{f\circ \tilde{g}^{-1}}{q^i}\right)\left(\pdv{E\circ \tilde{g}^{-1}}{p^i}\right) - \left(\pdv{f\circ \tilde{g}^{-1}}{p^i}\right)\left(\pdv{E\circ \tilde{g}^{-1}}{q^i}\right) = v^i\pdv{f}{q^i} - v^iv^l\Gamma_{il}^j\pdv{f}{v^j}
+\end{equation*}
+Therefore, re-indexing,
+\begin{equation*}
+G(q,v) = v^k\pdv{q^k} - v^iv^j\Gamma_{ij}^k\pdv{v^k}
+\end{equation*}
+is the geodesic vector field on $TN$.
+%________________________________________________________________________
+\end{document}
+
+%================================================================================

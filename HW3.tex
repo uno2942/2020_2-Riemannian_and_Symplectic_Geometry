@@ -1,0 +1,247 @@
+%Calculus Homework
+\documentclass[a4paper, 12pt]{article}
+
+%================================================================================
+%Package
+    \usepackage{amsmath, amsthm, amssymb, latexsym, mathtools, mathrsfs, physics}
+    \usepackage{dsfont, txfonts, soul, stackrel, tikz-cd, graphicx, titlesec, etoolbox}
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+    \usepackage{fancyhdr}
+    \usepackage[shortlabels]{enumitem}
+    \usepackage[pdfmenubar=true, pdfborder  ={0 0 0 [3 3]}]{hyperref}
+    \usepackage{kotex}
+
+%================================================================================
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{makebox}
+\usepackage{pst-node, auto-pst-pdf}
+
+%================================================================================
+%Layout
+    %Page layout
+    \addtolength{\hoffset}{-50pt}
+    \addtolength{\headheight}{+10pt}
+    \addtolength{\textwidth}{+75pt}
+    \addtolength{\voffset}{-50pt}
+    \addtolength{\textheight}{+75pt}
+    \newcommand{\Space}{1em}
+    \newcommand{\Vspace}{\vspace{\Space}}
+    \newcommand{\ran}{\textrm{ran }}
+    \setenumerate{listparindent=\parindent}
+
+%================================================================================
+%Statement
+    \newtheoremstyle{Mytheorem}%
+    {1em}{1em}%
+    {\slshape}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \newtheoremstyle{Mydefinition}%
+    {1em}{1em}%
+    {}{}%
+    {\bfseries}{.}%
+    { }{}
+
+    \theoremstyle{Mydefinition}
+    \newtheorem{statement}{Statement}
+    \newtheorem{definition}[statement]{Definition}
+    \newtheorem{definitions}[statement]{Definitions}
+    \newtheorem{remark}[statement]{Remark}
+    \newtheorem{remarks}[statement]{Remarks}
+    \newtheorem{example}[statement]{Example}
+    \newtheorem{examples}[statement]{Examples}
+    \newtheorem{question}[statement]{Question}
+    \newtheorem{questions}[statement]{Questions}
+    \newtheorem{problem}[statement]{Problem}
+    \newtheorem{exercise}{Exercise}[section]
+    \newtheorem*{comment*}{Comment}
+    %\newtheorem{exercise}{Exercise}[subsection]
+
+    \theoremstyle{Mytheorem}
+    \newtheorem{theorem}[statement]{Theorem}
+    \newtheorem{corollary}[statement]{Corollary}
+    \newtheorem{corollaries}[statement]{Corollaries}
+    \newtheorem{proposition}[statement]{Proposition}
+    \newtheorem{lemma}[statement]{Lemma}
+    \newtheorem{claim}{Claim}
+    \newtheorem{claimproof}{Proof of claim}[claim]
+    \newenvironment{myproof1}[1][\proofname]{%
+  \proof[\textit Proof of problem #1]%
+}{\endproof}
+
+%================================================================================
+%Header & footer
+    \fancypagestyle{myfency}{%Plain
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \fancypagestyle{myfirstpage}{%Firstpage
+    \fancyhf{}
+    \fancyhead[L]{}
+    \fancyhead[C]{}
+    \fancyhead[R]{}
+    \fancyfoot[L]{}
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+
+    \pagestyle{myfency}
+
+%================================================================================
+
+%***************************
+%*** Additional Command ****
+%***************************
+
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\co}{co}
+\DeclareMathOperator{\ball}{ball}
+\DeclareMathOperator{\wk}{wk}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\quotZ}[1]{\ensuremath{\mathbb{Z}/p^{#1}\mathbb{Z}}}
+%================================================================================
+%Document
+\begin{document}
+\thispagestyle{myfirstpage}
+\begin{center}
+    \Large{HW3}
+\end{center}
+박성빈, 수학과
+
+Notation: 
+
+\noindent \textbf{1}
+
+Fix $(s_0, t_0)\in (-\epsilon, \epsilon)\times [a,b]$ and $p=C(s_0, t_0)$. Choose a local coordinate $x$ near $p$, then we can write
+\begin{equation}
+\begin{split}
+    dC(s_0, t_0)\left(\left.\pdv{s}\right|_{(s_0,t_0)}\right) &= \left.\pdv{C^i}{s}\right|_{(s_0,t_0)}\left.\pdv{x^i}\right|_{p}\\
+    dC(s_0, t_0)\left(\left.\pdv{t}\right|_{(s_0,t_0)}\right) &= \left.\pdv{C^i}{t}\right|_{(s_0,t_0)}\left.\pdv{x^i}\right|_{p}.
+\end{split}
+\end{equation}
+
+Also, note that $dC\left(\pdv{s}\right), dC\left(\pdv{t}\right)$ is a smooth vector field on $C^*(TM)$. Using the local coordinate near $p$, we get
+
+\begin{equation}
+\begin{split}
+    \left(\frac{D}{dt}\pdv{C}{s}\right)(p) &= \frac{D}{dt}\left(\pdv{C^i}{s}\pdv{x^i}\right)(p)\\
+    &=\left.\pdv{C^i}{t}{s}\right|_{(s_0, t_0)}\left.\pdv{x^i}\right|_p + \left.\pdv{C^i}{s}\right|_{(s_0, t_0)}\frac{D}{dt}\left(\pdv{x^i}\right)(p)\\
+    &=\ldots + \left.\pdv{C^i}{s}\right|_{(s_0, t_0)}\left.\pdv{C^j}{t}\right|_{(s_0, t_0)}\nabla_{\pdv{x^j}}\left(\pdv{x^i}\right)(p)\\
+    &=\left.\pdv{C^j}{s}{t}\right|_{(s_0, t_0)}\left.\pdv{x^j}\right|_p + \left.\pdv{C^j}{t}\right|_{(s_0, t_0)}\left.\pdv{C^i}{s}\right|_{(s_0, t_0)}\nabla_{\pdv{x^i}}\left(\pdv{x^j}\right)(p)~(\because \textrm{torsion freeness)}\\
+    &=\left(\frac{D}{ds}\pdv{C}{t}\right)(p).
+\end{split}
+\end{equation}
+Therefore, $\frac{D}{dt}\pdv{C}{s} = \frac{D}{ds}\pdv{C}{t}$.\\
+
+Before start, I'll construct some useful functions which will be used in problem 2 and 3.
+
+Let $h:\mathbb{R}\rightarrow\mathbb{R}$ by
+\begin{equation}
+    h(x)=\begin{cases}
+    e^{-(x-1)^{-2}}e^{-(x+1)^{-2}} & x\in (-1, 1)\\
+    0 & x\notin (-1, 1).
+    \end{cases}
+\end{equation}
+
+Then this function is smooth on $\mathbb{R}$, $0$ on $(-\infty, -1]\cup [1, \infty)$, and the image is contained in $[0,1]$.
+
+Fix $0<\epsilon<1/4$ and define a bump function $f_\epsilon:[0,1]\rightarrow [0,1]$ by
+\begin{equation}
+    f_\epsilon(x) = \begin{cases}
+    \left(\int_{-1}^{(2/\epsilon) x-1} h(t)dt\right)/\left(\int_{-1}^{1} h(t)dt\right) & x\in[0,\epsilon]\\
+    1-\left(\int_{-1}^{(2/\epsilon) (x-1)+1} h(t)dt\right)/\left(\int_{-1}^{1} h(t)dt\right) & x\in[1-\epsilon,1]\\
+    1 & \textrm{else}.
+    \end{cases}
+\end{equation}
+For any $\delta>0$, we can extend $f_\epsilon$ on $(-\delta, 1+\delta)$ by setting $0$ additional interval, so $f_\epsilon$ is smooth on the extended interval.
+
+Also, define $g_\epsilon:[0,1]\rightarrow [0,1]$ by
+\begin{equation}
+    g_\epsilon(x) = \begin{cases}
+    1-\left(\int_{-1}^{(2/\epsilon) x-1} h(t)dt\right)/\left(\int_{-1}^{1} h(t)dt\right) & x\in[0,\epsilon]\\
+    0 & \textrm{else}.
+    \end{cases}
+\end{equation}
+$g_\epsilon$ also enjoys the $C^\infty$ property as $f_\epsilon$, representing smoothly decreasing function from $1$ to $0$.\\
+
+I'll prove a proposition which will be used in problem 2. (In fact, we already did this in the class.)
+\begin{proposition}
+Let $\gamma(t):[0,1]\rightarrow M$ be a curve and $V(t)$ be a vector field along the curve with $V(0)=V(1)=0$, then there exists $C(s,t):(-\epsilon, \epsilon)\times[0,1]\rightarrow M$ for some $\epsilon>0$ satisfying
+\begin{equation}
+    \begin{split}
+        C(0,t)&=\gamma(t)\\
+        C(s,0)&=\gamma(0), C(s,1)=\gamma(1)\\
+        \left.\pdv{C}{s}\right|_{(0,t)} &= V(t).
+    \end{split}
+\end{equation}
+for all $t$ or $s$.
+\end{proposition}
+\begin{proof}
+For each $t\in[0,1]$, there exists a normal neighborhood $U$ of $\gamma(t)$ with associated $\delta_t>0$ such that for $v\in T_{p}M$ with $p\in U$, if $\abs{v}<\delta_t$, then $\exp_p(v)$ is well-defined. Cover the $\gamma$ with normal neighborhoods and select finite cover since $\gamma$ is compact in $M$. Set $\delta$ be the minimum of $\delta_{t_i}$ which are associated with the finite normal neighborhoods. Now, we get $\delta>0$ such that $\exp_{\gamma(t)}(v)$ is well-defined for all $\abs{v}<\delta$ with $v\in T_{\gamma(t)}M$.
+
+Let $N=\max_{t\in[0,1]}\abs{V(t)}$, then $N<\infty$ since $\abs{V(t)}$ is a continuous function on compact set, and set $\epsilon = \delta/N$. Then we also get the well-defined $\exp_{\gamma(t)}(sV(t))$ for $\abs{s}<\epsilon$.
+
+Now, set $C(s,t) = \exp_{\gamma(t)}(sV(t))$, then the exponential map depends smoothly on $s$ and $t$. Also, it satisfies
+\begin{equation}
+    \begin{split}
+        C(0,t)&=\gamma(t)\\
+        C(s,0)&=\gamma(0), C(s,1)=\gamma(1) \textrm{ since }V(0)=V(1)=0\\
+        \left.\pdv{C}{s}\right|_{(0,t)} &= V(t).
+    \end{split}
+\end{equation}
+\end{proof}
+\noindent \textbf{2}
+WLOG, let's take the domain of the curve $[0,1]$ by taking a parametrization. Choose $0<\epsilon<1/4$ and take the bump function $f_\epsilon:[0,1]\rightarrow [0,1]$. For $f_\epsilon(t)W(t)$, which is a vector field along the curve with $0$ at $t=0$ and $1$, there exists a variation $C_\epsilon(s,t):(-\delta_\epsilon, \delta_\epsilon)\times[0,1]\rightarrow M$ for some $\delta_\epsilon>0$ with  $C_\epsilon(s,0) = \gamma(0)$, $C_\epsilon(s,1) = \gamma(1)$, and $\left.\pdv{C_\epsilon}{s}\right|_{(0,t)} = f_\epsilon(t)W(t)$. Therefore,
+\begin{equation}
+    \int_0^1 \langle f_\epsilon(t)W(t), W(t)\rangle dt = \int_0^1 f_\epsilon(t)\langle W(t), W(t)\rangle dt.
+\end{equation}
+for all $0<\epsilon<1/4$. Since $f_\epsilon\nearrow 1$ almost everywhere as $\epsilon\rightarrow 0$ and $\langle W(t), W(t)\rangle\geq 0$, by Monotone convergence theorem, we get 
+\begin{equation}
+    0 = \lim_{\epsilon\rightarrow 0}\int_0^1 f_\epsilon(t)\langle W(t), W(t)\rangle dt = \int_0^1 \langle W(t), W(t)\rangle dt
+\end{equation}
+and if $W(t)\neq 0$, then RHS is non-zero, which is a contradiction. Therefore, $W(t)\equiv 0$.\\
+
+\noindent \textbf{3}
+To show the proposition, WLOG I'll show that if $\dot{\gamma}(0)\not\perp T_{\gamma(0)}N$, then the geodesic $\gamma$ is not locally distance minimizing. (If $\dot{\gamma}(1)\not\perp T_{\gamma(1)}\overline{N}$, then set $\tilde{\gamma}(t) = \gamma(1-t)$ and interchange $N$ and $\overline{N}$.)
+
+Since $\gamma$ is geodesic, it has constant speed. By H\"older's inequality, we get equality
+\begin{equation}
+    \left(\int_0^1 \norm{\dot{\gamma}(t)}dt\right)^2 = \left(\int_0^1 \norm{\dot{\gamma}(t)}^2dt\right).
+\end{equation}
+
+the RHS is the double of kinetic energy of the curve $\gamma$, so locally distance minimizing means the curve is locally energy minimizing. If we assume the $\gamma$ is locally distance minimizing, by the first variation formula, we get
+\begin{equation}
+    0 = -\int_0^1 \left\langle V(t), \frac{D\dot{\gamma}}{dt}(t)\right\rangle dt + \left.\left\langle V(t), \dot{\gamma}(t)\right\rangle\right|_0^1
+\end{equation}
+
+for any infinitesimal variation $V(t)$ of $\gamma$. As $\gamma$ is geodesic, $\frac{D\dot{\gamma}}{dt} = 0$ and we get $\left.\left\langle V(t), \dot{\gamma}(t)\right\rangle\right|_0^1 = 0$.
+
+Let $p=\gamma(0)$ and choose small enough neighborhood $U$ of $p$ in $\gamma$ such that there exists a coordinate system $x$ for $M$ and $y$ for $N$ containing the neighborhood and $U\cap N$. Abusing notation, I'll write $i^{-1}(p)\in N$ by same $p$. Since $\dot{\gamma}(0)\not\perp T_{\gamma(0)}N$, WLOG, I'll assume that $\left\langle \dot{\gamma}(0), di(p)\left(\left.\pdv{y^1}\right|_p\right)\right\rangle\neq 0$. Our constraints on $\gamma$ is that $\gamma(0)\in i(N)$ and $\gamma(1)\in i(\overline{N})$. Let's give induced Riemannian metric on $N$ by the imbedding $i$. Using the induced metric, we get exponential map on $N$. Choose small enough $\epsilon>0$ in order to make $\rho(s) = \exp_p\left(s\left.\pdv{y^1}\right|_{p}\right)$ is well-defined and $\rho(s)\subset U\cap N$ for $\abs{s}<\epsilon$. (Since $\exp_p$ is a diffeomorphism between $B_\delta(0)\in TN$ for some $\delta>0$ and an open set in $N$ containing $p$, we can choose such $\epsilon>0$ satisfying $\rho(s)\subset U\cap N$.) Now, I need to construct $C(s,t):(-\epsilon, \epsilon)\times[0,1]\rightarrow M$ such that $C(s, 0) = i\circ \rho(s)$. Using the coordinate system, let's treat $U\subset \mathbb{R}^n$. Choose $\delta\in(0,1/4)$ such that $\gamma(t)\in U$ for $[0,\delta]$. Define a variation in $U$ by
+\begin{equation}
+    C(s,t) = \gamma(t) + g_{\delta/2}(t)(i\circ\rho(s)-\gamma(0)),
+\end{equation}
+then it is smooth since it is addition and multiplication of smooth functions. Furthermore, for $t\in [3\delta/4, 1]$, set $C(s,t) = \gamma(t)$ in $M$, then $C(s,t)$ is smooth for $(s,t)\in(-\epsilon, \epsilon)\times[0,1]$.
+
+$C(0,t) = \gamma(t)$, $C(s, 0) = i\circ\rho(s)\in i(N)$, and $C(s,t) = \gamma(t)$ for $t\geq\delta$. Now, set $V(t) = \left.\pdv{C}{s}\right|_{(0,t)}$, then
+\begin{equation}
+    V(t) = \begin{cases}
+    g_{\delta/2}(t)di(p)\left(\left.\pdv{\rho}{s}\right|_{p}\right) = g_{\delta/2}(t)di(p)\left(\left.\pdv{y^1}\right|_{p}\right) & t\in[0,\delta/2]\\
+    0 & t\in [\delta/2, 1].
+    \end{cases}
+\end{equation}
+For such $V$, we get $\left.\left\langle V(t), \dot{\gamma}(t)\right\rangle\right|_0^1 = -\left\langle di(p)\left(\left.\pdv{y^1}\right|_p\right), \dot{\gamma}(0)\right\rangle\neq 0$. It contradicts the local energy minimizing property. It proves the proposition.
+%________________________________________________________________________
+\end{document}
+
+%================================================================================
